@@ -1,3 +1,3 @@
 <?php
-	echo '<p> Une erreur s\'est produite. Try Again !</p>';
+	echo '<p> An error occured. Try Again !</p>';
 ?>
