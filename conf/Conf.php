@@ -3,7 +3,7 @@
 class Conf {
 
     static private $databases = array (
-        'hostname' => 'https://webinfo.iutmontp.univ-montp2.fr',
+        'hostname' => 'webinfo.iutmontp.univ-montp2.fr',
         // le nom de la base de donnée
         'database' => 'simondonj',
         // root
