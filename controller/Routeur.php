@@ -1,11 +1,5 @@
 <?php
 
-if (isset($_COOKIE['preference'])) {
-    $controller_default = $_COOKIE['preference'];
-} else {
-    $controller_default = "SI_CONTROLLER_NON_RENSEIGNE";
-}
-
 if (isset($_GET['controller'])) {
     $controller = $_GET['controller'];
 } else {
