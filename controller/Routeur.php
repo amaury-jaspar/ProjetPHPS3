@@ -27,7 +27,7 @@ if (isset($_GET['action'])) {
     }
 
   } else {
-    $action = "readAll";
+    $action = "read";
 }
 
 $controller_class::$action();
