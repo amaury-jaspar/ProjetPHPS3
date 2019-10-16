@@ -1,10 +1,10 @@
 <?php
 
-    require_once (File::build_path(array('model', 'ModelUtilisateur.php')));
+    require_once (File::build_path(array('model', 'ModelUser.php')));
 
-    class ControllerUtilisateur {
+    class ControllerUser {
 
-        protected static $object = "utilisateur";
+        protected static $object = "user";
 
         public static function read() {
 

@@ -3,7 +3,7 @@
 if (isset($_GET['controller'])) {
     $controller = $_GET['controller'];
 } else {
-    $controller = 'utilisateur';
+    $controller = 'user';
 }
 
 $controller_class = ucfirst("controller") . ucfirst($controller);
