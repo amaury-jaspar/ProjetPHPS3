@@ -6,7 +6,7 @@ echo <<< EOT
             <div class="row">
               <div class="col l6 s12">
                 <h5 class="white-text">DOMINION</h5>
-                <p class="grey-text text-lighten-4">Site de vente de carte de collection Dominion</p>
+                <p class="grey-text text-lighten-4">Site de vente de carte d'Item pour aventurier</p>
               </div>
               <div class="col l4 offset-l2 s12">
                 <ul>
@@ -25,7 +25,7 @@ echo <<< EOT
           <div class="footer-copyright">
             <div class="container">
             © 2019 Copyright Text
-            <a class="grey-text text-lighten-4 right" href="http://webinfo.iutmontp.univ-montp2.fr/~simondonj/">Par Jean Simondon</a>
+            <a class="grey-text text-lighten-4 right" href="http://webinfo.iutmontp.univ-montp2.fr/~simondonj/">Par Jean Simondon, Jaspar amaury, Mathieu Lagny</a>
             </div>
           </div>
         </footer>

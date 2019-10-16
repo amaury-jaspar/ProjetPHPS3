@@ -4,14 +4,13 @@ echo <<< EOT
 <header>
     <nav>
     <div class="nav-wrapper">
-        <a href="index.php?action=pageDeGardeBuilder&controller=accueil" class="brand-logo">La Bonne Carte</a>
+        <a href="index.php?action=pageDeGardeBuilder&controller=accueil" class="brand-logo">Le marché de l'aventurier</a>
         <ul id="nav-mobile" class="right hide-on-med-and-down">
 EOT;
         if(!empty($_SESSION['login'])) { echo '<li class="green">vous êtes connecté</li>'; }
 echo <<< EOT
         <li><a href="index.php?action=pageDeGardeBuilder&controller=accueil">Accueil</a></li>
                 <li><a href="index.php?action=pagination&controller=produit">Catalogue</a></li>
-            <!--<li><a href="index.php?action=pageBuilder&controller=bourse">Bourse aux cartes</a></li>-->
                 <li><a href="index.php?action=readBasket&controller=produit">Panier</a></li>
 EOT;
 
