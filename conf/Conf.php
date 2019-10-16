@@ -5,7 +5,7 @@ class Conf {
     static private $databases = array (
         'hostname' => 'https://webinfo.iutmontp.univ-montp2.fr',
         // le nom de la base de donnée
-        'database' => 'dominionVente',
+        'database' => 'simondonj',
         // root
         'login' => 'simondonj',
         // mdp créer à l'installation, certainement un root
