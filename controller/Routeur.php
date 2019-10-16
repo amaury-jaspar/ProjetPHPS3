@@ -3,7 +3,7 @@
 if (isset($_GET['controller'])) {
     $controller = $_GET['controller'];
 } else {
-    $controller = 'SI_ACCUEIL_NON_RENSEIGNE';
+    $controller = 'utilisateur';
 }
 
 $controller_class = ucfirst("controller") . ucfirst($controller);
@@ -27,7 +27,7 @@ if (isset($_GET['action'])) {
     }
 
   } else {
-    $action = "NOTRE_PAGE_PAR_DEFAUT";
+    $action = "readAll";
 }
 
 $controller_class::$action();
