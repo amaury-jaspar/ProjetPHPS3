@@ -2,20 +2,20 @@
 
 require_once (File::build_path(array('model', 'Model.php')));
 
-class ModelUtilisateur extends Model {
+class ModelUser extends Model {
 
     private $login;
-    private $nom;
-    private $prenom;
+    private $lastName;
+    private $surname;
 
-    protected static $object = "utilisateur";
+    protected static $object = "user";
     protected static $primary = "login";
 
     public function __construct($l = NULL, $n = NULL, $p = NULL) {
         if (!is_null($l) && !is_null($n) && !is_null($p)) {
             $this->login = $l;
-            $this->nom = $n;
-            $this->prenom = $p;
+            $this->lastName = $n;
+            $this->surname = $p;
         }
     }
 
@@ -27,20 +27,20 @@ class ModelUtilisateur extends Model {
         $this->login = $login;
     }
 
-    public function getNom() {
-        return $this->nom;
+    public function getLastName() {
+        return $this->lastName;
     }
 
-    public function setNom($nom) {
-        $this->nom = $nom;
+    public function setLastName($lastName) {
+        $this->lastName = $lastName;
     }
 
-    public function getPrenom() {
-        return $this->prenom;
+    public function getSurname() {
+        return $this->surname;
     }
 
-    public function setPrenom($prenom) {
-        $this->prenom = $prenom;
+    public function setSurname($surname) {
+        $this->surname = $surname;
     }
 
     public function getAdmin() {
