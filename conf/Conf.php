@@ -3,19 +3,19 @@
 class Conf {
 
     static private $databases = array (
-        'hostname' => 'localhost:8889',
+        'hostname' => 'https://webinfo.iutmontp.univ-montp2.fr',
         // le nom de la base de donnée
         'database' => 'dominionVente',
         // root
-        'login' => 'root',
+        'login' => 'simondonj',
         // mdp créer à l'installation, certainement un root
-        'password' => 'root'
+        'password' => '07C4XS02ID7'
         // a remplir
     );
 
     static private $debug = True;
 
-    static public function getDebut() {
+    static public function getDebug() {
         return self::$debug;
     }
 
