@@ -2,7 +2,6 @@
 
     require_once (File::build_path(array('model', 'ModelUser.php')));
     require_once (File::build_path(array('lib', 'Security.php')));
-    require_once (File::build_path(array('lib', 'Session.php')));
 
 	class ControllerUser {
 
@@ -181,6 +180,7 @@
             }
         }
 
+        
     }
 
 ?>

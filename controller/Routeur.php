@@ -1,5 +1,19 @@
 <?php
 
+/*
+// Une fonction qui va servir à convertir facilement le type de méthode que l'on souhaite dans les formulaire
+// Passer de GET à POST facilement
+static function myGet($nomvar) {
+    if (isset($_GET[$nomvar])) {
+       return $_GET[$nomvar];
+    } else if (isset($_POST[$nomvar])) {
+        return $_POST[$nomvar];
+    } else {
+        return NULL;
+    }
+}
+*/
+
 if (isset($_GET['controller'])) {
     $controller = $_GET['controller'];
 } else {
