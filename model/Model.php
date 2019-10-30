@@ -52,7 +52,7 @@ class Model {
 		$class_name = 'Model' . ucfirst($table_name);
 		$rep = Model::$pdo->query("SELECT * FROM $table_name");
 		$rep->setFetchMode(PDO::FETCH_CLASS, $class_name);
-		return $rep->fetchAll();
+		$tab = $rep->fetchAll();
 		if (empty($tab))
 			return false;
 		return $tab;
@@ -69,7 +69,7 @@ class Model {
 			"valeur" => $valeur
 		);
 		$req_prep->execute($values);
-		$rep->setFetchMode(PDO::FETCH_CLASS, $class_name);
+		$tab = $rep->setFetchMode(PDO::FETCH_CLASS, $class_name);
 		if (empty($tab))
 			return false;
 		return $tab;

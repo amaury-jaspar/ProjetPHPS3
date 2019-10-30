@@ -6,9 +6,6 @@ echo <<< EOT
     <div class="nav-wrapper">
         <a href="index.php?action=pageDeGardeBuilder&controller=home" class="brand-logo">Mystic Market Everywhere</a>
         <ul id="nav-mobile" class="right hide-on-med-and-down">
-EOT;
-        if(!empty($_SESSION['login'])) { echo '<li class="green">vous êtes connecté</li>'; }
-echo <<< EOT
         <li><a href="index.php?action=pageDeGardeBuilder&controller=home">Home</a></li>
                 <li><a href="index.php?action=pagination&controller=product">Catalog</a></li>
                 <li><a href="index.php?action=readBasket&controller=product">Basket</a></li>
@@ -33,4 +30,3 @@ echo <<< EOT
 EOT;
 
 ?>
-

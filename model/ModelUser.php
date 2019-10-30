@@ -7,17 +7,21 @@ class ModelUser extends Model {
 	private $login;
 	private $lastName;
 	private $surname;
+	private $mail;
 
 	protected static $object = "user";
 	protected static $primary = "login";
 
-	public function __construct($l = NULL, $n = NULL, $p = NULL) {
-		if (!is_null($l) && !is_null($n) && !is_null($p)) {
+	public function __construct($l = NULL, $n = NULL, $p = NULL, $e = NULL) {
+		if (!is_null($l) && !is_null($n) && !is_null($p) && !is_null($e)) {
 			$this->login = $l;
 			$this->lastName = $n;
 			$this->surname = $p;
+			$this->mail = $e;
 		}
 	}
+
+	// Faire les getter générique
 
 	public function getLogin() {
 		return $this->login;
@@ -43,28 +47,12 @@ class ModelUser extends Model {
 		$this->surname = $surname;
 	}
 
-	public function getAdmin() {
-		return $this->admin;
-	}
-
-	public function setAdmin($admin) {
-		$this->admin = $admin;
-	}
-
 	public function getMail() {
 		return $this->mail;
 	}
 
 	public function setMail($mail) {
 		$this->mail = $mail;
-	}
-
-	public function getWallet() {
-		return $this->wallet;
-	}
-
-	public function setWallet($wallet) {
-		$this->wallet = $wallet;
 	}
 
 }

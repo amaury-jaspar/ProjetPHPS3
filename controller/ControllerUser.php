@@ -1,10 +1,11 @@
 <?php
 
     require_once (File::build_path(array('model', 'ModelUser.php')));
+    require_once (File::build_path(array('lib', 'Security.php')));
 
-    class ControllerUser {
+	class ControllerUser {
 
-        protected static $object = "user";
+		protected static $object = "user";
 
         public static function read() {
             $login = htmlspecialchars($_GET['login']);
@@ -12,12 +13,12 @@
             if ($user == false) {
                 $array = array("view", "view.php");
                 $view='error';
-                $pagetitle='Error Page';
+                $pagetitle='Page d\'erreur';
                 require_once (File::build_path($array));
             } else {
                 $array = array("view", "view.php");
                 $view='detail';
-                $pagetitle='user detail';
+                $pagetitle='Detail user';
                 require_once (File::build_path($array));
             }
         }
@@ -26,70 +27,108 @@
             $tab_user = ModelUser::selectAll();
             $array = array("view", "view.php");
             $view='list';
-            $pagetitle='User list';
+            $pagetitle='Users list';
             require (File::build_path($array));
-        }
+        }     
 
         public static function create() {
             $login = "";
-            $nom = "";
-            $prenom = "";
+            $lastName = "";
+            $surname = "";
             $password1 = "";
             $password2 = "";
             $required = "required";
             $action = "created";
             $array = array("view", "view.php");
             $view='update';
-            $pagetitle='User creation';
+            $pagetitle='User\'s creation';
             require (File::build_path($array));
         }
 
         public static function created() {
-            if ($_GET['password1'] == $_GET['password2'] && filter_var($_GET['mail'], FILTER_VALIDATE_EMAIL)) {
-                $utilisateur = new ModelUtilisateur($_GET['login'], $_GET['nom'], $_GET['prenom'], false, $_GET['mail']);
-                    // il faudrait afficher une erreur si le login existe déjà
-                    $data = array (
-                        'login' => $utilisateur->getLogin(),
-                        'nom' => $utilisateur->getNom(),
-                        'prenom' => $utilisateur->getPrenom(),
-                        'password' => Security::chiffrer($_GET['password1']),
-                        'admin' => 0,
-                        'mail' => $_GET['mail'],
-                        'nonce' => Security::generateRandomHex(),
-                        'wallet' => 0
-                    );
-                    $utilisateur->save($data);
-                    Validate::sendValidationMail($data);
-                    $array = array("view", "view.php");
-                    $view='created';
-                    $pagetitle='Utilisateur créée';
-                    require (File::build_path($array));
-                } else {
-                    echo "Mot de passes différent ou adresse mail invalide, veuillez recommencer";
-                    $login = $_GET['login'];
-                    $nom = $_GET['nom'];
-                    $prenom = $_GET['prenom'];
-                    $required = "required";
-                    $action = "create";
-                    $array = array("view", "view.php");
-                    $view='update';
-                    $pagetitle='Creation d\'un utilisateur';
-                    require (File::build_path($array));
-                }
+            if ($_GET['password1'] == $_GET['password2']) {
+                $user = new ModelUser($_GET['login'], $_GET['lastname'], $_GET['surname'], $_GET['mail']);
+                $data = array (
+                    'login' => $user->getLogin(),
+                    'lastName' => $user->getLastName(),
+                    'surname' => $user->getSurname(),
+                    'password' => Security::chiffrer($_GET['password1']),
+                    'mail' => $_GET['mail']
+                );
+                $user->save($data);
+                $array = array("view", "view.php");
+                $view='created';
+                $pagetitle='user created';
+                require (File::build_path($array));
+            } else {
+                echo "The passwords don't match, please retry";
+                $login = $_GET['login'];
+                $lastName = $_GET['lastname'];
+                $surname = $_GET['surname'];
+                $required = "required";
+                $action = "create";
+                $array = array("view", "view.php");
+                $view='update';
+                $pagetitle='user creation';
+                require (File::build_path($array));
+            }
         }
 
         public static function delete() {
-
-        }
-
-        public static function update() {
-        
-        }
-
-        public static function updated() {
-
-        }
-
+            $login = $_GET['login'];
+            ModelUser::deleteById($login);
+            $tab_user = ModelUser::selectAll();
+            $array = array("view", "view.php");
+            $view='deleted';
+            $pagetitle='User deleted';
+            require (File::build_path($array));
     }
+
+	public static function update() {
+		$login = $_GET['login'];
+			$user = ModelUser::select($login);
+			$lastName = rawurlencode($user->getLastName());
+			$surname = rawurlencode($user->getSurname());
+            $password1 = "";
+			$password2 = "";
+            $mail = htmlspecialchars($user->getMail());
+            $required = "readonly";
+			$action = "updated";
+			$array = array("view", "view.php");
+			$view='update';
+			$pagetitle='User modification';
+			require (File::build_path($array));
+	}
+
+	public static function updated() {
+		$login = $_GET['login'];
+		if ($_GET['password1'] == $_GET['password2']) {
+			$data = array (
+				'login' => $_GET['login'],
+				'lastName' => $_GET['lastname'],
+				'surname' => $_GET['surname'],
+				'password' => Security::chiffrer($_GET['password1']),
+                'mail' => $_GET['mail']
+            );
+			ModelUser::updateByID($data);
+			$array = array("view", "view.php");
+			$view='updated';
+			$pagetitle='Modication of a user finished';
+			require (File::build_path($array));
+		} else {
+			echo "The passwords don't match, please retry";
+			$login = $_GET['login'];
+			$lastName = $_GET['lastname'];
+			$surname = $_GET['surname'];
+			$required = "required";
+			$action = "updated";
+			$array = array("view", "view.php");
+			$view='update';
+			$pagetitle='User\'s creation';
+			require (File::build_path($array));
+			}
+		}
+
+	}
 
 ?>
