@@ -5,7 +5,7 @@ class ControllerItem {
 	protected static $object = "item";
 
 	public static function read() {
-		echo "Ceci est un item";
+		
 	}
 
 	public static function readAll() {
