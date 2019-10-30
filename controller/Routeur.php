@@ -3,7 +3,7 @@
 if (isset($_GET['controller'])) {
     $controller = $_GET['controller'];
 } else {
-    $controller = 'user';
+    $controller = 'home';
 }
 
 $controller_class = ucfirst("controller") . ucfirst($controller);
@@ -25,7 +25,7 @@ if (isset($_GET['action'])) {
     }
 
   } else {
-    $action = "read";
+    $action = "buildFrontPage";
 }
 
 $controller_class::$action();

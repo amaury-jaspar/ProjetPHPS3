@@ -1,4 +1,5 @@
 <?php
+session_start(); // instruction à placer avant toute écriture de code HTML
 
 require_once ('../lib/File.php');
 
