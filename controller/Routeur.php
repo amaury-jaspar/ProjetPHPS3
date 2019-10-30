@@ -19,8 +19,6 @@ if (isset($_GET['action'])) {
 
     if (!in_array($action, $class_methods)) {
         $array = array("view", "view.php");
-        // Corriger la ligne ci-dessous
-        $controller=$controller;
         $view="error.php";
         $pagetitle="Erreur";
         require (File::build_path($array));
