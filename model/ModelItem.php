@@ -6,6 +6,19 @@ class ModelItem {
 	private $name;
 	private $price;
 	private $description;
+	
+	/**
+	 * Item constructor
+	 * The id and name are required to add the item to the database, the description and price can be added later on
+	 */
+	public function __construct($id, $name, $price, $description) {
+		if (!is_null($id) && !is_null($name)) {
+			$this->id = $id;
+			$this->name = $name;
+			$this->price = $price;
+			$this->description = $description;
+		}	
+	}
 
 
 	public function getID() {
@@ -38,10 +51,8 @@ class ModelItem {
 
 	public function getAllItems() {
 		return Model::selectAll();
-	}public function setName($name) {
-		$this->name = $name;
 	}
-
+	
 	public function getItemByID($id) {
 		return Model::selectWhere('id',$id);
 	}
