@@ -1,5 +1,5 @@
 <?php
 
-echo "You are now disconnected";
+    echo "You are now disconnected";
 
 ?>

@@ -129,6 +129,58 @@
 			}
 		}
 
-	}
+        public static function connect() {
+            $array = array("view", "view.php");
+            $view='connect';
+            $pagetitle='connection';
+            require (File::build_path($array));
+        }
+
+        public static function connected() {
+
+            if (ModelUser::checkPassword($_GET['login'], Security::chiffrer($_GET['password']))) {
+                $_SESSION['login'] = $_GET['login'];
+                $user = ModelUser::select($_GET['login']);
+                $array = array("view", "view.php");
+                $view='profil';
+                $pagetitle='User\'s detail';
+                require (File::build_path($array));
+            } else {
+                echo "Problem, please try again";
+                $password = "";
+                $login = $_GET['login'];
+                $array = array("view", "view.php");
+                $view='connect';
+                $pagetitle='connection';
+                require (File::build_path($array));
+            }
+        }
+
+        public static function disconnect() {
+            unset($_SESSION['login']);
+            session_destroy();
+            $array = array("view", "view.php");
+            $view='disconnected';
+            $pagetitle='accueil';
+            require (File::build_path($array));
+        }
+
+        public function profil() {
+            $user = ModelUser::select($_GET['login']);
+            if (Session::is_user($user->getLogin())) {
+                $array = array("view", "view.php");
+                $view='profil';
+                $pagetitle='accueil';
+                require (File::build_path($array));
+            } else {
+                $array = array("view", "view.php");
+                $view='error';
+                $pagetitle='Page d\'erreur';
+                require_once (File::build_path($array));
+            }
+        }
+
+        
+    }
 
 ?>

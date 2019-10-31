@@ -55,6 +55,22 @@ class ModelUser extends Model {
 		$this->mail = $mail;
 	}
 
+		// cherche dans la BDD les couples login / mots de passe, et renvoie vrais s'il n' a en qu'un seul, faux sinon
+		// Ne pas oublier de rajouter les try catch ici autour de l'objet PDO
+		// On doit pouvoir faire une meilleure requête, qui fait un count, voir même qui exploite une procédure, à voir.
+		// Renvoie true si la pair existe et que count = 1, si différent de 1, doit renvoyer false
+    public static function checkPassword($login, $mot_de_passe_chiffre) {
+        $rep = Model::$pdo->query('SELECT * FROM user WHERE login = "'.$login.'" AND password = "'.$mot_de_passe_chiffre.'"');
+        $rep->setFetchMode(PDO::FETCH_ASSOC);
+        $array = $rep->fetchAll();
+        return $array[0];
+//		if (!is_null($rep)) {
+//            return false;
+//		} else {
+//            return true;
+//        }
+	}
+
 }
 
 ?>
