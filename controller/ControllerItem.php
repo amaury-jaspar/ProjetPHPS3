@@ -1,11 +1,18 @@
 <?php
+require_once (File::build_path(array('model', 'ModelUser.php')));
+require_once (File::build_path(array('lib', 'Security.php')));
+class ControllerItem extends Controller {
 
-class ControllerItem {
-
-	protected static $object = "item";
+	protected static $item;
 
 	public static function read() {
-		echo "Ceci est un item";
+		$id = htmlspecialchars($_GET['id']);
+		$item = ModelItem::select($id);
+		if ($item == false) {
+			Controller::displayView('error', 'Page d\'erreur');
+		} else {
+			Controller::displayView("detail", "Item details");
+		}
 	}
 
 	public static function readAll() {

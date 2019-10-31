@@ -1,6 +1,6 @@
 <?php
 
-class ModelItem {
+class ModelItem extends Model {
 	
 	private $id;
 	private $name;

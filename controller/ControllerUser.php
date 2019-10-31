@@ -44,7 +44,8 @@
             $pagetitle='User\'s creation';
             require (File::build_path($array));
         }
-
+        require_once (File::build_path(array('model', 'ModelUser.php')));
+        require_once (File::build_path(array('lib', 'Security.php')));
         public static function created() {
             if ($_GET['password1'] == $_GET['password2']) {
                 $user = new ModelUser($_GET['login'], $_GET['lastname'], $_GET['surname'], $_GET['mail']);
