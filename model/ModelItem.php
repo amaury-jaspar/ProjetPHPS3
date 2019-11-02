@@ -1,5 +1,7 @@
 <?php
 
+require_once (File::build_path(array('model', 'Model.php')));
+
 class ModelItem extends Model {
 	
 	private $id;
@@ -7,19 +9,21 @@ class ModelItem extends Model {
 	private $price;
 	private $description;
 	
+	protected static $object = "item";
+	protected static $primary = "id";
+
 	/**
 	 * Item constructor
 	 * The id and name are required to add the item to the database, the description and price can be added later on
 	 */
-	public function __construct($id, $name, $price, $description) {
-		if (!is_null($id) && !is_null($name)) {
-			$this->id = $id;
-			$this->name = $name;
-			$this->price = $price;
-			$this->description = $description;
+	public function __construct($i = NULL, $n = NULL, $p = NULL, $d = NULL) {
+		if (!is_null($i) && !is_null($n) && !is_null($p) && !is_null($d)) {
+			$this->id = $i;
+			$this->name = $n;
+			$this->price = $p;
+			$this->description = $d;
 		}	
 	}
-
 
 	public function getID() {
 		return $this->id;
@@ -48,16 +52,6 @@ class ModelItem extends Model {
 	public function setDescription($description) {
 		$this->description = $description;
 	}
-
-	public function getAllItems() {
-		return Model::selectAll();
-	}
-	
-	public function getItemByID($id) {
-		return Model::selectWhere('id',$id);
-	}
-
-
 
 }
 

@@ -23,7 +23,7 @@
                 // on intégre le header
                 require_once (File::build_path(array("view", "header.php")));
             ?>
-            
+
             <main>
                 <?php
                     // on intégre la vue que l'on veut voir apparaitre
