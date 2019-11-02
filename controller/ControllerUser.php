@@ -139,9 +139,14 @@
 
         public static function connected() {
 
-            if (ModelUser::checkPassword($_GET['login'], Security::chiffrer($_GET['password']))) {
+//            $checkNonce = ModelUtilisateur::checkNonce($_GET['login']);
+
+            if (ModelUser::checkPassword($_GET['login'], Security::chiffrer($_GET['password'])) /*&& empty($checkNonce['nonce']*/) {
                 $_SESSION['login'] = $_GET['login'];
                 $user = ModelUser::select($_GET['login']);
+                if ($user->getAdmin() == true) {
+                    $_SESSION['admin'] = true;
+                }
                 $array = array("view", "view.php");
                 $view='profil';
                 $pagetitle='User\'s detail';
@@ -181,7 +186,6 @@
             }
         }
 
-        
     }
 
 ?>

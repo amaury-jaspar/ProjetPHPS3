@@ -8,6 +8,8 @@
     echo '<br>';
     echo "mail : " . $user->getMail();
     echo '<br>';
+    echo "is admin ? : " . $user->getAdmin();
+    echo '<br>';
     echo '<a href="index.php?controller=user&action=delete&login=' . rawurlencode($user->getLogin()) . ' ">Delete this user from DataBase</a>';
     echo '<br>';
     echo '<a href="index.php?controller=user&action=update&login=' . rawurlencode($user->getLogin()) . ' ">Modificate the data of this user</a>';

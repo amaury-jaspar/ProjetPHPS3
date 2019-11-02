@@ -8,16 +8,18 @@ class ModelUser extends Model {
 	private $lastName;
 	private $surname;
 	private $mail;
+	private $admin;
 
 	protected static $object = "user";
 	protected static $primary = "login";
 
-	public function __construct($l = NULL, $n = NULL, $p = NULL, $e = NULL) {
-		if (!is_null($l) && !is_null($n) && !is_null($p) && !is_null($e)) {
+	public function __construct($l = NULL, $n = NULL, $p = NULL, $e = NULL, $a = NULL) {
+		if (!is_null($l) && !is_null($n) && !is_null($p) && !is_null($e) && !is_null($a)) {
 			$this->login = $l;
 			$this->lastName = $n;
 			$this->surname = $p;
 			$this->mail = $e;
+			$this->admin = $a;
 		}
 	}
 
@@ -54,6 +56,15 @@ class ModelUser extends Model {
 	public function setMail($mail) {
 		$this->mail = $mail;
 	}
+
+    public function getAdmin() {
+        return $this->admin;
+    }
+
+    public function setAdmin($admin) {
+        $this->admin = $admin;
+    }
+
 
 		// cherche dans la BDD les couples login / mots de passe, et renvoie vrais s'il n' a en qu'un seul, faux sinon
 		// Ne pas oublier de rajouter les try catch ici autour de l'objet PDO
