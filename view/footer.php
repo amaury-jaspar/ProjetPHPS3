@@ -25,7 +25,7 @@ echo <<< EOT
           <div class="footer-copyright">
             <div class="container">
             © 2019 Copyright Text
-            <a class="grey-text text-lighten-4 right" href="http://webinfo.iutmontp.univ-montp2.fr/~simondonj/">Par Jean Simondon, Jaspar amaury, Mathieu Lagny</a>
+            <a class="grey-text text-lighten-4 right" href="http://webinfo.iutmontp.univ-montp2.fr/~simondonj/">Par Jean Simondon, Amaury Jaspar, Mathieu Lagny</a>
             </div>
           </div>
         </footer>
