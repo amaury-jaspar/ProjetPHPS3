@@ -2,91 +2,112 @@
 
     require_once (File::build_path(array('model', 'ModelUser.php')));
     require_once (File::build_path(array('lib', 'Security.php')));
+    require_once (File::build_path(array('lib', 'Session.php')));
 
-	class ControllerUser {
+class ControllerUser {
 
-		protected static $object = "user";
+    protected static $object = "user";
 
-        public static function read() {
-            $login = htmlspecialchars($_GET['login']);
-            $user = ModelUser::select($login);
-            if ($user == false) {
-                $array = array("view", "view.php");
-                $view='error';
-                $pagetitle='Page d\'erreur';
-                require_once (File::build_path($array));
-            } else {
-                $array = array("view", "view.php");
-                $view='detail';
-                $pagetitle='Detail user';
-                require_once (File::build_path($array));
-            }
-        }
-
-        public static function readAll() {
-            $tab_user = ModelUser::selectAll();
+    public static function read() {
+        $login = htmlspecialchars($_GET['login']);
+        $user = ModelUser::select($login);
+        if ($user == false) {
             $array = array("view", "view.php");
-            $view='list';
-            $pagetitle='Users list';
-            require (File::build_path($array));
-        }     
+            $view='error';
+            $pagetitle='Error page';
+            require_once (File::build_path($array));
+        } else {
+            $array = array("view", "view.php");
+            $view='detail';
+            $pagetitle='Detail user';
+            require_once (File::build_path($array));
+        }
+    }
 
-        public static function create() {
-            $login = "";
-            $lastName = "";
-            $surname = "";
-            $password1 = "";
-            $password2 = "";
+public static function readAll() {
+        $tab_user = ModelUser::selectAll();
+        $array = array("view", "view.php");
+        $view='list';
+        $pagetitle='Users list';
+        require (File::build_path($array));
+    }     
+
+    public static function create() {
+        $login = "";
+        $lastName = "";
+        $surname = "";
+        $password1 = "";
+        $password2 = "";
+        $required = "required";
+        $action = "created";
+        $array = array("view", "view.php");
+        $view='update';
+        $pagetitle='User\'s creation';
+        require (File::build_path($array));
+    }
+
+    public static function created() {
+        if ($_GET['password1'] == $_GET['password2'] /* && filter_var($_GET['mail'], FILTER_VALIDATE_EMAIL)*/) {
+            $user = new ModelUser($_GET['login'], $_GET['lastname'], $_GET['surname'], $_GET['mail'], false);
+
+            echo '<pre>';
+            print_r($user);
+            echo '</pre>';
+
+            $data = array (
+                'login' => $user->getLogin(),
+                'lastName' => $user->getLastName(),
+                'surname' => $user->getSurname(),
+                'password' => Security::chiffrer($_GET['password1']),
+                'mail' => $_GET['mail'],
+                'admin' => 0,
+                /*
+                'nonce' => Security::generateRandomHex(),
+                'wallet' => 0
+                */
+            );
+
+
+            $user->save($data);
+            // Validate::sendValidationMail($data);
+            $array = array("view", "view.php");
+            $view='created';
+            $pagetitle='user created';
+            require (File::build_path($array));
+        } else {
+            echo "The passwords don't match, please retry";
+            $login = $_GET['login'];
+            $lastName = $_GET['lastname'];
+            $surname = $_GET['surname'];
             $required = "required";
-            $action = "created";
+            $action = "create";
             $array = array("view", "view.php");
             $view='update';
-            $pagetitle='User\'s creation';
+            $pagetitle='user creation';
             require (File::build_path($array));
         }
+    }
 
-
-        public static function created() {
-            if ($_GET['password1'] == $_GET['password2']) {
-                $user = new ModelUser($_GET['login'], $_GET['lastname'], $_GET['surname'], $_GET['mail']);
-                $data = array (
-                    'login' => $user->getLogin(),
-                    'lastName' => $user->getLastName(),
-                    'surname' => $user->getSurname(),
-                    'password' => Security::chiffrer($_GET['password1']),
-                    'mail' => $_GET['mail']
-                );
-                $user->save($data);
-                $array = array("view", "view.php");
-                $view='created';
-                $pagetitle='user created';
-                require (File::build_path($array));
-            } else {
-                echo "The passwords don't match, please retry";
-                $login = $_GET['login'];
-                $lastName = $_GET['lastname'];
-                $surname = $_GET['surname'];
-                $required = "required";
-                $action = "create";
-                $array = array("view", "view.php");
-                $view='update';
-                $pagetitle='user creation';
-                require (File::build_path($array));
-            }
-        }
-
-        public static function delete() {
-            $login = $_GET['login'];
+    public static function delete() {
+        $login = $_GET['login'];
+        if ($login == $_SESSION['login'] || Session::is_admin()) {
             ModelUser::deleteById($login);
             $tab_user = ModelUser::selectAll();
             $array = array("view", "view.php");
             $view='deleted';
             $pagetitle='User deleted';
             require (File::build_path($array));
+        } else {
+            $array = array("view", "view.php");
+            $view='connect';
+            $pagetitle='connexion';
+            require (File::build_path($array));
+        }
     }
 
 	public static function update() {
-    		$login = $_GET['login'];
+        $login = $_GET['login'];
+        if ($login == $_SESSION['login'] || Session::is_admin()) {
 			$user = ModelUser::select($login);
 			$lastName = rawurlencode($user->getLastName());
 			$surname = rawurlencode($user->getSurname());
@@ -99,17 +120,32 @@
 			$view='update';
 			$pagetitle='User modification';
 			require (File::build_path($array));
-	}
+    	} else {
+            $array = array("view", "view.php");
+            $view='connect';
+            $pagetitle='connection';
+            require (File::build_path($array));
+        }
+    }
 
 	public static function updated() {
 		$login = $_GET['login'];
-		if ($_GET['password1'] == $_GET['password2']) {
-			$data = array (
+        if ($login == $_SESSION['login'] || Session::is_admin()) {
+        if ($_GET['password1'] == $_GET['password2']) {
+            /*
+                if (isset($_GET['admin']) && $_GET['admin'] == on) {
+                    $admin = 1;
+                } else {
+                    $admin = 2;
+                }
+            */
+            $data = array (
 				'login' => $_GET['login'],
 				'lastName' => $_GET['lastname'],
 				'surname' => $_GET['surname'],
 				'password' => Security::chiffrer($_GET['password1']),
                 'mail' => $_GET['mail']
+                // 'admin' => $admin
             );
 			ModelUser::updateByID($data);
 			$array = array("view", "view.php");
@@ -127,8 +163,14 @@
 			$view='update';
 			$pagetitle='User\'s creation';
 			require (File::build_path($array));
-			}
-		}
+        }
+      }  else {
+            $array = array("view", "view.php");
+            $view='connect';
+            $pagetitle='connection';
+            require (File::build_path($array));
+        }
+    }
 
         public static function connect() {
             $array = array("view", "view.php");
@@ -152,6 +194,8 @@
                 $pagetitle='User\'s detail';
                 require (File::build_path($array));
             } else {
+                echo $_GET['login'];
+                echo $_GET['password'];
                 echo "Problem, please try again";
                 $password = "";
                 $login = $_GET['login'];

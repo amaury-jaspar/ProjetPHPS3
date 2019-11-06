@@ -5,7 +5,6 @@
     class QueryBuilder {
 
         public $sql = "SELECT ";
-
         
 //      pas sur qu'il faille un construit si la classe ou ses méthodes sont static.
 //        public function __construct() {

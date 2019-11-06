@@ -9,17 +9,19 @@ class ModelUser extends Model {
 	private $surname;
 	private $mail;
 	private $admin;
+	private $wallet;
 
 	protected static $object = "user";
 	protected static $primary = "login";
 
-	public function __construct($l = NULL, $n = NULL, $p = NULL, $e = NULL, $a = NULL) {
-		if (!is_null($l) && !is_null($n) && !is_null($p) && !is_null($e) && !is_null($a)) {
+	public function __construct($l = NULL, $n = NULL, $p = NULL, $m = NULL, $a = NULL) {
+		if (!is_null($l) && !is_null($n) && !is_null($p) && !is_null($m) && !is_null($a)) {
 			$this->login = $l;
 			$this->lastName = $n;
 			$this->surname = $p;
-			$this->mail = $e;
+			$this->mail = $m;
 			$this->admin = $a;
+			$this->wallet = 0;
 		}
 	}
 
