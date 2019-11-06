@@ -50,11 +50,6 @@ public static function readAll() {
 
         if ($_GET['password1'] == $_GET['password2'] /* && filter_var($_GET['mail'], FILTER_VALIDATE_EMAIL)*/) {
             $user = new ModelUser($_GET['login'], $_GET['lastname'], $_GET['surname'], $_GET['mail'], false, 0);
-
-            echo '<pre>';
-            print_r($user);
-            echo '</pre>';
-
             $data = array (
                 'login' => $_GET['login'],
                 'lastName' => $_GET['lastname'],
@@ -66,6 +61,7 @@ public static function readAll() {
                 'wallet' => 0,  
             );
             $user->save($data);
+            $tab_user = ModelUser::selectAll();
             // Validate::sendValidationMail($data);
             $array = array("view", "view.php");
             $view='created';
@@ -102,10 +98,14 @@ public static function readAll() {
         }
     }
 
+    /*
+    * Seul l'admin ou l'utilisateur en question peuvent faire update sur l'utilisateur
+    * On préremplie les champs lastname, surname et mail
+    */
 	public static function update() {
-        $login = $_GET['login'];
-        if ($login == $_SESSION['login'] || Session::is_admin()) {
-			$user = ModelUser::select($login);
+        if ($_GET['login'] == $_SESSION['login'] || Session::is_admin()) {
+            $user = ModelUser::select($_GET['login']);
+            $login = rawurlencode($user->getLogin());
 			$lastName = rawurlencode($user->getLastName());
 			$surname = rawurlencode($user->getSurname());
             $password1 = "";
@@ -125,24 +125,23 @@ public static function readAll() {
         }
     }
 
+    /*
+    * On vérifie que c'est l'admin ou l'utilisateur en question qui tente de faire updated
+    * On ne fait l'udpate que si les 2 mots de passe sont les mêmes
+    * 
+    */
 	public static function updated() {
-		$login = $_GET['login'];
-        if ($login == $_SESSION['login'] || Session::is_admin()) {
-        if ($_GET['password1'] == $_GET['password2']) {
-            /*
-                if (isset($_GET['admin']) && $_GET['admin'] == on) {
-                    $admin = 1;
-                } else {
-                    $admin = 2;
-                }
-            */
+        if ($_GET['login'] == $_SESSION['login'] || Session::is_admin()) {
+            if ($_GET['password1'] == $_GET['password2']) {
+            if (isset($_GET['admin']) && $_GET['admin'] == on) { $admin = 1; } else { $admin = 0; }
             $data = array (
-				'login' => $_GET['login'],
-				'lastName' => $_GET['lastname'],
-				'surname' => $_GET['surname'],
+				'login' => htmlspecialchars($_GET['login']),
+				'lastName' => htmlspecialchars($_GET['lastname']),
+				'surname' => htmlspecialchars($_GET['surname']),
 				'password' => Security::chiffrer($_GET['password1']),
-                'mail' => $_GET['mail']
-                // 'admin' => $admin
+                'mail' => htmlspecialchars($_GET['mail']),
+                'admin' => $admin,
+                'nonce' => "",
             );
 			ModelUser::updateByID($data);
 			$array = array("view", "view.php");
@@ -154,7 +153,8 @@ public static function readAll() {
 			$login = $_GET['login'];
 			$lastName = $_GET['lastname'];
 			$surname = $_GET['surname'];
-			$required = "required";
+			$mail = $_GET['mail'];
+            $required = "required";
 			$action = "updated";
 			$array = array("view", "view.php");
 			$view='update';
