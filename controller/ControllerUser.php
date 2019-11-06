@@ -47,27 +47,24 @@ public static function readAll() {
     }
 
     public static function created() {
+
         if ($_GET['password1'] == $_GET['password2'] /* && filter_var($_GET['mail'], FILTER_VALIDATE_EMAIL)*/) {
-            $user = new ModelUser($_GET['login'], $_GET['lastname'], $_GET['surname'], $_GET['mail'], false);
+            $user = new ModelUser($_GET['login'], $_GET['lastname'], $_GET['surname'], $_GET['mail'], false, 0);
 
             echo '<pre>';
             print_r($user);
             echo '</pre>';
 
             $data = array (
-                'login' => $user->getLogin(),
-                'lastName' => $user->getLastName(),
-                'surname' => $user->getSurname(),
+                'login' => $_GET['login'],
+                'lastName' => $_GET['lastname'],
+                'surname' => $_GET['surname'],
                 'password' => Security::chiffrer($_GET['password1']),
                 'mail' => $_GET['mail'],
                 'admin' => 0,
-                /*
                 'nonce' => Security::generateRandomHex(),
-                'wallet' => 0
-                */
+                'wallet' => 0,  
             );
-
-
             $user->save($data);
             // Validate::sendValidationMail($data);
             $array = array("view", "view.php");

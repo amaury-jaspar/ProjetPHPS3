@@ -104,6 +104,7 @@ class Model {
 		$req_prep->execute($values);
 	}
 
+		// attention, ordre des valeurs
 	public function save($data) {
 		$primary_key = static::$primary;
 		$table_name = static::$object;

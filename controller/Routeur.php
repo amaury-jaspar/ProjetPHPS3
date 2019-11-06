@@ -14,7 +14,7 @@ static function myGet($nomvar) {
 }
 */
 
-if (isset($_GET['controller'])) {
+if (isset($_GET['controller'])) { 
     $controller = $_GET['controller'];
 } else {
     $controller = 'home';

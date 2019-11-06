@@ -14,14 +14,14 @@ class ModelUser extends Model {
 	protected static $object = "user";
 	protected static $primary = "login";
 
-	public function __construct($l = NULL, $n = NULL, $p = NULL, $m = NULL, $a = NULL) {
-		if (!is_null($l) && !is_null($n) && !is_null($p) && !is_null($m) && !is_null($a)) {
+	public function __construct($l = NULL, $n = NULL, $p = NULL, $m = NULL, $a = NULL, $w = NULL) {
+		if (!is_null($l) && !is_null($n) && !is_null($p) && !is_null($m) && !is_null($a) && !is_null ($w)) {
 			$this->login = $l;
 			$this->lastName = $n;
 			$this->surname = $p;
 			$this->mail = $m;
 			$this->admin = $a;
-			$this->wallet = 0;
+			$this->wallet = $w;
 		}
 	}
 
@@ -64,6 +64,14 @@ class ModelUser extends Model {
     }
 
     public function setAdmin($admin) {
+        $this->admin = $admin;
+    }
+
+    public function getWallet() {
+        return $this->admin;
+    }
+
+    public function setWallet($wallet) {
         $this->admin = $admin;
     }
 
