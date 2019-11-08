@@ -1,6 +1,9 @@
 <?php
-	$htmlImmatriculation = htmlspecialchars($immat);
+	$htmlItem = htmlspecialchars($item->getName());
 
-	echo '<p>La voiture '.$htmlImmatriculation.' a bien été créée !</p>';
-	require File::build_path(array('view','voiture','list.php'));
+	echo '<p>The item '.$htmlItem.' has been created !</p>';
+
+    $array = array("view", "item", "list.php");
+	require (File::build_path($array));
+	
 ?>
