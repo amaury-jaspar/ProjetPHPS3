@@ -24,7 +24,7 @@ echo <<< EOT
                     <input type="text" placeholder="" name="mail" id="mail_id" value="$mail" required>
                     <br>                
 EOT;
-                    if (Session::is_admin() && $action == update) {
+                    if (Session::is_admin() && $action == updated) {
 echo <<< EOT
                     <p>
                     <label for="admin_id">

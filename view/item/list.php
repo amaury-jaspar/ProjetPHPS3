@@ -1,10 +1,15 @@
 <?php
+
 foreach ($tab_item as $item) {
+
 	$htmlID = htmlspecialchars($item->getID());
 	$htmlName = htmlspecialchars($item->getName());
-	
-	$urlID = rawurlencode($v->getID());
 
-	echo '<div><a href=http://localhost/ProjetPHPS3/index.php?action=read&id='.$urlID.'>'.$htmlID.' '.$htmlName.'</a></div>';
+	echo '<p> item : <a href="index.php?controller=item&action=read&id='. $htmlID . '"> ' . $htmlName . '</a>.</p>';
+
 }
+
+echo '<a href="index.php?controller=item&action=create">Create a new item</a>';
+
 ?>
+
