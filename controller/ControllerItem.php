@@ -108,6 +108,36 @@ class ControllerItem {
 		require_once (File::build_path($array));
 	}
 
+	public static function paging() {
+
+		if (isset($_GET['condition']) && $_GET['condition'] != "") {
+			$nb_Id = Modelitem::countCatalogCategory($_GET['condition']);
+		} else {
+			$nb_Id = ModelItem::countCatalog(); // le nombre d'item qui ont 1 pour l'attribut catalog
+		}
+
+		$parPage = 5; // le nombre d'item que l'on veut afficher par page
+		$nbPage = ceil($nb_Id['nb_Id'] / $parPage); // On calcule le nombre de page par division nbProduit / Produit par page
+
+		if(isset($_GET['currentpage']) && $_GET['currentpage'] > 0 && $_GET['currentpage'] <= $nbPage) {
+			$currentPage = $_GET['currentpage'];
+		} else {
+			$currentPage = 1;
+		}
+
+		if (isset($_GET['condition'])) {
+			$tab_result = Modelitem::selectPageCategory($currentPage, $parPage, $_GET['condition']);    
+		} else {
+			$tab_result = ModelItem::selectPage($currentPage, $parPage);
+		}
+
+		$array = array("view", "view.php");
+		$view='paging';
+		$pagetitle='paging';
+		require_once (File::build_path($array));
+
+	}
+
 }
 
 ?>
