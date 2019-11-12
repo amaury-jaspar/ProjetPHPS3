@@ -66,43 +66,87 @@ class ModelItem extends Model {
 
 	// utile à la pagination de article afin de compter tous les produits qui sont à vendre
     public static function countCatalog() {
-        $primary_key = static::$primary;
-        $table_name = static::$object;
-        $rep = Model::$pdo->query("SELECT COUNT($primary_key) as nb_Id FROM $table_name WHERE catalog = 1");
-        $answer = $rep->fetchAll(PDO::FETCH_ASSOC);
-        return $answer[0];
+		$primary_key = static::$primary;
+		$table_name = static::$object;
+		try {
+			$rep = Model::$pdo->query("SELECT COUNT($primary_key) as nb_Id FROM $table_name WHERE catalog = 1");
+			$answer = $rep->fetch(PDO::FETCH_ASSOC);
+		} catch (PDOException $e) {
+			if(Conf::getDebug()) {
+				echo $e->getMessage();
+			} else {
+				echo 'Une erreur est survenue <a href="index.php?action=buildFrontPage&controller=home"> retour à la page d\'acceuil </a>';
+			}
+			die();
+		}
+		return $answer;
 	}
 
     public static function countCatalogCategory($condition) {
         $primary_key = static::$primary;
         $table_name = static::$object;
         $alias = $table_name[0];
-        $sql = "SELECT COUNT($alias.$primary_key) as nb_Id FROM $table_name $alias WHERE catalog = 1 AND category = '$condition'";
-        $rep = Model::$pdo->query($sql);
-        $answer = $rep->fetchAll(PDO::FETCH_ASSOC);
-        return $answer[0];
+		try {
+			$req_prep = Model::$pdo->prepare("SELECT COUNT($alias.$primary_key) as nb_Id FROM $table_name $alias WHERE catalog = 1 AND category = :condition");
+			$values = array("condition" => $condition);
+			$req_prep->execute($values);
+			$answer = $req_prep->fetchAll(PDO::FETCH_ASSOC);
+			} catch (PDOException $e) {
+			if(Conf::getDebug()) {
+				echo $e->getMessage();
+			} else {
+				echo 'Une erreur est survenue <a href="index.php?action=buildFrontPage&controller=home"> retour à la page d\'acceuil </a>';
+			}
+			die();
+		}
+		return $answer;
     }
 
 	// utile à la pagination de article
 	public static function selectPage($currentPage, $parPage) {
 		$primary_key = static::$primary;
 		$table_name = static::$object;
-		$rep = Model::$pdo->query("SELECT * FROM $table_name WHERE catalog = 1 ORDER BY $primary_key ASC LIMIT " .(($currentPage-1)*$parPage) .",$parPage");
-		$answer = $rep->fetchAll(PDO::FETCH_CLASS, "ModelItem");
-		// devrait être remplacé par un Fetch Class pour récupérer des objets
-		return $answer;
+		$class_name = 'Model' . ucfirst($table_name);
+		try {
+			$rep = Model::$pdo->query("SELECT * FROM $table_name WHERE catalog = 1 ORDER BY $primary_key ASC LIMIT " .(($currentPage-1)*$parPage) .",$parPage");
+			$rep->setFetchMode(PDO::FETCH_CLASS, $class_name);
+			$tab_obj = $rep->fetchAll();
+		} catch (PDOException $e) {
+			if(Conf::getDebug()) {
+				echo $e->getMessage();
+			} else {
+				echo 'Une erreur est survenue <a href="index.php?action=buildFrontPage&controller=home"> retour à la page d\'acceuil </a>';
+			}
+			die();
+		}
+		if (empty($tab_obj))
+			return false;
+		return $tab_obj;
 	}
 
     // utile à la pagination de article
     public static function selectPageCategory($currentPage, $parPage, $condition) {
 		$primary_key = static::$primary;
         $table_name = static::$object;
-        $alias = $table_name[0];
-        $sql = "SELECT $alias.* FROM $table_name $alias WHERE catalog = 1 AND category = '$condition' ORDER BY $primary_key ASC LIMIT " .(($currentPage-1)*$parPage) .",$parPage";
-        $rep = Model::$pdo->query($sql);
-        $answer = $rep->fetchAll(PDO::FETCH_CLASS, "ModelItem");
-        // devrait être remplacé par un Fetch Class pour récupérer des objets
-        return $answer;
+		$alias = $table_name[0];
+		$class_name = 'Model' . ucfirst($table_name);
+		try {
+			$req_prep = Model::$pdo->prepare("SELECT $alias.* FROM $table_name $alias WHERE catalog = 1 AND category = :condition ORDER BY $primary_key ASC LIMIT " .(($currentPage-1)*$parPage) .",$parPage");
+			$values = array ("condition" => $condition);
+			$req_prep->execute($values);
+			$req_prep->setFetchMode(PDO::FETCH_CLASS, $class_name);
+			$tab_obj = $req_prep->fetchAll();
+		} catch (PDOException $e) {
+			if(Conf::getDebug()) {
+				echo $e->getMessage();
+			} else {
+				echo 'Une erreur est survenue <a href="index.php?action=buildFrontPage&controller=home"> retour à la page d\'acceuil </a>';
+			}
+			die();
+		}
+		if (empty($tab_obj))
+			return false;
+		return $tab_obj;
     }
 
 }

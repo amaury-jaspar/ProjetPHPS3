@@ -20,7 +20,7 @@ if (isset($_GET['controller'])) {
     $controller = 'home';
 }
 
-$controller_class = ucfirst("controller") . ucfirst($controller);
+$controller_class = "Controller" . ucfirst($controller);
 
 $array = array("controller", $controller_class);
 

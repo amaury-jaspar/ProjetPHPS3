@@ -14,6 +14,9 @@ class ModelUser extends Model {
 	protected static $object = "user";
 	protected static $primary = "login";
 
+	// passer les construteur avec un $data en argument pour rendre ça plus conçis
+	// et déclarer le tableau directement dans les parenthèses d'une fonction
+
 	public function __construct($l = NULL, $n = NULL, $p = NULL, $m = NULL, $a = NULL, $w = NULL) {
 		if (!is_null($l) && !is_null($n) && !is_null($p) && !is_null($m) && !is_null($a) && !is_null ($w)) {
 			$this->login = $l;
@@ -75,21 +78,27 @@ class ModelUser extends Model {
         $this->admin = $admin;
     }
 
-
-		// cherche dans la BDD les couples login / mots de passe, et renvoie vrais s'il n' a en qu'un seul, faux sinon
-		// Ne pas oublier de rajouter les try catch ici autour de l'objet PDO
-		// On doit pouvoir faire une meilleure requête, qui fait un count, voir même qui exploite une procédure, à voir.
-		// Renvoie true si la pair existe et que count = 1, si différent de 1, doit renvoyer false
     public static function checkPassword($login, $mot_de_passe_chiffre) {
-        $rep = Model::$pdo->query('SELECT * FROM user WHERE login = "'.$login.'" AND password = "'.$mot_de_passe_chiffre.'"');
-        $rep->setFetchMode(PDO::FETCH_ASSOC);
-        $array = $rep->fetchAll();
-        return $array[0];
-//		if (!is_null($rep)) {
-//            return false;
-//		} else {
-//            return true;
-//        }
+		$primary_key = static::$primary;
+		$table_name = static::$object;
+		try {
+			$req_prep = Model::$pdo->prepare("SELECT COUNT(*) FROM $table_name WHERE $primary_key = :login AND password = :mdp");
+			$values = array (
+				"login" => $login,
+				"mdp" => $mot_de_passe_chiffre,
+			);
+			$req_prep->execute($values);
+			$answer = $req_prep->setFetchMode(PDO::FETCH_ASSOC);
+			echo $answer;
+		} catch (PDOException $e) {
+			if(Conf::getDebug()) {
+				echo $e->getMessage();
+			} else {
+				echo 'Une erreur est survenue <a href="index.php?action=buildFrontPage&controller=home"> retour à la page d\'acceuil </a>';
+			}
+			die();
+		}
+		return $answer;
 	}
 
 }
