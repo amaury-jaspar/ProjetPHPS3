@@ -1,5 +1,4 @@
 <?php
-
 class Session {
 
     public static function is_user($login) {
@@ -11,5 +10,4 @@ class Session {
     }
 
 }
-
 ?>
