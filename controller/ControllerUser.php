@@ -9,7 +9,7 @@ class ControllerUser {
     protected static $object = "user";
 
     public static function read() {
-        $login = htmlspecialchars($_GET['login']);
+        $login = $_GET['login'];
         $user = ModelUser::select($login);
         if ($user == false) {
             $view='error';
@@ -22,7 +22,7 @@ class ControllerUser {
         }
     }
 
-public static function readAll() {
+    public static function readAll() {
         $tab_user = ModelUser::selectAll();
         $view='list';
         $pagetitle='Users list';
@@ -111,6 +111,12 @@ public static function readAll() {
 	public static function update() {
         if ($_GET['login'] == $_SESSION['login'] || Session::is_admin()) {
             $user = ModelUser::select($_GET['login']);
+            $login = htmlspecialchars($user->get('login'));
+            $lastName = htmlspecialchars($user->get('lastName'));
+            $surname = htmlspecialchars($user->get('surname'));
+            $mail = htmlspecialchars($user->get('mail'));
+            $password = "";
+            $password = "";            
             $required = "readonly";
 			$action = "updated";
 			$view='update';
