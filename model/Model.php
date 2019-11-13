@@ -63,7 +63,7 @@ class Model {
 			if(Conf::getDebug()) {
 				echo $e->getMessage();
 			} else {
-				echo 'Une erreur est survenue <a href=""> retour à la page d\'acceuil </a>';
+				echo 'Une erreur est survenue <a href="index.php?action=buildFrontPage&controller=home"> retour à la page d\'acceuil </a>';
 			}
 			die();
 		}
@@ -177,6 +177,10 @@ class Model {
 			die();
 		}
 	}
+
+	/*
+	$e->getCode() == 23000
+	*/
 	
 }
 

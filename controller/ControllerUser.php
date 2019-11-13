@@ -87,8 +87,8 @@ public static function readAll() {
             ModelUser::deleteById($login);
             $tab_user = ModelUser::selectAll();
             $array = array("view", "view.php");
-            $view='deleted';
-            $pagetitle='User deleted';
+            $view='delete';
+            $pagetitle='Delete validation';
             require (File::build_path($array));
         } else {
             $array = array("view", "view.php");

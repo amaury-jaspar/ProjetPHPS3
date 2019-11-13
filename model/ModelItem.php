@@ -28,6 +28,14 @@ class ModelItem extends Model {
         }
     }
 
+	public function get($nom_attribut) {
+		return $this->$nom_attribut;
+	}
+
+	public function set($nom_attribut, $valeur) {
+		$this->nom_attribut = $valeur;
+	}
+
 	public function getID() {
 		return $this->id;
 	}

@@ -1,14 +1,20 @@
 <?php
-    echo "Do you really want to delete that user ?";
-    // ici un bouton pour valider la suppression ou l'annuler.
 
-    <form GET action="do">
-        <input type="submit" value="Yes">
+echo "Do you really want to delete that user ?";
+// ici un bouton pour valider la suppression ou l'annuler.
+
+echo <<< EOT
+    <form method="GET" action="do">
+        <input type="button" value="Yes">
     </form>
 
-    <form GET action="undo">
+    <button class="btn waves-effect waves-light" type="submit" name="action">Submit
+        <i class="material-icons right">send</i>
+    </button>
+
+    <form method="GET" action="undo">
         <input type="submit" value="No">
     </form>
-
+EOT;
 
 ?>

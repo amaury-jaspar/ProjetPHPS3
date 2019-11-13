@@ -28,7 +28,19 @@ class ModelUser extends Model {
 		}
 	}
 
-	// Faire les getter générique
+	// Faire les getter et setter générique
+
+	public function get($nom_attribut) {
+		return $this->$nom_attribut;
+	}
+
+	public function set($nom_attribut, $valeur) {
+		$this->nom_attribut = $valeur;
+	}
+
+
+
+
 
 	public function getLogin() {
 		return $this->login;

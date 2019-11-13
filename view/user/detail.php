@@ -1,14 +1,20 @@
 <?php
 
-    echo "login : " . $user->getLogin();
+$userLogin = $user->getLogin();
+$userLastname = $user->getLastName();
+$userName = $user->getSurname();
+$userMail = $user->getMail();
+$userAdmin = $user->getAdmin();
+
+    echo "login : " . $userLogin;
     echo '<br>';
-    echo "last name : " . $user->getLastName();
+    echo "last name : " . $userLastname;
     echo '<br>';
-    echo "surname : " . $user->getSurname();
+    echo "surname : " . $userName;
     echo '<br>';
-    echo "mail : " . $user->getMail();
+    echo "mail : " . $userMail;
     echo '<br>';
-    echo "is admin ? : " . $user->getAdmin();
+    echo "is admin ? : " . $userAdmin;
     echo '<br>';
 
     if ($_SESSION['login'] == $user->getLogin() || Session::is_admin()) {

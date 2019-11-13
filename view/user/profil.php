@@ -1,8 +1,11 @@
 <?php
 
+$username = $user->get('surname');
+
+
 echo "<h1>YOUR ACCOUNT</h1>";
 
-echo "<p>Hi " . $user->getSurname() . ", welcome</p>";
+echo "<p>Hi " . $username . ", welcome</p>";
 
 // Utiliser la variable $_SERVER pour afficher des données sur l'utilisateur tel que son IP etc..
 
