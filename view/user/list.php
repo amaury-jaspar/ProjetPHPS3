@@ -2,8 +2,11 @@
 
 foreach ($tab_user as $user)
 
-    echo '<p> User : <a href="index.php?controller=user&action=read&login=' . rawurlencode($user->getLogin()) . ' "> ' . rawurlencode($user->getLastName()) . ' </a></p>';
+    $login = rawurldecode($user->get('login'));
+    $lastName = htmlspecialchars($user->get('lastName'));
 
-        echo '<a href="index.php?controller=user&action=create">Create a new user</a>';
+    echo '<p> User : <a href="index.php?controller=user&action=read&login=' . $login . ' "> ' . $lastName . ' </a></p>';
+
+    echo '<a href="index.php?controller=user&action=create">Create a new user</a>';
 
 ?>

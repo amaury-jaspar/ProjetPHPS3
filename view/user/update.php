@@ -1,5 +1,10 @@
 <?php
 
+$login = htmlspecialchars($user->getLogin());
+$lastName = htmlspecialchars($user->get('lastName'));
+$surname = htmlspecialchars($user->get('surname'));
+$mail = htmlspecialchars($user->get('mail'));
+
 echo <<< EOT
     <form method="get" action="index.php?">
         <fieldset>

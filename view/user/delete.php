@@ -1,20 +1,18 @@
 <?php
 
-echo "Do you really want to delete that user ?";
-// ici un bouton pour valider la suppression ou l'annuler.
+$login = rawurldecode($login);
 
 echo <<< EOT
-    <form method="GET" action="do">
-        <input type="button" value="Yes">
-    </form>
 
-    <button class="btn waves-effect waves-light" type="submit" name="action">Submit
-        <i class="material-icons right">send</i>
-    </button>
-
-    <form method="GET" action="undo">
-        <input type="submit" value="No">
-    </form>
+Do you really want to delete that user ?
+<br>
+<br>
+<a href="index.php?controller=user&action=read&login=$login">No</a>
+<br>
+<br>
+<br>    
+<a href="index.php?controller=user&action=deleted&login=$login">Yes</a>
+<br>
 EOT;
 
 ?>

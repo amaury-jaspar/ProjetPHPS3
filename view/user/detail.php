@@ -1,10 +1,11 @@
 <?php
 
-$userLogin = $user->getLogin();
-$userLastname = $user->getLastName();
-$userName = $user->getSurname();
-$userMail = $user->getMail();
-$userAdmin = $user->getAdmin();
+$userLogin = htmlspecialchars($user->get('login'));
+$userLastname = htmlspecialchars($user->get('lastName'));
+$userName = htmlspecialchars($user->get('surname'));
+$userMail = htmlspecialchars($user->get('mail'));
+$userAdmin = htmlspecialchars($user->get('admin'));
+
 
     echo "login : " . $userLogin;
     echo '<br>';
@@ -15,13 +16,13 @@ $userAdmin = $user->getAdmin();
     echo "mail : " . $userMail;
     echo '<br>';
     echo "is admin ? : " . $userAdmin;
-    echo '<br>';
 
-    if ($_SESSION['login'] == $user->getLogin() || Session::is_admin()) {
+
+    if ($_SESSION['login'] == $user->get('login') || Session::is_admin()) {
+        echo '<br>';
         echo '<a href="index.php?controller=user&action=delete&login=' . rawurlencode($user->getLogin()) . ' ">Delete this user from DataBase</a>';
         echo '<br>';
         echo '<a href="index.php?controller=user&action=update&login=' . rawurlencode($user->getLogin()) . ' ">Modificate the data of this user</a>';
-        echo '<br>';
     }
 
 ?>
