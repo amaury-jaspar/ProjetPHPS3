@@ -25,8 +25,6 @@ class Model {
 		}
 	}
 
-
-
 	public static function select($primary_value) {
 		$primary_key = static::$primary;
 		$table_name = static::$object;
@@ -50,8 +48,6 @@ class Model {
 		return $tab[0];
 	}
 
-
-
 	public static function selectAll() {
 		$table_name = static::$object;
 		$class_name = 'Model' . ucfirst($table_name);
@@ -71,8 +67,6 @@ class Model {
 			return false;
 		return $tab_obj;
 	}
-
-
 
 		// Inutile à l'heure actuelle
 		// A tester, pas sûr que la préparation des valeurs à insérer soi correct
@@ -100,8 +94,6 @@ class Model {
 			return false;
 		return $tab_obj;
 	}
-
-
 
 	public static function deleteById($primary_value) {
 		$primary_key = static::$primary;
@@ -139,6 +131,30 @@ class Model {
 					$maclef = ":" . $cle;
 					$values[$maclef] = $valeur;
 			}
+			$req_prep->execute($values);
+		} catch (PDOException $e) {
+			if(Conf::getDebug()) {
+				echo $e->getMessage();
+			} else {
+				echo 'Une erreur est survenue <a href="index.php?action=buildFrontPage&controller=home"> retour à la page d\'acceuil </a>';
+			}
+			die();
+		}
+	}
+
+	public static function updateWhere($attribut, $value) {
+		$primary_key = static::$primary;
+		$table_name = static::$object;
+
+		try {
+
+			$req_prep = Model::$pdo->prepare("UPDATE $table_name SET :attribut = :value WHERE $primary_key =: $primary_key");
+
+			$values = array(
+				'values' => $value,
+				'attribut' => $attribut
+			);
+
 			$req_prep->execute($values);
 		} catch (PDOException $e) {
 			if(Conf::getDebug()) {

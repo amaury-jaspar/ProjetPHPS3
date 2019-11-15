@@ -19,10 +19,10 @@
     }
 
     echo '<br>';
-    echo "COUT TOTAL : " . $_SESSION['sumBasket'];
+    echo "TOTAL COST : " . $_SESSION['sumBasket'];
     echo '<br>';
     echo '<br>';
-    echo '<a href="index.php?action=buyBasket&controller=item">Purchase</a>';
+    echo '<a href="index.php?action=beforeBuyBasket&controller=item">Purchase</a>';
     echo '<br>';
     echo '<br>';    
     echo '<a href="index.php?action=resetBasket&controller=item">Empty the basket</a>';

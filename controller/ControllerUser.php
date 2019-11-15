@@ -221,6 +221,10 @@ class ControllerUser {
             }
         }
 
+        public function payBill() {
+            Model::substractMoney();
+        }
+
     }
 
 ?>

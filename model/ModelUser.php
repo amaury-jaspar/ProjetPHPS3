@@ -28,8 +28,6 @@ class ModelUser extends Model {
 		}
 	}
 
-	// Faire les getter et setter générique
-
 	public function get($nom_attribut) {
 		return $this->$nom_attribut;
 	}
@@ -37,10 +35,6 @@ class ModelUser extends Model {
 	public function set($nom_attribut, $valeur) {
 		$this->nom_attribut = $valeur;
 	}
-
-
-
-
 
 	public function getLogin() {
 		return $this->login;
@@ -83,11 +77,11 @@ class ModelUser extends Model {
     }
 
     public function getWallet() {
-        return $this->admin;
+        return $this->wallet;
     }
 
     public function setWallet($wallet) {
-        $this->admin = $admin;
+        $this->wallet = $wallet;
     }
 
     public static function checkPassword($login, $mot_de_passe_chiffre) {
@@ -112,6 +106,20 @@ class ModelUser extends Model {
 		}
 		return $answer;
 	}
+
+    public function addMoney($credit) {
+        $amount = $this->get('wallet');
+        $amount += $credit;
+        $user->set('wallet', $amount);
+		Model::updateWhere('wallet', $amount);
+    }
+
+    public function substractMoney($debit) {
+        $amount = $this->get('wallet');
+        $amount -= $debit;
+        $this->set('wallet', $amount);
+		Model::updateWhere('wallet', $amount);
+    }
 
 }
 
