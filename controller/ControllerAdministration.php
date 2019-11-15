@@ -10,11 +10,10 @@
         public static function dashboard() {
 
             if (Session::is_admin()) {
-                $array = array("view", "view.php");
-                $controller= static::$object;
+               $controller= static::$object;
                 $view='dashboard';
                 $pagetitle='Dashboard';
-                require (File::build_path($array));
+                require (File::build_path(array("view", "view.php")));
             } else {
               echo 'Désolée mais vous n\'êtes pas un admin, vous ne pouvez pas accéder à cette page';
             }

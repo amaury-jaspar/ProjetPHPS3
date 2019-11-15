@@ -17,7 +17,7 @@ echo <<< EOT
           I am convenient because I require little markup to use effectively.</p>
         </div>
         <div class="card-action">
-          <a href="index.php?action=paging&controller=item&condition=$cat">Enter</a>
+          <a href="index.php?action=paging&controller=item&condition=$cat">Enter $cat</a>
         </div>
       </div>
     </div>

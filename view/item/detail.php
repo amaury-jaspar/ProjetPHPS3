@@ -17,5 +17,9 @@ if (Session::is_admin()) {
     echo '<br>';
 }
 
+echo '<a href="index.php?controller=item&action=addToBasket&prix='.rawurlencode($item->getPrice()).'&id=' . rawurlencode($item->getId()) . ' ">Add to basket</a>';
+echo "<br>";
+echo "<br>";
+echo '<a href="index.php?controller=item&action=addToWishList&id=' . rawurlencode($item->getId()) . ' ">Add to my Wishlist</a>';
 
 ?>

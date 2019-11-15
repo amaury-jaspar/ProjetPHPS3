@@ -12,24 +12,21 @@ class ControllerItem {
 		$id = htmlspecialchars($_GET['id']);
 		$item = ModelItem::select($id);
 		if ($item == false) {
-			$array = array("view", "view.php");
 			$view='error';
             $pagetitle='Error page';
-			require_once (File::build_path($array));
+			require_once (File::build_path(array("view", "view.php")));
 		} else {
-            $array = array("view", "view.php");
             $view='detail';
 			$pagetitle='Detail item';
-            require_once (File::build_path($array));
+            require_once (File::build_path(array("view", "view.php")));
 		}
 	}
 
 	public static function readAll() {
         $tab_item = ModelItem::selectAll();
-		$array = array("view", "view.php");
         $view='list';
         $pagetitle='Item list';
-        require (File::build_path($array));
+        require (File::build_path(array("view", "view.php")));
 	}        
 
 	public static function create() {
@@ -40,10 +37,9 @@ class ControllerItem {
 		$category = "";
 		$required = "required";
 		$action = "created";
-		$array = array("view", "view.php");
 		$view='update';
 		$pagetitle='Create Item';
-		require_once (File::build_path($array));
+		require_once (File::build_path(array("view", "view.php")));
 	}
 
 	public static function created() {
@@ -61,22 +57,19 @@ class ControllerItem {
 		);
 		$item->save($data);
 		$tab_item = ModelItem::selectAll();
-		$array = array("view", "view.php");
 		$view='created';
 		$pagetitle='Item Created';
-		require (File::build_path($array));
+		require (File::build_path(array("view", "view.php")));
 	}
 
 	public static function delete() {
 		$id = $_GET['id'];
 		ModelItem::deleteById($id);
 		$tab_item = ModelItem::selectAll();
-		$array = array("view", "view.php");
 		$controller= static::$object;
-		$array = array("view", "view.php");
 		$view='deleted';
 		$pagetitle='Delete Item';
-		require_once (File::build_path($array));
+		require_once (File::build_path(array("view", "view.php")));
 	}
 
 	public static function update() {
@@ -87,10 +80,9 @@ class ControllerItem {
 		$description = $item->getDescription();
 		$required = "readonly";
 		$action = "updated";
-		$array = array("view", "view.php");
 		$view='update';
 		$pagetitle='Update Item';
-		require_once (File::build_path($array));
+		require_once (File::build_path(array("view", "view.php")));
 	}
 
 	public static function updated() {
@@ -102,10 +94,9 @@ class ControllerItem {
 		);
 		ModelItem::updateByID($data);
 		$tab_item = ModelItem::selectAll();
-		$array = array("view", "view.php");
 		$view='updated';
 		$pagetitle='Item updated';
-		require_once (File::build_path($array));
+		require_once (File::build_path(array("view", "view.php")));
 	}
 
 	public static function paging() {
@@ -131,10 +122,9 @@ class ControllerItem {
 			$tab_result = ModelItem::selectPage($currentPage, $parPage);
 		}
 
-		$array = array("view", "view.php");
 		$view='paging';
 		$pagetitle='paging';
-		require_once (File::build_path($array));
+		require_once (File::build_path(array("view", "view.php")));
 
 	}
 
@@ -150,6 +140,98 @@ class ControllerItem {
 		$pagetitle='Item updated';
 		require_once (File::build_path(array("view", "view.php")));
 	}
+
+//-----------------------------------BASKET--------------------------------------------------------------------------------------
+
+/*
+*	Fonctionnement du panier :
+*		$_COOKIE['basket'] : tableau de type key => value
+*			pour stocker dans key les ID des produits dans le panier
+*			et dans value la quantitée de ce produit placé dans ce panier
+*		$_SESSION['sumBasket'] sert à stocker la valeur totale du panier
+*			pour stocker la somme des produits du panier
+*			à actualiser le plus souvent possible grâce à la fonction actualiserSommePanier
+*/
+
+	public static function actualizeSumBasket() {
+		$tab_item = unserialize($_COOKIE['basket']);
+		$sum = 0;
+		foreach($tab_item as $key => $value) {
+			$item = ModelItem::select($key);
+			$sum += $item->getPrice() * $value;
+		}
+		$_SESSION['sumBasket'] = $sum;
+	}
+
+	public static function readBasket() {
+		ControllerItem::actualizeSumBasket();
+		$sumBasket = $_SESSION['sumBasket'];
+		$tab_basket = unserialize($_COOKIE['basket']);
+
+		foreach($tab_basket as $key => $value) {
+			$currentBasket[$key] = ModelItem::select($key);
+		}
+
+		$view='basket';
+		$pagetitle='Basket';
+		require (File::build_path(array("view", "view.php")));
+	}
+
+	public static function addToBasket() {
+		if(isset($_COOKIE['basket'])) {
+			$tab_basket = unserialize($_COOKIE['basket']);
+		} else {
+			$tab_basket;
+		}
+		if(isset($tab_basket[$_GET['id']])) {
+			$tab_basket[$_GET['id']] += 1;
+		} else {
+			$tab_basket[$_GET['id']] = 1;
+		}
+		setcookie('basket', serialize($tab_basket), time()+ (60 * 60 * 24));
+		ControllerItem::actualizeSumBasket();
+		$view='addedToBasket';
+		$pagetitle='The item have been add to the basket succesfully';
+		require (File::build_path(array("view", "view.php")));
+	}
+
+	public static function resetBasket() {
+		$tab_basket = NULL;
+		setcookie('basket', "", time() - 1);
+		$_SESSION['sumBasket'] = 0;
+		echo "Your basket is now empty";
+		$view='panier';
+		$pagetitle='Panier';
+		require (File::build_path(array("view", "view.php")));
+	}
+
+	public static function deleteFromBasket() {
+		if(isset($_COOKIE['basket'])) {
+			$tab_basket = unserialize($_COOKIE['basket']);
+		} else {
+			$view='error';
+			$pagetitle='Error';
+			require (File::build_path(array("view", "view.php")));
+		}
+		if(isset($tab_basket[$_GET['id']])) {
+			$tab_basket[$_GET['id']] -= 1;
+			if($tab_basket[$_GET['id']] == 0 ) {
+				unset($_GET['id']);
+			}
+		}
+		setcookie('basket', serialize($tab_basket), time()+ (60 * 60 * 24));
+		ControllerItem::actualizeSumBasket();
+		$view='basket';
+		$pagetitle='Basket';
+		require (File::build_path(array("view", "view.php")));
+	}
+
+
+
+
+
+//-------------------------------------------------------------------------------------------------------------------------
+
 
 }
 

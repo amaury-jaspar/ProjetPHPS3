@@ -8,10 +8,9 @@ class ControllerHome {
 
     public function buildFrontPage() {
 
-        $array = array("view", "view.php");
         $view='frontpage';
         $pagetitle='frontpage';
-        require (File::build_path($array));
+        require (File::build_path(array("view", "view.php")));
 
 //        require_once (File::build_path(array('lib', 'viewBuilder.php')));
 //        echo '1';
