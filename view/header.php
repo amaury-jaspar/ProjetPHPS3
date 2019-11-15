@@ -7,6 +7,7 @@ echo <<< EOT
         <a href="index.php?action=buildFrontPage&controller=home" class="brand-logo">Mystic Market Everywhere</a>
         <ul id="nav-mobile" class="right hide-on-med-and-down">
         <li><a href="index.php?action=buildFrontPage&controller=home">Home</a></li>
+        <li><a href="index.php?action=marketplace&controller=item">Marketplace</a></li>                        
                 <li><a href="index.php?action=paging&controller=item">Catalog</a></li>
                 <li><a href="index.php?action=readBasket&controller=item">Basket</a></li>
 EOT;

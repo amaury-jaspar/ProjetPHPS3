@@ -138,6 +138,19 @@ class ControllerItem {
 
 	}
 
+	public function marketplace () {
+		$tab_category = array(
+			"alchimist" => "Welcome to the Alchimist", 
+			"tavern"  => "Welcome to the Tavern",
+			"bookstore" => "Welcome to the Bookstore",
+			"temple" => "Welcome to the Temple",
+			"armory" => "Welcome to the Armory"
+		);
+		$view='marketplace';
+		$pagetitle='Item updated';
+		require_once (File::build_path(array("view", "view.php")));
+	}
+
 }
 
 ?>

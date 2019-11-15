@@ -2,17 +2,16 @@
 
 <div class="row">
     <form method="get" action="index.php?" class="col s12">
-        <div class="row">
+        <div class="row" id="test">
             <div class="input-field col s12">
                     <input type='hidden' name='action' value='paging'>
                     <input type='hidden' name='controller' value='item'>
                     <select id="select" name="condition">
-                        <option id="select"value="" disabled selected>Choose a shop</option>
-                        <option value="">Catalog</option>
+                        <option id="select" value="" disabled selected>Got to another shop</option>
                         <option value="alchimist">Tri : Alchimist</option>
                         <option value="tavern">Tri : Tavern</option>
                         <option value="bookstore">Tri : Bookstore</option>
-                        <option value="Temple">Tri : Temple</option>
+                        <option value="temple">Tri : Temple</option>
                         <option value="armory">Tri : Armory</option>
                     </select>
                     <input type="submit" value="Envoyer">
