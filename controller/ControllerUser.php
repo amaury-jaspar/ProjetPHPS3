@@ -3,6 +3,7 @@
     require_once (File::build_path(array('model', 'ModelUser.php')));
     require_once (File::build_path(array('lib', 'Security.php')));
     require_once (File::build_path(array('lib', 'Session.php')));
+    require_once (File::build_path(array('lib', 'Validate.php')));
 
 class ControllerUser {
 
@@ -23,10 +24,16 @@ class ControllerUser {
     }
 
     public static function readAll() {
-        $tab_user = ModelUser::selectAll();
-        $view='list';
-        $pagetitle='Users list';
-        require (File::build_path(array("view", "view.php")));
+        if (Session::is_admin()) {
+            $tab_user = ModelUser::selectAll();
+            $view='list';
+            $pagetitle='Users list';
+            require (File::build_path(array("view", "view.php")));
+        } else {
+            $view='error';
+            $pagetitle='Error page';
+            require_once (File::build_path(array("view", "view.php")));
+        }
     }     
 
     public static function create() {
@@ -44,7 +51,7 @@ class ControllerUser {
 
     public static function created() {
 
-        if ($_GET['password1'] == $_GET['password2'] /* && filter_var($_GET['mail'], FILTER_VALIDATE_EMAIL)*/) {
+        if ($_GET['password1'] == $_GET['password2'] && filter_var($_GET['mail'], FILTER_VALIDATE_EMAIL)) {
             $user = new ModelUser($_GET['login'], $_GET['lastname'], $_GET['surname'], $_GET['mail'], false, 0);
             $data = array (
                 'login' => $_GET['login'],
@@ -58,7 +65,7 @@ class ControllerUser {
             );
             $user->save($data);
             $tab_user = ModelUser::selectAll();
-            // Validate::sendValidationMail($data);
+            Validate::sendValidationMail($data);
             $view='created';
             $pagetitle='user created';
             require (File::build_path(array("view", "view.php")));
@@ -77,7 +84,7 @@ class ControllerUser {
 
     public static function delete() {
         $login = $_GET['login'];
-        if ($login == $_SESSION['login'] || Session::is_admin()) {
+        if (Session::is_user($_GET['login']) || Session::is_admin()) {
             $view='delete';
             $pagetitle='Delete validation';
             require (File::build_path(array("view", "view.php")));
@@ -91,7 +98,7 @@ class ControllerUser {
 
     public static function deleted() {
         $login = $_GET['login'];
-        if ($login == $_SESSION['login'] || Session::is_admin()) {
+        if (Session::is_user($_GET['login']) || Session::is_admin()) {
             ModelUser::deleteById($login);
             $tab_user = ModelUser::selectAll();
             $view='deleted';
@@ -109,7 +116,7 @@ class ControllerUser {
     * On préremplie les champs lastname, surname et mail
     */
 	public static function update() {
-        if ($_GET['login'] == $_SESSION['login'] || Session::is_admin()) {
+        if (Session::is_user($_GET['login']) || Session::is_admin()) {
             $user = ModelUser::select($_GET['login']);
             $login = htmlspecialchars($user->get('login'));
             $lastName = htmlspecialchars($user->get('lastName'));
@@ -135,7 +142,7 @@ class ControllerUser {
     * 
     */
 	public static function updated() {
-        if ($_GET['login'] == $_SESSION['login'] || Session::is_admin()) {
+        if (Session::is_user($_GET['login']) || Session::is_admin()) {
             if ($_GET['password1'] == $_GET['password2']) {
             if (isset($_GET['admin']) && $_GET['admin'] == on) { $admin = 1; } else { $admin = 0; }
             $data = array (
@@ -177,9 +184,7 @@ class ControllerUser {
         }
 
         public static function connected() {
-
-//            $checkNonce = ModelUtilisateur::checkNonce($_GET['login']);
-            if (ModelUser::checkPassword($_GET['login'], Security::chiffrer($_GET['password'])) /*&& empty($checkNonce['nonce']*/) {
+            if (ModelUser::checkPassword($_GET['login'], Security::chiffrer($_GET['password'])) && ModelUser::checkNonce($_GET['login'])) {
                 $_SESSION['login'] = $_GET['login'];
                 $user = ModelUser::select($_GET['login']);
                 if ($user->get('admin') == true) {
@@ -189,8 +194,6 @@ class ControllerUser {
                 $pagetitle='User\'s detail';
                 require (File::build_path(array("view", "view.php")));
             } else {
-                echo $_GET['login'];
-                echo $_GET['password'];
                 echo "Problem, please try again";
                 $password = "";
                 $login = $_GET['login'];
@@ -223,6 +226,15 @@ class ControllerUser {
 
         public function payBill() {
             Model::substractMoney();
+        }
+
+//----------------------------------- VALIDATION COMPTE --------------------------------------------------------------------------------------
+ 
+        public static function validation() {
+            Validate::validation();
+            $view='profil';
+            $pagetitle='profile';
+            require (File::build_path(array("view", "view.php")));
         }
 
     }

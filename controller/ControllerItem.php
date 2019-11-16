@@ -128,19 +128,6 @@ class ControllerItem {
 
 	}
 
-	public function marketplace () {
-		$tab_category = array(
-			"alchimist" => "Welcome to the Alchimist", 
-			"tavern"  => "Welcome to the Tavern",
-			"bookstore" => "Welcome to the Bookstore",
-			"temple" => "Welcome to the Temple",
-			"armory" => "Welcome to the Armory"
-		);
-		$view='marketplace';
-		$pagetitle='Item updated';
-		require_once (File::build_path(array("view", "view.php")));
-	}
-
 //-----------------------------------BASKET--------------------------------------------------------------------------------------
 
 /*
@@ -229,20 +216,26 @@ class ControllerItem {
 		// On confirme
 		// Ou bien on demande à modifier, ce qui revient à appeler readBasket
 	public static function beforeBuyBasket() {
-		ControllerItem::actualizeSumBasket();
-		$sumBasket = $_SESSION['sumBasket'];
-		$tab_basket = unserialize($_COOKIE['basket']);
-		require_once (File::build_path(array('controller', 'ControllerUser.php')));
-		$user = ModelUser::select($_SESSION['login']);
-		$moneyBefore = $user->get('wallet');
-		$moneyAfter = $user->get('wallet') - $sumBasket;
-		foreach($tab_basket as $key => $value) {
-			$currentBasket[$key] = ModelItem::select($key);
+		if (isset($_SESSION['login'])) {
+			ControllerItem::actualizeSumBasket();
+			$sumBasket = $_SESSION['sumBasket'];
+			$tab_basket = unserialize($_COOKIE['basket']);
+			require_once (File::build_path(array('controller', 'ControllerUser.php')));
+			$user = ModelUser::select($_SESSION['login']);
+			$moneyBefore = $user->get('wallet');
+			$moneyAfter = $user->get('wallet') - $sumBasket;
+			foreach($tab_basket as $key => $value) {
+				$currentBasket[$key] = ModelItem::select($key);
+			}
+			$_SESSION['basket'] = $currentBasket;
+			$view='checkBasket';
+			$pagetitle='Basket';
+			require (File::build_path(array("view", "view.php")));
+		} else {
+			$view='connect';
+			$pagetitle='connection';
+			require (File::build_path(array("view", "view.php")));
 		}
-		$_SESSION['basket'] = $currentBasket;
-		$view='checkBasket';
-		$pagetitle='Basket';
-		require (File::build_path(array("view", "view.php")));
 	}
 
 /* 1 - En premier lieu, l'utilisateur ne doit pas pouvoir acheter hors connexion
@@ -294,7 +287,7 @@ class ControllerItem {
 			$view='connect';
 			$pagetitle='connection';
 			require (File::build_path(array("view", "view.php")));
-		}      
+		}
 	}
 
 //-------------------------------------------------------------------------------------------------------------------------

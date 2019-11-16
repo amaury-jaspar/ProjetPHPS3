@@ -94,8 +94,7 @@ class ModelUser extends Model {
 				"mdp" => $mot_de_passe_chiffre,
 			);
 			$req_prep->execute($values);
-			$answer = $req_prep->setFetchMode(PDO::FETCH_ASSOC);
-			echo $answer;
+			$answer = $req_prep->fetch(PDO::FETCH_ASSOC);
 		} catch (PDOException $e) {
 			if(Conf::getDebug()) {
 				echo $e->getMessage();
@@ -104,7 +103,68 @@ class ModelUser extends Model {
 			}
 			die();
 		}
+		if ($answer['COUNT(*)'] == 0) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+
+	// Quand on se connecte, on vérifie que le champ nonce de la relation user est vide.
+	// S'il n'est pas vide, c'est que l'utilisateur n'a pas valider son compte et il doit donc d'abord en passer par le mail qui lui a été envoyé.
+	public static function checkNonce($login) {
+		try {
+			$req_prep = Model::$pdo->prepare("SELECT nonce FROM user WHERE login = :login");
+			$values = array ("login" => $login);
+			$req_prep->execute($values);
+			$answer = $req_prep->fetch(PDO::FETCH_ASSOC);	
+		} catch (PDOException $e) {
+			if(Conf::getDebug()) {
+				echo $e->getMessage();
+			} else {
+				echo 'Une erreur est survenue <a href="index.php?action=buildFrontPage&controller=home"> retour à la page d\'acceuil </a>';
+			}
+			die();
+		}	
 		return $answer;
+	}
+
+	public static function nonceAndId($login, $nonce) {
+		try {
+			$req_prep = Model::$pdo->prepare("SELECT * FROM user WHERE login = :login AND nonce = :nonce");
+			$values = array (
+				"login" => $login,
+				"nonce" => $nonce
+			);
+			$req_prep->execute($values);
+			$answer = $req_prep->fetch(PDO::FETCH_ASSOC);
+		} catch (PDOException $e) {
+			if(Conf::getDebug()) {
+				echo $e->getMessage();
+			} else {
+				echo 'Une erreur est survenue <a href="index.php?action=buildFrontPage&controller=home"> retour à la page d\'acceuil </a>';
+			}
+			die();
+		}	
+		return $answer;
+	}
+
+	public static function eraseNonce($login, $nonce) {
+		try {			
+			$req_prep = Model::$pdo->prepare("UPDATE user SET nonce = NULL WHERE login = :login AND nonce = :nonce");
+			$values = array (
+				"login" => $login,
+				"nonce" => $nonce
+			);
+			$req_prep->execute($values);
+		} catch (PDOException $e) {
+			if(Conf::getDebug()) {
+				echo $e->getMessage();
+			} else {
+				echo 'Une erreur est survenue <a href="index.php?action=buildFrontPage&controller=home"> retour à la page d\'acceuil </a>';
+			}
+			die();
+		}
 	}
 
     public function addMoney($credit) {
@@ -120,6 +180,8 @@ class ModelUser extends Model {
         $this->set('wallet', $amount);
 		Model::updateWhere('wallet', $amount);
     }
+
+
 
 }
 

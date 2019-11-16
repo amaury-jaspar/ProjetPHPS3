@@ -18,7 +18,7 @@ $userAdmin = htmlspecialchars($user->get('admin'));
     echo "is admin ? : " . $userAdmin;
 
 
-    if ($_SESSION['login'] == $user->get('login') || Session::is_admin()) {
+    if (Session::is_user($user->get('login'))  || Session::is_admin()) {
         echo '<br>';
         echo '<a href="index.php?controller=user&action=delete&login=' . rawurlencode($user->getLogin()) . ' ">Delete this user from DataBase</a>';
         echo '<br>';
