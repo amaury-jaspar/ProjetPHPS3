@@ -5,7 +5,7 @@ $userLastname = htmlspecialchars($user->get('lastName'));
 $userName = htmlspecialchars($user->get('surname'));
 $userMail = htmlspecialchars($user->get('mail'));
 $userAdmin = htmlspecialchars($user->get('admin'));
-
+$userIdURL = rawurlencode($user->getLogin());
 
     echo "login : " . $userLogin;
     echo '<br>';
@@ -20,9 +20,9 @@ $userAdmin = htmlspecialchars($user->get('admin'));
 
     if (Session::is_user($user->get('login'))  || Session::is_admin()) {
         echo '<br>';
-        echo '<a href="index.php?controller=user&action=delete&login=' . rawurlencode($user->getLogin()) . ' ">Delete this user from DataBase</a>';
+        echo '<a href="index.php?controller=user&action=delete&login=' . $userIdURL . ' ">Delete this user from DataBase</a>';
         echo '<br>';
-        echo '<a href="index.php?controller=user&action=update&login=' . rawurlencode($user->getLogin()) . ' ">Modificate the data of this user</a>';
+        echo '<a href="index.php?controller=user&action=update&login=' . $userIdURL . ' ">Modificate the data of this user</a>';
     }
 
 ?>

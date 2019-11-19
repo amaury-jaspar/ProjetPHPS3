@@ -1,5 +1,6 @@
 <?php
-	$htmlItem = htmlspecialchars($item->getName());
+
+	$htmlItem = htmlspecialchars($item->get('name'));
 
 	echo '<p>The item '.$htmlItem.' has been created !</p>';
 

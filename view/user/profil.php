@@ -1,14 +1,14 @@
 <?php
 
-$username = htmlspecialchars($user->get('surname'));
-$login = rawurldecode($user->get('login'));
+$userSurname = htmlspecialchars($user->get('surname'));
+$userLogin = rawurldecode($user->get('login'));
 
 echo "<h1>YOUR ACCOUNT</h1>";
 
-echo "<p>Hi " . $username . ", welcome</p>";
+echo "<p>Hi " . $userSurname . ", welcome</p>";
 
 
-echo '<a href="index.php?action=read&controller=user&login='.$login.'">Detail</a>';
+echo '<a href="index.php?action=read&controller=user&login='.$userLogin.'">Detail</a>';
 echo '<br>';
 echo '<br>';
 // Utiliser la variable $_SERVER pour afficher des données sur l'utilisateur tel que son IP etc..

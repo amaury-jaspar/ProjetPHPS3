@@ -1,25 +1,27 @@
 <?php
 
-$htmlname = htmlspecialchars($item->getName());
-$htmlPrice = htmlspecialchars($item->getPrice());
-$htmlDescription = htmlspecialchars($item->getDescription());
+$itemName = htmlspecialchars($item->get('name'));
+$itemPrice = htmlspecialchars($item->get('price'));
+$itemDescription = htmlspecialchars($item->get('price'));
 
-$urlID = rawurlencode($item->getID());
+$idURL = rawurlencode($item->get('id'));
+$priceURL = rawurlencode($item->get('price'));
 
-echo '<div>Name : '.$htmlname.'</div> <div>Price : '.$htmlPrice.'</div> Description '.$htmlDescription.'</div>';
+
+echo '<div>Name : '.$itemName.'</div> <div>Price : '.$itemPrice.'</div> Description '.$itemDescription.'</div>';
 
 echo '<br>';
 
 if (Session::is_admin()) {
-    echo '<a href="index.php?controller=item&action=delete&id=' . rawurlencode($item->getId()) . ' ">Delete this item from DataBase</a>';
+    echo '<a href="index.php?controller=item&action=delete&id=' .$idURL . ' ">Delete this item from DataBase</a>';
     echo '<br>';
-    echo '<a href="index.php?controller=item&action=update&id=' . rawurlencode($item->getId()) . ' ">Modificate the data of this item</a>';
+    echo '<a href="index.php?controller=item&action=update&id=' . $idURL . ' ">Modificate the data of this item</a>';
     echo '<br>';
 }
 
-echo '<a href="index.php?controller=item&action=addToBasket&prix='.rawurlencode($item->getPrice()).'&id=' . rawurlencode($item->getId()) . ' ">Add to basket</a>';
+echo '<a href="index.php?controller=item&action=addToBasket&prix='. $priceURL .'&id=' . $idURL . ' ">Add to basket</a>';
 echo "<br>";
 echo "<br>";
-echo '<a href="index.php?controller=item&action=addToWishList&id=' . rawurlencode($item->getId()) . ' ">Add to my Wishlist</a>';
+echo '<a href="index.php?controller=item&action=addToWishList&id=' . $priceURL . ' ">Add to my Wishlist</a>';
 
 ?>

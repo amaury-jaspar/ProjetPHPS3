@@ -213,7 +213,7 @@ class ControllerUser {
 
         public function profil() {
             $user = ModelUser::select($_GET['login']);
-            if (Session::is_user($user->getLogin())) {
+            if (Session::is_user($user->get('login'))) {
                 $view='profil';
                 $pagetitle='accueil';
                 require (File::build_path(array("view", "view.php")));

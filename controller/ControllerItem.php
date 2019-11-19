@@ -46,10 +46,10 @@ class ControllerItem {
 		$item = new ModelItem($_GET['name'], $_GET['price'], $_GET['description'], "bookstore");
 		if (isset($_GET['catalog'])) {$catalog = 1;} else { $catalog = 0;}
 		$data = array (
-			'id' => $item->getId(),
-			'name' => $item->getName(),
-			'price' => $item->getPrice(),
-			'description' => $item->getDescription(),
+			'id' => $item->get('id'),
+			'name' => $item->get('name'),
+			'price' => $item->get('price'),
+			'description' => $item->get('description'),
 			'catalog' => $catalog,
 			'nbbuy' => 0,
 			'dateadd' => date("Y-m-d"),
@@ -75,9 +75,9 @@ class ControllerItem {
 	public static function update() {
 		$id = $_GET['id'];
 		$item = ModelItem::select($id);
-		$name = $item->getName();
-		$price = $item->getPrice();
-		$description = $item->getDescription();
+		$name = $item->get('name');
+		$price = $item->get('price');
+		$description = $item->get('description');
 		$required = "readonly";
 		$action = "updated";
 		$view='update';
@@ -145,7 +145,7 @@ class ControllerItem {
 		$sum = 0;
 		foreach($tab_item as $key => $value) {
 			$item = ModelItem::select($key);
-			$sum += $item->getPrice() * $value;
+			$sum += $item->get('price') * $value;
 		}
 		$_SESSION['sumBasket'] = $sum;
 	}
@@ -156,7 +156,9 @@ class ControllerItem {
 		$tab_basket = unserialize($_COOKIE['basket']);
 
 		foreach($tab_basket as $key => $value) {
+			if ($value > 0) {
 			$currentBasket[$key] = ModelItem::select($key);
+			}
 		}
 		$view='basket';
 		$pagetitle='Basket';
@@ -206,9 +208,21 @@ class ControllerItem {
 		}
 		setcookie('basket', serialize($tab_basket), time()+ (60 * 60 * 24));
 		ControllerItem::actualizeSumBasket();
-		$view='basket';
-		$pagetitle='Basket';
-		require (File::build_path(array("view", "view.php")));
+
+		// code de readFromBasket
+/*		$sumBasket = $_SESSION['sumBasket'];
+		$tab_basket = unserialize($_COOKIE['basket']);
+		foreach($tab_basket as $key => $value) {
+			if ($value > 0) {
+			$currentBasket[$key] = ModelItem::select($key);
+			}
+		}
+*/
+		ControllerItem::readBasket();
+
+//		$view='basket';
+//		$pagetitle='Basket';
+//		require (File::build_path(array("view", "view.php")));
 	}
 
 		// Envoie vers une page qui permet une dernière visualisation du panier avant de confirmer l'achat

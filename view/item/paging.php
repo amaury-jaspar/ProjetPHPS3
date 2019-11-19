@@ -28,9 +28,13 @@ for ($i = 1; $i <= $nbPage; $i++) {
 
 foreach($tab_result as $item) {
 
+$itemIdURL = rawurldecode($item->get('id'));
+$itemIdHTML = htmlspecialchars($item->get('id'));
+$itemNameHTML = htmlspecialchars($item->get('name'));
+
 echo '<div >';
-echo '<p><a href="index.php?controller=item&action=read&id='. rawurlencode($item->getId()) . '"> ' . htmlspecialchars($item->getName()) . '</a>.</p>';
-echo '<img src="../image/produit/'. $item->getName() .'.jpg" alt="">';
+echo '<p><a href="index.php?controller=item&action=read&id='.$itemIdURL.'">'.$itemNameHTML.'</a>.</p>';
+echo '<img src="../image/produit/'. $itemNameHTML .'.jpg" alt="">';
 echo "</div>";
 
 }
@@ -40,5 +44,3 @@ for ($i = 1; $i <= $nbPage; $i++) {
  }
 
 ?>
-
-
