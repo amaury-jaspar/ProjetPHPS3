@@ -17,14 +17,14 @@ class ModelUser extends Model {
 	// passer les construteur avec un $data en argument pour rendre ça plus conçis
 	// et déclarer le tableau directement dans les parenthèses d'une fonction
 
-	public function __construct($l = NULL, $n = NULL, $p = NULL, $m = NULL, $a = NULL, $w = NULL) {
-		if (!is_null($l) && !is_null($n) && !is_null($p) && !is_null($m) && !is_null($a) && !is_null ($w)) {
-			$this->login = $l;
-			$this->lastName = $n;
-			$this->surname = $p;
-			$this->mail = $m;
-			$this->admin = $a;
-			$this->wallet = $w;
+	public function __construct($data = NULL) {
+		if (!is_null($data)) {
+			$this->login = $data['login'];
+			$this->lastName = $data['lastName'];
+			$this->surname = $data['surname'];
+			$this->mail = $data['mail'];
+			$this->admin = $data['admin'];
+			$this->wallet = $data['wallet'];
 		}
 	}
 

@@ -45,33 +45,21 @@ class ControllerItem {
 	}
 
 	public static function created() {
-		$item = new ModelItem($_POST['name'], $_POST['price'], $_POST['description'], $_POST["category"]);
-		if (isset($_POST['catalog'])) {$catalog = 1;} else { $catalog = 0;}
+		if (isset($_GET['catalog'])) {$catalog = 1;} else { $catalog = 0;}
 		$data = array (
-			'id' => $item->get('id'),
-			'name' => $item->get('name'),
-			'price' => $item->get('price'),
-			'description' => $item->get('description'),
+			'id' => Security::generateRandomHex(),
+			'name' => $_GET['name'],
+			'price' => $_GET['price'],
+			'description' => $_GET['description'],
 			'catalog' => $catalog,
 			'nbbuy' => 0,
 			'dateadd' => date("Y-m-d"),
-			'category' => $item->get('category')
+			'category' => $_GET["category"]
 		);
-/*
-		echo '<pre>';
-		var_dump($_FILES["fileToUpload"]["name"]);
-		echo '</pre>';
-		echo '<pre>';
-		var_dump($_FILES["fileToUpload"]);
-		echo '</pre>';
-		echo '<pre>';
-		var_dump($_FILES["name"]);
-		echo '</pre>';
-*/
+		$item = new ModelItem($data);
 		if(!empty($_FILES)) {			
 			ImageUploader::uploadImg($_FILE['img']);
 		}
-		
 		$item->save($data);
 		$tab_item = ModelItem::selectAll();
 		$view='created';

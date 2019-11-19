@@ -50,9 +50,7 @@ class ControllerUser {
     }
 
     public static function created() {
-
         if ($_GET['password1'] == $_GET['password2'] && filter_var($_GET['mail'], FILTER_VALIDATE_EMAIL)) {
-            $user = new ModelUser($_GET['login'], $_GET['lastname'], $_GET['surname'], $_GET['mail'], false, 0);
             $data = array (
                 'login' => $_GET['login'],
                 'lastName' => $_GET['lastname'],
@@ -61,8 +59,9 @@ class ControllerUser {
                 'mail' => $_GET['mail'],
                 'admin' => 0,
                 'nonce' => Security::generateRandomHex(),
-                'wallet' => 0,  
+                'wallet' => 0,
             );
+            $user = new ModelUser($data);            
             $user->save($data);
             $tab_user = ModelUser::selectAll();
             Validate::sendValidationMail($data);

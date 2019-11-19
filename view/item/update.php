@@ -1,7 +1,7 @@
 <?php
 
 echo <<< EOT
-    <form method="POST" action="index.php" enctype="multipart/form-data">
+    <form method="GET" action="index.php" enctype="multipart/form-data">
     <legend> Create / Update
         <fieldset>
                 <p>

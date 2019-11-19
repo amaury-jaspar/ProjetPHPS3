@@ -18,13 +18,13 @@ class ModelItem extends Model {
 	 * Item constructor
 	 * The id and name are required to add the item to the database, the description and price can be added later on
 	 */
-    public function __construct($n = NULL, $p = NULL, $d = NULL, $cat = NULL) {
-        if (!is_null($n) && !is_null($p) && !is_null($d) && !is_null($cat)) {
-            $this->id = Security::generateRandomHex();
-            $this->name = $n;
-            $this->price = $p;
-            $this->description = $d;
-            $this->category = $cat;
+    public function __construct($data = NULL) {
+        if (!is_null($data)) {
+            $this->id = $data['id'];
+            $this->name = $data['name'];
+            $this->price = $$data['price'];
+            $this->description = $data['description'];
+            $this->category = $data['category'];
         }
     }
 
