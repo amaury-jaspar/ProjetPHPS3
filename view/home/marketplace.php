@@ -1,6 +1,7 @@
 <?php
 
-echo '<h5>Greetings my friend, choose a shop and have fun shopping</h5>';
+echo '<div class="container">';
+echo '<h3>Greetings my friend, choose a shop and have fun shopping</h3>';
 
 foreach ($tab_category as $cat => $catname) {
 
@@ -25,7 +26,7 @@ echo <<< EOT
 EOT;
 
 }
-
+echo '</div>';
 
 
 ?>

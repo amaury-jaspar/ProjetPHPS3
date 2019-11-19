@@ -1,8 +1,8 @@
 <?php
 
 echo <<< EOT
-    <form method="get" action="index.php?">
-    <legend> Update
+    <form method="POST" action="index.php" enctype="multipart/form-data">
+    <legend> Create / Update
         <fieldset>
                 <p>
                     <label for="name_id">Name</label>
@@ -14,6 +14,7 @@ echo <<< EOT
                     <label for="description_id">Description</label>
                     <input type="text" placeholder="" name="description" id="description_id" value="$description"/>
                     <br>
+
 
                 <label for="id_categorisation">Add this item to a category</label><br/>
                     <select name="category" id="id_categorisation">
@@ -33,12 +34,17 @@ echo <<< EOT
                      </label>
                      </p>
 
+                     <!-- <label for="fileToUpload">Select image to upload :</label> -->
+                     <!-- <input type="file" value="Upload Image" name="fileToUpload" accept="image/png, image/jpeg" id="fileToUpload"/> -->
+
+                     <input type="file" name="img"/>
+
                      <br>
                     <input type='hidden' name='id' value=$id>
                     <input type='hidden' name='controller' value='item'>
                     <input type='hidden' name='action' value=$action>
                 </p>
-                <input type="submit" value="Send">
+                <input type="submit" value="Send" name="submit">
             </legend>
     </fieldset>
 
@@ -46,3 +52,7 @@ EOT;
 echo "</div>";
 
 ?>
+
+<!--
+20190721_075539.jpg
+-->

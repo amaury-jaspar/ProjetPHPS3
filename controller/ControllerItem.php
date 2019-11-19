@@ -3,6 +3,8 @@
 	require_once (File::build_path(array('model', 'ModelItem.php')));
 	require_once (File::build_path(array('lib', 'Security.php')));
 	require_once (File::build_path(array('lib', 'Session.php')));
+	require_once (File::build_path(array('lib', 'ImageUploader.php')));
+
 
 class ControllerItem {
 
@@ -43,8 +45,8 @@ class ControllerItem {
 	}
 
 	public static function created() {
-		$item = new ModelItem($_GET['name'], $_GET['price'], $_GET['description'], "bookstore");
-		if (isset($_GET['catalog'])) {$catalog = 1;} else { $catalog = 0;}
+		$item = new ModelItem($_POST['name'], $_POST['price'], $_POST['description'], $_POST["category"]);
+		if (isset($_POST['catalog'])) {$catalog = 1;} else { $catalog = 0;}
 		$data = array (
 			'id' => $item->get('id'),
 			'name' => $item->get('name'),
@@ -53,8 +55,23 @@ class ControllerItem {
 			'catalog' => $catalog,
 			'nbbuy' => 0,
 			'dateadd' => date("Y-m-d"),
-			'category' => "bookstore"
+			'category' => $item->get('category')
 		);
+/*
+		echo '<pre>';
+		var_dump($_FILES["fileToUpload"]["name"]);
+		echo '</pre>';
+		echo '<pre>';
+		var_dump($_FILES["fileToUpload"]);
+		echo '</pre>';
+		echo '<pre>';
+		var_dump($_FILES["name"]);
+		echo '</pre>';
+*/
+		if(!empty($_FILES)) {			
+			ImageUploader::uploadImg($_FILE['img']);
+		}
+		
 		$item->save($data);
 		$tab_item = ModelItem::selectAll();
 		$view='created';
@@ -206,7 +223,7 @@ class ControllerItem {
 				unset($_GET['id']);
 			}
 		}
-		setcookie('basket', serialize($tab_basket), time()+ (60 * 60 * 24));
+		setcookie('basket', serialize($tab_basket), time() + (60 * 60 * 24));
 		ControllerItem::actualizeSumBasket();
 
 		// code de readFromBasket
