@@ -34,7 +34,7 @@ class ControllerUser {
             $pagetitle='Error page';
             require_once (File::build_path(array("view", "view.php")));
         }
-    }     
+    }
 
     public static function create() {
         $login = "";
@@ -61,7 +61,7 @@ class ControllerUser {
                 'nonce' => Security::generateRandomHex(),
                 'wallet' => 0,
             );
-            $user = new ModelUser($data);            
+            $user = new ModelUser($data);
             $user->save($data);
             $tab_user = ModelUser::selectAll();
             Validate::sendValidationMail($data);
@@ -122,7 +122,7 @@ class ControllerUser {
             $surname = htmlspecialchars($user->get('surname'));
             $mail = htmlspecialchars($user->get('mail'));
             $password = "";
-            $password = "";            
+            $password = "";
             $required = "readonly";
 			$action = "updated";
 			$view='update';
@@ -138,7 +138,7 @@ class ControllerUser {
     /*
     * On vérifie que c'est l'admin ou l'utilisateur en question qui tente de faire updated
     * On ne fait l'udpate que si les 2 mots de passe sont les mêmes
-    * 
+    *
     */
 	public static function updated() {
         if (Session::is_user($_GET['login']) || Session::is_admin()) {
@@ -176,66 +176,66 @@ class ControllerUser {
         }
     }
 
-        public static function connect() {
+    public static function connect() {
+        $view='connect';
+        $pagetitle='connection';
+        require (File::build_path(array("view", "view.php")));
+    }
+
+    public static function connected() {
+        if (ModelUser::checkPassword($_GET['login'], Security::chiffrer($_GET['password'])) && ModelUser::checkNonce($_GET['login'])) {
+            $_SESSION['login'] = $_GET['login'];
+            $user = ModelUser::select($_GET['login']);
+            if ($user->get('admin') == true) {
+                $_SESSION['admin'] = true;
+            }
+            $view='profil';
+            $pagetitle='User\'s detail';
+            require (File::build_path(array("view", "view.php")));
+        } else {
+            echo "Problem, please try again";
+            $password = "";
+            $login = $_GET['login'];
             $view='connect';
             $pagetitle='connection';
             require (File::build_path(array("view", "view.php")));
         }
+    }
 
-        public static function connected() {
-            if (ModelUser::checkPassword($_GET['login'], Security::chiffrer($_GET['password'])) && ModelUser::checkNonce($_GET['login'])) {
-                $_SESSION['login'] = $_GET['login'];
-                $user = ModelUser::select($_GET['login']);
-                if ($user->get('admin') == true) {
-                    $_SESSION['admin'] = true;
-                }
-                $view='profil';
-                $pagetitle='User\'s detail';
-                require (File::build_path(array("view", "view.php")));
-            } else {
-                echo "Problem, please try again";
-                $password = "";
-                $login = $_GET['login'];
-                $view='connect';
-                $pagetitle='connection';
-                require (File::build_path(array("view", "view.php")));
-            }
-        }
+    public static function disconnect() {
+        unset($_SESSION['login']);
+        session_destroy();
+        $view='disconnected';
+        $pagetitle='accueil';
+        require (File::build_path(array("view", "view.php")));
+    }
 
-        public static function disconnect() {
-            unset($_SESSION['login']);
-            session_destroy();
-            $view='disconnected';
+    public function profil() {
+        $user = ModelUser::select($_GET['login']);
+        if (Session::is_user($user->get('login'))) {
+            $view='profil';
             $pagetitle='accueil';
             require (File::build_path(array("view", "view.php")));
+        } else {
+            $view='error';
+            $pagetitle='Page d\'erreur';
+            require_once (File::build_path(array("view", "view.php")));
         }
+    }
 
-        public function profil() {
-            $user = ModelUser::select($_GET['login']);
-            if (Session::is_user($user->get('login'))) {
-                $view='profil';
-                $pagetitle='accueil';
-                require (File::build_path(array("view", "view.php")));
-            } else {
-                $view='error';
-                $pagetitle='Page d\'erreur';
-                require_once (File::build_path(array("view", "view.php")));
-            }
-        }
-
-        public function payBill() {
-            Model::substractMoney();
-        }
+    public function payBill() {
+        Model::substractMoney();
+    }
 
 //----------------------------------- VALIDATION COMPTE --------------------------------------------------------------------------------------
- 
-        public static function validation() {
-            Validate::validation();
-            $view='profil';
-            $pagetitle='profile';
-            require (File::build_path(array("view", "view.php")));
-        }
 
+    public static function validation() {
+        Validate::validation();
+        $view='profil';
+        $pagetitle='profile';
+        require (File::build_path(array("view", "view.php")));
     }
+
+}
 
 ?>

@@ -5,7 +5,7 @@
 // https://www.damienflandrin.fr/blog/post/tutoriel-comment-uploader-un-fichier-en-php
 
     class ImageUploader {
-        
+
         public static function uploadImg($img) {
 
             $target_dir = File::buildpath(array('image/'));
