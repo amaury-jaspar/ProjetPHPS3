@@ -13,7 +13,7 @@ EOT;
 
 if (!empty($_SESSION['login'])) {
                 echo '<li><a href="index.php?action=read&controller=inventory">Inventory</a></li>';
-                echo '<li><a href="index.php?action=read&controller=wishList">Wish List</a></li>';
+                echo '<li><a href="index.php?action=read&controller=wishlist">Wish List</a></li>';
                 echo '<li><a href="index.php?action=profil&controller=user'."&login=".$_SESSION['login'].'">Profile</a></li>';
                 echo '<li><a class="waves-effect waves-light btn-small" href="index.php?action=disconnect&controller=user">Log out</a></li>';
 }

@@ -28,7 +28,7 @@ class ControllerItem {
         $view='list';
         $pagetitle='Item list';
         require (File::build_path(array("view", "view.php")));
-	}        
+	}
 
 	public static function create() {
 		$id = NULL;
@@ -120,7 +120,7 @@ class ControllerItem {
 		}
 
 		if (Routeur::myGet('condition') !== NULL) {
-			$tab_result = Modelitem::selectPageCategory($currentPage, $parPage, Routeur::myGet('condition'));    
+			$tab_result = Modelitem::selectPageCategory($currentPage, $parPage, Routeur::myGet('condition'));
 		} else {
 			$tab_result = ModelItem::selectPage($currentPage, $parPage);
 		}

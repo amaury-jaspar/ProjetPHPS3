@@ -4,13 +4,13 @@ require_once (File::build_path(array('model', 'Model.php')));
 require_once (File::build_path(array('lib', 'Security.php')));
 
 class ModelItem extends Model {
-	
+
 	private $id;
 	private $name;
 	private $price;
 	private $description;
 	private $category;
-	
+
 	protected static $object = "item";
 	protected static $primary = "id";
 
