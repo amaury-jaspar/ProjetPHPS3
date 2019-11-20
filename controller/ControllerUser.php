@@ -183,9 +183,9 @@ class ControllerUser {
     }
 
     public static function connected() {
-        if (ModelUser::checkPassword($_GET['login'], Security::chiffrer($_GET['password'])) && ModelUser::checkNonce($_GET['login'])) {
-            $_SESSION['login'] = $_GET['login'];
-            $user = ModelUser::select($_GET['login']);
+        if (ModelUser::checkPassword(Routeur::myGet('login'), Security::chiffrer(Routeur::myGet('password1'))) && ModelUser::checkNonce(Routeur::myGet('login'))) {
+            $_SESSION['login'] = Routeur::myGet('login');
+            $user = ModelUser::select(Routeur::myGet('login'));
             if ($user->get('admin') == true) {
                 $_SESSION['admin'] = true;
             }
@@ -195,7 +195,7 @@ class ControllerUser {
         } else {
             echo "Problem, please try again";
             $password = "";
-            $login = $_GET['login'];
+            $login = Routeur::myGet('login');
             $view='connect';
             $pagetitle='connection';
             require (File::build_path(array("view", "view.php")));
@@ -211,7 +211,7 @@ class ControllerUser {
     }
 
     public function profil() {
-        $user = ModelUser::select($_GET['login']);
+        $user = ModelUser::select(Routeur::myGet('login'));
         if (Session::is_user($user->get('login'))) {
             $view='profil';
             $pagetitle='accueil';

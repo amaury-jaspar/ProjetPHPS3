@@ -56,8 +56,7 @@ class ControllerItem {
 			'category' => Routeur::myGet('category')
 		);
 		$item = new ModelItem($data);
-		var_dump($_FILES['img']);
-		if(!empty($_FILES['img'])) { ImageUploader::uploadImg($_FILE['img']);}
+		if(!empty($_FILES['img'])) { ImageUploader::uploadImg();}
 		$item->save($data);
 		$tab_item = ModelItem::selectAll();
 		$view='created';
