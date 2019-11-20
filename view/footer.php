@@ -12,7 +12,7 @@ echo <<< EOT
                 <ul>
                   <li><a class="grey-text text-lighten-3" href="index.php?action=contact&controller=home">Contact</a></li>
 EOT;
-if ($_SESSION['admin'] == true) {
+if (Session::is_admin()) {
                     echo '<li><a class="grey-text text-lighten-3" href="index.php?action=dashboard&controller=administration">Administration</a></li>';
 }
 echo <<< EOT
