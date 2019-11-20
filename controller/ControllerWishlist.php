@@ -11,8 +11,8 @@ class ControllerWishlist {
   protected static $object = 'wishlist';
 
   public static function read() {
-    $user_id = htmlspecialchars(Routeur::myGet('user_id'));
-    $tab_item = ModelWishlist::selectAll();
+    $user_id = $_SESSION['login'];
+    $tab_item = ModelWishlist::selectAll($user_id);
     $view = 'list';
     $pagetitle = 'Wishlist';
     require(File::build_path(array('view','view.php')));
