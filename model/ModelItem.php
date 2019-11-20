@@ -87,7 +87,7 @@ class ModelItem extends Model {
 			}
 			die();
 		}
-		return $answer;
+		return $answer['nb_Id'];
 	}
 
     public static function countCatalogCategory($condition) {
@@ -107,7 +107,7 @@ class ModelItem extends Model {
 			}
 			die();
 		}
-		return $answer;
+		return $answer['nb_Id'];
     }
 
 	// utile à la pagination de article
