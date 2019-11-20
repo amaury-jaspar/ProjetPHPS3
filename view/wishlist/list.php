@@ -17,7 +17,7 @@
 //        echo '<img src="../image/produit/'. $item->getName() .'.jpg" alt="">';
         echo "quantity : ". $itemQuantity;
         echo '<br>';
-        echo "Transfert item from basket to wishlist: ";
+        echo "Transfert item from wishlist to basket: ";
         echo '<br>';
         echo '<a href="index.php?action=deleteItem&controller=wishlist&id='.$itemIdURL.'&prix='.$itemPriceURL.'">Remove from wishlist</a>';
         echo '<br>';
@@ -29,7 +29,4 @@
     echo "TOTAL COST : " . $currentWishlist;
     echo '<br>';
     echo '<br>';
-    echo '<a href="index.php?action=beforeBuyBasket&controller=item">Purchase</a>';
-    echo '<br>';
-    echo '<br>';
-    echo '<a href="index.php?action=resetBasket&controller=item">Empty the basket</a>';
+    // echo '<a href="index.php?action=addAll&controller=item">Add all items to the basket</a>';
