@@ -42,6 +42,7 @@ class ControllerUser {
         $surname = "";
         $password1 = "";
         $password2 = "";
+        $mail = "";
         $required = "required";
         $action = "created";
         $view='update';
@@ -121,8 +122,8 @@ class ControllerUser {
             $lastName = htmlspecialchars($user->get('lastName'));
             $surname = htmlspecialchars($user->get('surname'));
             $mail = htmlspecialchars($user->get('mail'));
-            $password = "";
-            $password = "";
+            $password1 = "";
+            $password2 = "";
             $required = "readonly";
 			$action = "updated";
 			$view='update';
