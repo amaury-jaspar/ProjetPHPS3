@@ -1,6 +1,6 @@
 <?php
 
-    $preference = htmlspecialchars($_GET['preference']);
+    $preference = htmlspecialchars(Routeur::myGet('preference'));
 
     setcookie("preference", $preference, time()+3600);
 

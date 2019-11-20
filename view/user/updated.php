@@ -1,7 +1,7 @@
 <?php
 
-    $userLastName = htmlspecialchars($_GET['lastname']);
-    $userSurname = htmlspecialchars($_GET['surname']);
+    $userLastName = htmlspecialchars(Routeur::myGet('lastname'));
+    $userSurname = htmlspecialchars(Routeur::myGet('surname'));
 
     echo $userLastName . " " . $userSurname . " has been modified !</p>";
 

@@ -1,10 +1,12 @@
 <?php
 
+require_once (File::build_path(array('lib', 'queryBuilder.php')));
+
 class ControllerHome {
 
 	protected static $object = "home";
 
-    public function buildFrontPage() {
+    public static function buildFrontPage() {
 
         $tab_category = array(
             "alchimist" => "Welcome to the Alchimist", 

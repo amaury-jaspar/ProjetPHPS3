@@ -10,7 +10,7 @@ class ControllerUser {
     protected static $object = "user";
 
     public static function read() {
-        $login = $_GET['login'];
+        $login = Routeur::myGet('login');
         $user = ModelUser::select($login);
         if ($user == false) {
             $view='error';
@@ -50,13 +50,13 @@ class ControllerUser {
     }
 
     public static function created() {
-        if ($_GET['password1'] == $_GET['password2'] && filter_var($_GET['mail'], FILTER_VALIDATE_EMAIL)) {
+        if (Routeur::myGet('password1') == Routeur::myGet('password2') && filter_var(Routeur::myGet('mail'), FILTER_VALIDATE_EMAIL)) {
             $data = array (
-                'login' => $_GET['login'],
-                'lastName' => $_GET['lastname'],
-                'surname' => $_GET['surname'],
-                'password' => Security::chiffrer($_GET['password1']),
-                'mail' => $_GET['mail'],
+                'login' => Routeur::myGet('login'),
+                'lastName' => Routeur::myGet('lastname'),
+                'surname' => Routeur::myGet('surname'),
+                'password' => Security::chiffrer(Routeur::myGet('password1')),
+                'mail' => Routeur::myGet('mail'),
                 'admin' => 0,
                 'nonce' => Security::generateRandomHex(),
                 'wallet' => 0,
@@ -70,9 +70,9 @@ class ControllerUser {
             require (File::build_path(array("view", "view.php")));
         } else {
             echo "The passwords don't match, please retry";
-            $login = $_GET['login'];
-            $lastName = $_GET['lastname'];
-            $surname = $_GET['surname'];
+            $login = Routeur::myGet('login');
+            $lastName = Routeur::myGet('lastname');
+            $surname = Routeur::myGet('surname');
             $required = "required";
             $action = "create";
             $view='update';
@@ -82,8 +82,8 @@ class ControllerUser {
     }
 
     public static function delete() {
-        $login = $_GET['login'];
-        if (Session::is_user($_GET['login']) || Session::is_admin()) {
+        $login = Routeur::myGet('login');
+        if (Session::is_user(Routeur::myGet('login')) || Session::is_admin()) {
             $view='delete';
             $pagetitle='Delete validation';
             require (File::build_path(array("view", "view.php")));
@@ -96,8 +96,8 @@ class ControllerUser {
 
 
     public static function deleted() {
-        $login = $_GET['login'];
-        if (Session::is_user($_GET['login']) || Session::is_admin()) {
+        $login = Routeur::myGet('login');
+        if (Session::is_user(Routeur::myGet('login')) || Session::is_admin()) {
             ModelUser::deleteById($login);
             $tab_user = ModelUser::selectAll();
             $view='deleted';
@@ -115,8 +115,8 @@ class ControllerUser {
     * On préremplie les champs lastname, surname et mail
     */
 	public static function update() {
-        if (Session::is_user($_GET['login']) || Session::is_admin()) {
-            $user = ModelUser::select($_GET['login']);
+        if (Session::is_user(Routeur::myGet('login')) || Session::is_admin()) {
+            $user = ModelUser::select(Routeur::myGet('login'));
             $login = htmlspecialchars($user->get('login'));
             $lastName = htmlspecialchars($user->get('lastName'));
             $surname = htmlspecialchars($user->get('surname'));
@@ -141,15 +141,15 @@ class ControllerUser {
     *
     */
 	public static function updated() {
-        if (Session::is_user($_GET['login']) || Session::is_admin()) {
-            if ($_GET['password1'] == $_GET['password2']) {
-            if (isset($_GET['admin']) && $_GET['admin'] == on) { $admin = 1; } else { $admin = 0; }
+        if (Session::is_user(Routeur::myGet('login')) || Session::is_admin()) {
+            if (Routeur::myGet('password1') == Routeur::myGet('password2')) {
+            if (Routeur::myGet('admin') !== NULL && Routeur::myGet('admin') == on) { $admin = 1; } else { $admin = 0; }
             $data = array (
-				'login' => htmlspecialchars($_GET['login']),
-				'lastName' => htmlspecialchars($_GET['lastname']),
-				'surname' => htmlspecialchars($_GET['surname']),
-				'password' => Security::chiffrer($_GET['password1']),
-                'mail' => htmlspecialchars($_GET['mail']),
+				'login' => htmlspecialchars(Routeur::myGet('login')),
+				'lastName' => htmlspecialchars(Routeur::myGet('lastname')),
+				'surname' => htmlspecialchars(Routeur::myGet('surname')),
+				'password' => Security::chiffrer(Routeur::myGet('password1')),
+                'mail' => htmlspecialchars(Routeur::myGet('mail')),
                 'admin' => $admin,
                 'nonce' => "",
             );
@@ -159,10 +159,10 @@ class ControllerUser {
 			require (File::build_path(array("view", "view.php")));
 		} else {
 			echo "The passwords don't match, please retry";
-			$login = $_GET['login'];
-			$lastName = $_GET['lastname'];
-			$surname = $_GET['surname'];
-			$mail = $_GET['mail'];
+			$login = Routeur::myGet('login');
+			$lastName = Routeur::myGet('lastname');
+			$surname = Routeur::myGet('surname');
+			$mail = Routeur::myGet('mail');
             $required = "required";
 			$action = "updated";
 			$view='update';

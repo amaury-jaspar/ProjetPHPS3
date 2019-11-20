@@ -9,9 +9,9 @@
 class Validate {
 
     public static function validation() {
-        if (!is_null(ModelUser::select($_GET['login'])) && ModelUser::nonceAndId($_GET['login'], $_GET['nonce'])) {
+        if (!is_null(ModelUser::select(Routeur::myGet('login'))) && ModelUser::nonceAndId(Routeur::myGet('login'), Routeur::myGet('nonce'))) {
             echo "efface le nonce";
-            ModelUser::eraseNonce($_GET['login'], $_GET['nonce']);
+            ModelUser::eraseNonce(Routeur::myGet('login'), Routeur::myGet('nonce'));
         } else {
             echo "Mauvaise clef de validation";
         }
