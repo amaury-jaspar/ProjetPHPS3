@@ -5,13 +5,12 @@
 	require_once (File::build_path(array('lib', 'Session.php')));
 	require_once (File::build_path(array('lib', 'ImageUploader.php')));
 
-
 class ControllerItem {
 
 	protected static $object = "item";
 
 	public static function read() {
-		$id = htmlspecialchars($_GET['id']);
+		$id = htmlspecialchars(Routeur::myGet('id'));
 		$item = ModelItem::select($id);
 		if ($item == false) {
 			$view='error';
@@ -45,21 +44,20 @@ class ControllerItem {
 	}
 
 	public static function created() {
-		if (isset($_GET['catalog'])) {$catalog = 1;} else { $catalog = 0;}
+		if (Routeur::myGet('catalog') !== NULL) {$catalog = 1;} else { $catalog = 0;}
 		$data = array (
 			'id' => Security::generateRandomHex(),
-			'name' => $_GET['name'],
-			'price' => $_GET['price'],
-			'description' => $_GET['description'],
+			'name' => Routeur::myGet('name'),
+			'price' => Routeur::myGet('price'),
+			'description' => Routeur::myGet('description'),
 			'catalog' => $catalog,
 			'nbbuy' => 0,
 			'dateadd' => date("Y-m-d"),
-			'category' => $_GET["category"]
+			'category' => Routeur::myGet('category')
 		);
 		$item = new ModelItem($data);
-		if(!empty($_FILES)) {			
-			ImageUploader::uploadImg($_FILE['img']);
-		}
+		var_dump($_FILES['img']);
+		if(!empty($_FILES['img'])) { ImageUploader::uploadImg($_FILE['img']);}
 		$item->save($data);
 		$tab_item = ModelItem::selectAll();
 		$view='created';
@@ -68,7 +66,7 @@ class ControllerItem {
 	}
 
 	public static function delete() {
-		$id = $_GET['id'];
+		$id = Routeur::myGet('id');
 		ModelItem::deleteById($id);
 		$tab_item = ModelItem::selectAll();
 		$controller= static::$object;
@@ -78,7 +76,7 @@ class ControllerItem {
 	}
 
 	public static function update() {
-		$id = $_GET['id'];
+		$id = Routeur::myGet('id');
 		$item = ModelItem::select($id);
 		$name = $item->get('name');
 		$price = $item->get('price');
@@ -92,10 +90,10 @@ class ControllerItem {
 
 	public static function updated() {
 		$data = array (
-			'id' => $_GET['id'],
-			'name' => $_GET['name'],
-			'description' => $_GET['description'],
-			'price' => $_GET['price']
+			'id' => Routeur::myGet('id'),
+			'name' => Routeur::myGet('name'),
+			'description' => Routeur::myGet('description'),
+			'price' => Routeur::myGet('price')
 		);
 		ModelItem::updateByID($data);
 		$tab_item = ModelItem::selectAll();
@@ -106,8 +104,8 @@ class ControllerItem {
 
 	public static function paging() {
 
-		if (isset($_GET['condition']) && $_GET['condition'] != "") {
-			$nb_Id = Modelitem::countCatalogCategory($_GET['condition']);
+		if (Routeur::myGet('condition') !== NULL && Routeur::myGet('condition') != "") {
+			$nb_Id = Modelitem::countCatalogCategory(Routeur::myGet('condition'));
 		} else {
 			$nb_Id = ModelItem::countCatalog(); // le nombre d'item qui ont 1 pour l'attribut catalog
 		}
@@ -115,14 +113,14 @@ class ControllerItem {
 		$parPage = 5; // le nombre d'item que l'on veut afficher par page
 		$nbPage = ceil($nb_Id['nb_Id'] / $parPage); // On calcule le nombre de page par division nbProduit / Produit par page
 
-		if(isset($_GET['currentpage']) && $_GET['currentpage'] > 0 && $_GET['currentpage'] <= $nbPage) {
-			$currentPage = $_GET['currentpage'];
+		if( Routeur::myGet('currentpage') !== NULL && Routeur::myGet('currentpage') > 0 && Routeur::myGet('currentpage') <= $nbPage) {
+			$currentPage = Routeur::myGet('currentpage');
 		} else {
 			$currentPage = 1;
 		}
 
-		if (isset($_GET['condition'])) {
-			$tab_result = Modelitem::selectPageCategory($currentPage, $parPage, $_GET['condition']);    
+		if (Routeur::myGet('condition') !== NULL) {
+			$tab_result = Modelitem::selectPageCategory($currentPage, $parPage, Routeur::myGet('condition'));    
 		} else {
 			$tab_result = ModelItem::selectPage($currentPage, $parPage);
 		}
@@ -176,10 +174,10 @@ class ControllerItem {
 		} else {
 			$tab_basket;
 		}
-		if(isset($tab_basket[$_GET['id']])) {
-			$tab_basket[$_GET['id']] += 1;
+		if(isset($tab_basket[Routeur::myGet('id')])) {
+			$tab_basket[Routeur::myGet('id')] += 1;
 		} else {
-			$tab_basket[$_GET['id']] = 1;
+			$tab_basket[Routeur::myGet('id')] = 1;
 		}
 		setcookie('basket', serialize($tab_basket), time()+ (60 * 60 * 24));
 		ControllerItem::actualizeSumBasket();
@@ -205,10 +203,11 @@ class ControllerItem {
 			$pagetitle='Error';
 			require (File::build_path(array("view", "view.php")));
 		}
-		if(isset($tab_basket[$_GET['id']])) {
-			$tab_basket[$_GET['id']] -= 1;
-			if($tab_basket[$_GET['id']] == 0 ) {
-				unset($_GET['id']);
+		if(isset($tab_basket[Routeur::myGet('id')])) {
+			$tab_basket[Routeur::myGet('id')] -= 1;
+			if($tab_basket[Routeur::myGet('id')] == 0 ) {
+				if (isset($_GET['id'])) { unset($_GET['id']);}
+				if (isset($_POST['id'])) { unset($_POST['id']);}
 			}
 		}
 		setcookie('basket', serialize($tab_basket), time() + (60 * 60 * 24));

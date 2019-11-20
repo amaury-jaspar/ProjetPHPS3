@@ -1,21 +1,23 @@
 <?php
 
-/*
+
 // Une fonction qui va servir à convertir facilement le type de méthode que l'on souhaite dans les formulaire
 // Passer de GET à POST facilement
-static function myGet($nomvar) {
-    if (isset($_GET[$nomvar])) {
-       return $_GET[$nomvar];
-    } else if (isset($_POST[$nomvar])) {
-        return $_POST[$nomvar];
-    } else {
-        return NULL;
+class Routeur {
+
+    public static function myGet($nomvar) {
+        if (isset($_GET[$nomvar])) {
+        return $_GET[$nomvar];
+        } else if (isset($_POST[$nomvar])) {
+            return $_POST[$nomvar];
+        } else {
+            return NULL;
+        }
     }
 }
-*/
 
-if (isset($_GET['controller'])) { 
-    $controller = $_GET['controller'];
+if (Routeur::myGet('controller') !== NULL) { 
+    $controller = Routeur::myGet('controller');
 } else {
     $controller = 'home';
 }
@@ -26,9 +28,9 @@ $array = array("controller", $controller_class);
 
 require_once (File::build_path($array) . ".php");
 
-if (isset($_GET['action'])) {
+if (Routeur::myGet('action') !== NULL) {
 
-    $action = $_GET['action'];
+    $action = Routeur::myGet('action');
     $class_methods = get_class_methods($controller_class);
 
     if (!in_array($action, $class_methods)) {

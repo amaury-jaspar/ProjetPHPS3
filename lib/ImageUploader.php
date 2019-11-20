@@ -14,7 +14,7 @@
             $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
 
             // check if the image file is a actual image or fake image
-            if(isset($_GET["submit"])) {
+            if(Routeur::myGet('submit') != NULL) {
                 $check = getimagesize($img['tmp_name']);
                 if($check !== false) {
                     echo "File is an image - " . $check["mime"] . ".";

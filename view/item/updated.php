@@ -1,6 +1,6 @@
 <?php
 
-    $itemName = $_GET['name'];
+    $itemName = Routeur::myGet('name');
 
     echo "the item " . $itemName . " has been updated !</p>";
 
