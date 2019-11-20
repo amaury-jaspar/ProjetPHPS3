@@ -111,7 +111,7 @@ class ControllerItem {
 		}
 
 		$parPage = 5; // le nombre d'item que l'on veut afficher par page
-		$nbPage = ceil($nb_Id['nb_Id'] / $parPage); // On calcule le nombre de page par division nbProduit / Produit par page
+		$nbPage = ceil($nb_Id / $parPage); // On calcule le nombre de page par division nbProduit / Produit par page
 
 		if( Routeur::myGet('currentpage') !== NULL && Routeur::myGet('currentpage') > 0 && Routeur::myGet('currentpage') <= $nbPage) {
 			$currentPage = Routeur::myGet('currentpage');
