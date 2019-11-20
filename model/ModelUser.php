@@ -125,8 +125,12 @@ class ModelUser extends Model {
 				echo 'Une erreur est survenue <a href="index.php?action=buildFrontPage&controller=home"> retour à la page d\'acceuil </a>';
 			}
 			die();
-		}	
-		return $answer;
+		}
+		if ($answer['nonce'] !== "") {
+			return false;
+		} else {
+			return true;
+		}
 	}
 
 	public static function nonceAndId($login, $nonce) {

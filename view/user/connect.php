@@ -1,4 +1,4 @@
-<form action="index.php?">
+<form method="POST" action="index.php?">
     <legend>
         <label for="login_id">Login</label>
         <input type="text" name="login" id="login_id" value="" required>

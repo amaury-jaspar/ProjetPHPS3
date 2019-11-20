@@ -8,7 +8,7 @@ require_once (File::build_path(array('lib', 'Session.php')));
  */
 class ControllerWishlist {
 
-  protected static $object = 'whislist';
+  protected static $object = 'wishlist';
 
   public static function read() {
     $user_id = htmlspecialchars(Routeur::myGet('user_id'));
