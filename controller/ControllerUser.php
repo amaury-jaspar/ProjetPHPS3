@@ -184,7 +184,7 @@ class ControllerUser {
     }
 
     public static function connected() {
-        if (ModelUser::checkPassword(Routeur::myGet('login'), Security::chiffrer(Routeur::myGet('password1'))) && ModelUser::checkNonce(Routeur::myGet('login'))) {
+        if (ModelUser::checkPassword(Routeur::myGet('login'), Security::chiffrer(Routeur::myGet('password'))) && ModelUser::checkNonce(Routeur::myGet('login'))) {
             $_SESSION['login'] = Routeur::myGet('login');
             $user = ModelUser::select(Routeur::myGet('login'));
             if ($user->get('admin') == true) {
