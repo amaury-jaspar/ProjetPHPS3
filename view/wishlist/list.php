@@ -26,7 +26,7 @@
     }
 
     echo '<br>';
-    echo "TOTAL COST : " . $currentWishlist;
+    // echo "TOTAL COST : " . $currentWishlist;
     echo '<br>';
     echo '<br>';
     // echo '<a href="index.php?action=addAll&controller=item">Add all items to the basket</a>';
