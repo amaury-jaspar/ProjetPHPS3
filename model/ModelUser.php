@@ -179,8 +179,11 @@ class ModelUser extends Model {
     }
 
     public function substractMoney($debit) {
-        $amount = $this->get('wallet');
-        $amount -= $debit;
+		echo 'substractMoney';
+		var_dump($this);
+		$amount = $this->get('wallet');
+
+		$amount -= $debit;
         $this->set('wallet', $amount);
 		Model::updateWhere('wallet', $amount);
     }

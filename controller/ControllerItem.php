@@ -274,10 +274,16 @@ class ControllerItem {
 			$sumBasket = $_SESSION['sumBasket'];
 			require_once (File::build_path(array('controller', 'ControllerUser.php')));
 			$user = ModelUser::select($_SESSION['login']);
+
+			echo '<pre>';
+			var_dump($user);
+			echo '</pre>';
+
 			if ($user->get('wallet') >= $sumBasket) {
 				$user->set('wallet', $user->get('wallet') - $sumBasket);
 				$tab_basket = $_SESSION['basket'];
 				unset($_SESSION['basket']);
+
 /*				Si on ne fait pas de trigger dans la BDD
 				foreach($tab_basket as $key => $value) {
 					for($i = 0; $i < $value; $i++) {
@@ -289,6 +295,7 @@ class ControllerItem {
 				setcookie('basket', "", time() - 1);
 				$_SESSION['sumBasket'] = 0;
 				echo '2';
+
 				$user->payBill($user->get('wallet') - $sumBasket);
 				echo '3';
 				$view='bought';

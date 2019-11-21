@@ -95,7 +95,6 @@ class ControllerUser {
         }
     }
 
-
     public static function deleted() {
         $login = Routeur::myGet('login');
         if (Session::is_user(Routeur::myGet('login')) || Session::is_admin()) {
@@ -225,7 +224,8 @@ class ControllerUser {
     }
 
     public function payBill() {
-        Model::substractMoney();
+        echo 'paybill';
+        ModelUser::substractMoney();
     }
 
 //----------------------------------- VALIDATION COMPTE --------------------------------------------------------------------------------------
