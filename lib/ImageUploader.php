@@ -8,21 +8,17 @@
 
         public static function uploadImg() {
 
-            echo '<pre>';
-            var_dump($_FILES['img']);
-            echo '</pre>';
-
             $target_dir = "../images/";
 
             $target_file = $target_dir . basename($_FILES['img']['name']);
             $uploadOk = 1;
             $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
          
-/*
+
             // check if the image file is an actual image or fake image
             if(Routeur::myGet('submit') !== NULL) {
                 echo '1';
-                $check = getimagesize($_FILES['tmp_name']);
+                $check = getimagesize($_FILES['img']['tmp_name']);
                 if($check !== false) {
                     echo "File is an image - " . $check["mime"] . ".";
                     $uploadOk = 1;
@@ -40,7 +36,7 @@
             }
 
             // Check file size
-            if ($_FILES['size'] > 500000) {
+            if ($_FILES['img']['size'] > 500000) {
                 echo "Sorry, your file is too large.";
                 $uploadOk = 0;
             }
@@ -51,7 +47,7 @@
                 echo "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
                 $uploadOk = 0;
             }
-*/
+
 
             // Check if $uploadOk is set to 0 by an error
             if ($uploadOk == 0) {

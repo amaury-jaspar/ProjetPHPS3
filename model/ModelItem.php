@@ -1,7 +1,6 @@
 <?php
 
 require_once (File::build_path(array('model', 'Model.php')));
-require_once (File::build_path(array('lib', 'Security.php')));
 
 class ModelItem extends Model {
 
@@ -14,10 +13,6 @@ class ModelItem extends Model {
 	protected static $object = "item";
 	protected static $primary = "id";
 
-	/**
-	 * Item constructor
-	 * The id and name are required to add the item to the database, the description and price can be added later on
-	 */
     public function __construct($data = NULL) {
         if (!is_null($data)) {
             $this->id = $data['id'];

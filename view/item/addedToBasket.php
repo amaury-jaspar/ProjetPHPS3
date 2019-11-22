@@ -1,8 +1,8 @@
 <?php
 
-    $itemName = htmlspecialchars($item->get('name'));
+    $categoryName = htmlspecialchars($category->get('name'));
 
-    echo 'The item ' . $itemName . ' has been added to the basket ';
+    echo 'The item ' . $categoryName . ' has been added to the basket ';
     echo "<br>";
     echo '<a href="index.php?action=readBasket&controller=item">Do you want to see your basket ?</a>';
     echo "<br>";

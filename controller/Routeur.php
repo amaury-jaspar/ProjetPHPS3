@@ -1,6 +1,5 @@
 <?php
 
-
 // Une fonction qui va servir à convertir facilement le type de méthode que l'on souhaite dans les formulaire
 // Passer de GET à POST facilement
 class Routeur {

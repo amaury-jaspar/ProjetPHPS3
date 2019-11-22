@@ -61,6 +61,8 @@ class ControllerUser {
                 'admin' => 0,
                 'nonce' => Security::generateRandomHex(),
                 'wallet' => 0,
+                'level' => 0,
+                'spend' => 0
             );
             $user = new ModelUser($data);
             $user->save($data);
@@ -153,6 +155,8 @@ class ControllerUser {
                 'mail' => htmlspecialchars(Routeur::myGet('mail')),
                 'admin' => htmlspecialchars(Routeur::myGet('admin')),
                 'nonce' => NULL,
+                'level' => htmlspecialchars(Routeur::myGet('level')),
+                'spend' => htmlspecialchars(Routeur::myGet('spend')),
             );
 			ModelUser::updateByID($data);
 			$view='updated';
@@ -166,7 +170,7 @@ class ControllerUser {
 			$mail = Routeur::myGet('mail');
             $required = "required";
 			$action = "updated";
-			$view='update';
+			$view = 'update';
 			$pagetitle='User\'s creation';
 			require (File::build_path(array("view", "view.php")));
         }
@@ -234,6 +238,26 @@ class ControllerUser {
     public function saveCurrentState($data) {
         echo 'passe ici';
         ModelUser::updateByID($this);
+    }
+
+    public function checkLevel() {
+        if ($this->depense >= 0 && $this->depense < 100) {
+            $level = 1;
+            echo "Felicitation, vous êtes monté de niveau";
+        } else if ($this->depense >= 100 && $this->depense < 1000) {
+            $level = 2;
+            echo "Felicitation, vous êtes monté de niveau";
+        } else if ($this->depense >= 1000 && $this->depense < 10000) {
+            $level = 3;
+            echo "Felicitation, vous êtes monté de niveau";
+        } else if ($this->depense >= 100000 && $this->depense < 1000000) {
+            $level = 4;
+            echo "Felicitation, vous êtes monté de niveau";
+        } else if ($this->depense >= 1000000 && $this->depense < 10000000) {
+            $level = 5;
+        }
+        $this->set('level', $level);
+        $this->saveCurrentState($this);
     }
 
 //----------------------------------- VALIDATION COMPTE --------------------------------------------------------------------------------------

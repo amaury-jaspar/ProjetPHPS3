@@ -3,9 +3,6 @@
 require_once (File::build_path(array('model', 'ModelWishlist.php')));
 require_once (File::build_path(array('lib', 'Session.php')));
 
-/**
- *
- */
 class ControllerWishlist {
 
   protected static $object = 'wishlist';

@@ -10,6 +10,8 @@ class ModelUser extends Model {
 	private $mail;
 	private $admin;
 	private $wallet;
+	private $level;
+	private $spend;
 
 	protected static $object = "user";
 	protected static $primary = "login";
@@ -25,6 +27,8 @@ class ModelUser extends Model {
 			$this->mail = $data['mail'];
 			$this->admin = $data['admin'];
 			$this->wallet = $data['wallet'];
+			$this->level = $data['level'];
+			$this->spend = $data['spend'];
 		}
 	}
 
@@ -78,7 +82,7 @@ class ModelUser extends Model {
 			}
 			die();
 		}
-		if ($answer['nonce'] !== "") {
+		if ($answer['nonce'] !== NULL) {
 			return false;
 		} else {
 			return true;
@@ -106,7 +110,7 @@ class ModelUser extends Model {
 	}
 
 	public static function eraseNonce($login, $nonce) {
-		try {			
+		try {
 			$req_prep = Model::$pdo->prepare("UPDATE user SET nonce = NULL WHERE login = :login AND nonce = :nonce");
 			$values = array (
 				"login" => $login,

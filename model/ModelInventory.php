@@ -2,12 +2,12 @@
 
 require_once (File::build_path(array('model', 'Model.php')));
 
-class ModelWishlist extends Model {
+class ModelInventory extends Model {
 
   private $login_user;
   private $item_id;
 
-  protected static $object = "wishlist";
+  protected static $object = "inventory";
   protected static $primary = "login_user";
 
   public function __construct($data=NULL) {

@@ -235,6 +235,7 @@ class ControllerItem {
 		// On confirme
 		// Ou bien on demande à modifier, ce qui revient à appeler readBasket
 	public static function beforeBuyBasket() {
+		
 		if (Session::is_connected()) { // on vérifie que la personne est connecté
 			ControllerItem::actualizeSumBasket(); // on recalcule la valeur du panier
 			$sumBasket = $_SESSION['sumBasket']; // on récupère la valeur du panier que l'on a placé dans $_SESSION
@@ -244,15 +245,6 @@ class ControllerItem {
 			$moneyBefore = $user->get('wallet'); // on récupère la somme d'argent qu'il possède
 			$moneyAfter = $user->get('wallet') - $sumBasket; // on calcule ce qu'il aura après achat
 			if ($moneyAfter >= 0) { // si l'utilisateur a suffisamment d'argent
-/*
-				foreach($tab_basket as $key => $value) { // on va placer, dans un nouveau tableau, tous les objets construit à partir de leur identifiant
-					$currentBasket[$key] = ModelItem::select($key); // Mais je ne sais plus pourquoi
-				}
-
-				echo '<pre>';
-				var_dump($currentBasket);
-				echo '</pre>';
-*/
 				$_SESSION['basket'] = $tab_basket; // puis on transfère le nouveau tableau vers la Session, pour que l'utilisateur ne puissent plus y toucher
 				$view='checkBasket';
 				$pagetitle='Basket';
@@ -273,6 +265,9 @@ class ControllerItem {
 		}
 	}
 
+
+
+
 /* 1 - En premier lieu, l'utilisateur ne doit pas pouvoir acheter hors connexion
 		On vérifie que l'utilisateur est connecté
 			S'il ne l'est pas, on redirige vers la page de connexion
@@ -289,26 +284,16 @@ class ControllerItem {
 
 	public static function confirmBuyBasket() {
 		if (Session::is_connected()) {
-			$sumBasket = $_SESSION['sumBasket'];
-			require_once (File::build_path(array('controller', 'ControllerUser.php')));
-			$user = ModelUser::select($_SESSION['login']);
-			if ($user->get('wallet') >= $sumBasket) { // si l'utilisateur a suffisamment d'argent
-				$money = $user->get('wallet') - $sumBasket;
-				$user->set('wallet', $money); // on lui retire l'argent de son compte
-				/*
-				$data = array (
-					'login' => $user->get('login'),
-					'lastName' => $user->get('lastname'),
-					'surname' => $user->get('surname'),
-					'password' => $user->get('password1'),
-					'mail' => $user->get('mail'),
-					'admin' => $user->get('admin'),
-					'nonce' => "",
-					'wallet' => $user->get('wallet')
-				);
-				*/
+			$sumBasket = $_SESSION['sumBasket']; // On récupère la somme du panier
+			require_once (File::build_path(array('controller', 'ControllerUser.php'))); // on importe controllerUser
+			$user = ModelUser::select($_SESSION['login']); // on reconstruit l'utilisateur
+			if ($user->get('wallet') >= $sumBasket) { // si l'utilisateur a suffisamment d'argent, on continue
+				$user->set('wallet', $user->get('wallet') - $sumBasket); // on lui retire l'argent de son compte
 				$user->saveCurrentState($user); // et on sauvegarde le nouvel état de l'utilisateur
+				$user->checkLevel();
+				// faire un trigger, si 'after update on depense', faire un if et déterminer le niveau du joueur, puis s'il y a changement de niveau, l'annoncer dans un message 
 				$tab_basket = $_SESSION['basket']; // on prépare un tableau qui sera le panier
+
 //				unset($_SESSION['basket']); // on efface le panier dans la Session
 
 				/*				Si on ne fait pas de trigger dans la BDD
@@ -320,6 +305,9 @@ class ControllerItem {
 */
 //				setcookie('basket', "", time() - 1); // on efface les cookies relatif au panier
 //				$_SESSION['sumBasket'] = 0; // on remet la valeur du panier à zéro
+
+
+
 				$view='bought';
 				$pagetitle='Basket bought';
 				require (File::build_path(array("view", "view.php")));
