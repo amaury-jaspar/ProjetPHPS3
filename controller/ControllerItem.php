@@ -168,6 +168,7 @@ class ControllerItem {
 	}
 
 	public static function addToBasket() {
+		$item = ModelItem::select(Routeur::myGet('id'));
 		if(isset($_COOKIE['basket'])) {
 			$tab_basket = unserialize($_COOKIE['basket']);
 		} else {
@@ -188,6 +189,7 @@ class ControllerItem {
 	public static function resetBasket() {
 		$tab_basket = NULL;
 		setcookie('basket', "", time() - 1);
+		unset($_SESSION['basket']);
 		$_SESSION['sumBasket'] = 0;
 		$view='panier';
 		$pagetitle='Panier';
@@ -233,22 +235,38 @@ class ControllerItem {
 		// On confirme
 		// Ou bien on demande à modifier, ce qui revient à appeler readBasket
 	public static function beforeBuyBasket() {
-		if (isset($_SESSION['login'])) {
-			ControllerItem::actualizeSumBasket();
-			$sumBasket = $_SESSION['sumBasket'];
-			$tab_basket = unserialize($_COOKIE['basket']);
-			require_once (File::build_path(array('controller', 'ControllerUser.php')));
-			$user = ModelUser::select($_SESSION['login']);
-			$moneyBefore = $user->get('wallet');
-			$moneyAfter = $user->get('wallet') - $sumBasket;
-			foreach($tab_basket as $key => $value) {
-				$currentBasket[$key] = ModelItem::select($key);
+		if (Session::is_connected()) { // on vérifie que la personne est connecté
+			ControllerItem::actualizeSumBasket(); // on recalcule la valeur du panier
+			$sumBasket = $_SESSION['sumBasket']; // on récupère la valeur du panier que l'on a placé dans $_SESSION
+			$tab_basket = unserialize($_COOKIE['basket']); // on récupère le panier qui se trouve dans COOKIE
+			require_once (File::build_path(array('controller', 'ControllerUser.php'))); // On appelle le controller de user
+			$user = ModelUser::select($_SESSION['login']); // pour construire l'utilisateur en fonction de la session en cours
+			$moneyBefore = $user->get('wallet'); // on récupère la somme d'argent qu'il possède
+			$moneyAfter = $user->get('wallet') - $sumBasket; // on calcule ce qu'il aura après achat
+			if ($moneyAfter >= 0) { // si l'utilisateur a suffisamment d'argent
+/*
+				foreach($tab_basket as $key => $value) { // on va placer, dans un nouveau tableau, tous les objets construit à partir de leur identifiant
+					$currentBasket[$key] = ModelItem::select($key); // Mais je ne sais plus pourquoi
+				}
+
+				echo '<pre>';
+				var_dump($currentBasket);
+				echo '</pre>';
+*/
+				$_SESSION['basket'] = $tab_basket; // puis on transfère le nouveau tableau vers la Session, pour que l'utilisateur ne puissent plus y toucher
+				$view='checkBasket';
+				$pagetitle='Basket';
+				require (File::build_path(array("view", "view.php")));
+			} else {
+				static::$object = "user";
+				echo "ALERTE : vous n'avez pas suffisament d'argent";
+				$view='profil';
+				$pagetitle='profil';
+				require (File::build_path(array("view", "view.php")));
 			}
-			$_SESSION['basket'] = $currentBasket;
-			$view='checkBasket';
-			$pagetitle='Basket';
-			require (File::build_path(array("view", "view.php")));
 		} else {
+			static::$object = "user";
+			echo "ALERTE : Vous devez être connecté pour acheter le contenu de votre panier";
 			$view='connect';
 			$pagetitle='connection';
 			require (File::build_path(array("view", "view.php")));
@@ -270,41 +288,46 @@ class ControllerItem {
 */
 
 	public static function confirmBuyBasket() {
-		if (isset($_SESSION['login'])) {
+		if (Session::is_connected()) {
 			$sumBasket = $_SESSION['sumBasket'];
 			require_once (File::build_path(array('controller', 'ControllerUser.php')));
 			$user = ModelUser::select($_SESSION['login']);
+			if ($user->get('wallet') >= $sumBasket) { // si l'utilisateur a suffisamment d'argent
+				$money = $user->get('wallet') - $sumBasket;
+				$user->set('wallet', $money); // on lui retire l'argent de son compte
+				/*
+				$data = array (
+					'login' => $user->get('login'),
+					'lastName' => $user->get('lastname'),
+					'surname' => $user->get('surname'),
+					'password' => $user->get('password1'),
+					'mail' => $user->get('mail'),
+					'admin' => $user->get('admin'),
+					'nonce' => "",
+					'wallet' => $user->get('wallet')
+				);
+				*/
+				$user->saveCurrentState($user); // et on sauvegarde le nouvel état de l'utilisateur
+				$tab_basket = $_SESSION['basket']; // on prépare un tableau qui sera le panier
+//				unset($_SESSION['basket']); // on efface le panier dans la Session
 
-			echo '<pre>';
-			var_dump($user);
-			echo '</pre>';
-
-			if ($user->get('wallet') >= $sumBasket) {
-				$user->set('wallet', $user->get('wallet') - $sumBasket);
-				$tab_basket = $_SESSION['basket'];
-				unset($_SESSION['basket']);
-
-/*				Si on ne fait pas de trigger dans la BDD
+				/*				Si on ne fait pas de trigger dans la BDD
 				foreach($tab_basket as $key => $value) {
 					for($i = 0; $i < $value; $i++) {
 						ControllerInventory::addToInventory($id, $user->getLogin());
 					}
 				}
 */
-				echo '1';
-				setcookie('basket', "", time() - 1);
-				$_SESSION['sumBasket'] = 0;
-				echo '2';
-
-				$user->payBill($user->get('wallet') - $sumBasket);
-				echo '3';
+//				setcookie('basket', "", time() - 1); // on efface les cookies relatif au panier
+//				$_SESSION['sumBasket'] = 0; // on remet la valeur du panier à zéro
 				$view='bought';
 				$pagetitle='Basket bought';
 				require (File::build_path(array("view", "view.php")));
 			} else {
 				echo "You do not have enought money, you should add money to your account first";
-				$view='basket';
-				$pagetitle='Basket';
+				static::$object = "user";
+				$view='profil';
+				$pagetitle='profile';
 				require (File::build_path(array("view", "view.php")));
 			}
 		} else {

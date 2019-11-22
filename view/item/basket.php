@@ -7,14 +7,14 @@
     foreach($currentBasket as $item) {
 
         $itemName = htmlspecialchars($item->get('name'));
-        $itemQuantity = htmlspecialchars($tab_basket[$item->getId()]);
+        $itemQuantity = htmlspecialchars($tab_basket[$item->get('id')]);
         $itemIdURL = rawurlencode($item->get('id'));
         $itemPriceURL = rawurlencode($item->get('price'));
 
         echo "<div style='border: 1px solid black;text-align:left;padding:1em;margin:1em;'>";
 
         echo "<h6>" . $itemName . "</h6>";
-//        echo '<img src="../image/produit/'. $item->getName() .'.jpg" alt="">';
+        echo '<img src="../image/produit/'. $itemName .'.jpg" alt="">';
         echo "quantity : ". $itemQuantity;
         echo '<br>';
         echo "Transfert item from basket to wishlist: ";

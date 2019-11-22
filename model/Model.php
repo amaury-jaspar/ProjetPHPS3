@@ -118,19 +118,17 @@ class Model {
 		$primary_key = static::$primary;
 		$table_name = static::$object;
 		$SET = "SET ";
-		foreach ($data as $cle => $valeur) {
+		$values = array();
+		foreach ($data as $cle => $value) {
 			if ($cle != $primary_key) {
-				$SET = $SET . "$cle=:$cle, ";
+				$SET = $SET . "$cle = :$cle, ";
 			}
+			$values[$cle] = $value;
 		}
 		$SET = rtrim($SET, ", ");
+		$sql = "UPDATE $table_name $SET WHERE $primary_key = :$primary_key";
 		try {
-			$req_prep = Model::$pdo->prepare("UPDATE $table_name $SET WHERE $primary_key = :$primary_key");
-			$values = array();
-			foreach ($data as $cle => $valeur) {
-					$maclef = ":" . $cle;
-					$values[$maclef] = $valeur;
-			}
+			$req_prep = Model::$pdo->prepare($sql);
 			$req_prep->execute($values);
 		} catch (PDOException $e) {
 			if(Conf::getDebug()) {
@@ -145,16 +143,12 @@ class Model {
 	public static function updateWhere($attribut, $value) {
 		$primary_key = static::$primary;
 		$table_name = static::$object;
-
 		try {
-
-			$req_prep = Model::$pdo->prepare("UPDATE $table_name SET :attribut = :value WHERE $primary_key =: $primary_key");
-
+			$req_prep = Model::$pdo->prepare("UPDATE $table_name SET :attribut = :value WHERE $primary_key = :$primary_key");
 			$values = array(
 				'values' => $value,
 				'attribut' => $attribut
 			);
-
 			$req_prep->execute($values);
 		} catch (PDOException $e) {
 			if(Conf::getDebug()) {
@@ -169,13 +163,18 @@ class Model {
 	public function save($data) {
 		$primary_key = static::$primary;
 		$table_name = static::$object;
+		$INSERINTO = "INSERT INTO " . $table_name . "(";
 		$VALUES = "VALUES (";
 		foreach ($data as $cle => $valeur) {
-				$VALUES = $VALUES . ":" . $cle . ", ";
+			$INSERINTO = $INSERINTO . $cle . ", ";
+			$VALUES = $VALUES . ":" . $cle . ", ";
 		}
+		$INSERINTO = rtrim($INSERINTO, ", ");
+		$INSERINTO = $INSERINTO . ")";
 		$VALUES = rtrim($VALUES, ", ");
 		$VALUES = $VALUES . ")";
-		$sql = 'INSERT INTO ' . $table_name . " " . $VALUES;
+		$sql = $INSERINTO . " " . $VALUES;
+		echo $sql;
 		try {
 			$req_prep = Model::$pdo->prepare($sql);
 			$values = array();
@@ -194,10 +193,6 @@ class Model {
 		}
 	}
 
-	/*
-	$e->getCode() == 23000
-	*/
-	
 }
 
 Model::Init();

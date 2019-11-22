@@ -33,58 +33,10 @@ class ModelUser extends Model {
 	}
 
 	public function set($nom_attribut, $valeur) {
-		$this->nom_attribut = $valeur;
+		$this->$nom_attribut = $valeur;
 	}
 
-	public function getLogin() {
-		return $this->login;
-	}
-
-	public function setLogin($login) {
-		$this->login = $login;
-	}
-
-	public function getLastName() {
-		return $this->lastName;
-	}
-
-	public function setLastName($lastName) {
-		$this->lastName = $lastName;
-	}
-
-	public function getSurname() {
-		return $this->surname;
-	}
-
-	public function setSurname($surname) {
-		$this->surname = $surname;
-	}
-
-	public function getMail() {
-		return $this->mail;
-	}
-
-	public function setMail($mail) {
-		$this->mail = $mail;
-	}
-
-    public function getAdmin() {
-        return $this->admin;
-    }
-
-    public function setAdmin($admin) {
-        $this->admin = $admin;
-    }
-
-    public function getWallet() {
-        return $this->wallet;
-    }
-
-    public function setWallet($wallet) {
-        $this->wallet = $wallet;
-    }
-
-    public static function checkPassword($login, $mot_de_passe_chiffre) {
+	public static function checkPassword($login, $mot_de_passe_chiffre) {
 		$primary_key = static::$primary;
 		$table_name = static::$object;
 		try {
@@ -170,7 +122,7 @@ class ModelUser extends Model {
 			die();
 		}
 	}
-
+/*
     public function addMoney($credit) {
         $amount = $this->get('wallet');
         $amount += $credit;
@@ -187,8 +139,7 @@ class ModelUser extends Model {
         $this->set('wallet', $amount);
 		Model::updateWhere('wallet', $amount);
     }
-
-
+*/
 
 }
 

@@ -33,43 +33,7 @@ class ModelItem extends Model {
 	}
 
 	public function set($nom_attribut, $valeur) {
-		$this->nom_attribut = $valeur;
-	}
-
-	public function getID() {
-		return $this->id;
-	}
-
-	public function getName() {
-		return $this->name;
-	}
-
-	public function getPrice() {
-		return $this->price;
-	}
-
-	public function getDescription() {
-		return $this->description;
-	}
-
-	public function setName($name) {
-		$this->name = $name;
-	}
-
-	public function setPrice($price) {
-		$this->name = $price;
-	}
-
-	public function setDescription($description) {
-		$this->description = $description;
-	}
-
-	public function getCategory() {
-		return $this->category;
-	}
-
-	public function setCategory($category) {
-		$this->category = $category;
+		$this->$nom_attribut = $valeur;
 	}
 
 	// utile à la pagination de article afin de compter tous les produits qui sont à vendre

@@ -121,6 +121,7 @@ class ControllerUser {
             $lastName = htmlspecialchars($user->get('lastName'));
             $surname = htmlspecialchars($user->get('surname'));
             $mail = htmlspecialchars($user->get('mail'));
+            $admin = htmlspecialchars($user->get('admin'));
             $password1 = "";
             $password2 = "";
             $required = "readonly";
@@ -150,8 +151,8 @@ class ControllerUser {
 				'surname' => htmlspecialchars(Routeur::myGet('surname')),
 				'password' => Security::chiffrer(Routeur::myGet('password1')),
                 'mail' => htmlspecialchars(Routeur::myGet('mail')),
-                'admin' => $admin,
-                'nonce' => "",
+                'admin' => htmlspecialchars(Routeur::myGet('admin')),
+                'nonce' => NULL,
             );
 			ModelUser::updateByID($data);
 			$view='updated';
@@ -223,9 +224,16 @@ class ControllerUser {
         }
     }
 
+/*
     public function payBill() {
         echo 'paybill';
         ModelUser::substractMoney();
+    }
+*/
+
+    public function saveCurrentState($data) {
+        echo 'passe ici';
+        ModelUser::updateByID($this);
     }
 
 //----------------------------------- VALIDATION COMPTE --------------------------------------------------------------------------------------
