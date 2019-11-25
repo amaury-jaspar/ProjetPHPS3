@@ -31,16 +31,34 @@ class ControllerItem {
 	}
 
 	public static function create() {
-		$id = NULL;
-		$name = "";
-		$price = "";
-		$description = "";
-		$category = "";
-		$required = "required";
-		$action = "created";
-		$view='update';
-		$pagetitle='Create Item';
-		require_once (File::build_path(array("view", "view.php")));
+		if (Session::is_connected()) {
+			if (Session::is_admin()) {
+				if (Conf::getDebug() == True) { $method = "get"; } else { $method = "post";}
+				$id = NULL;
+				$name = "";
+				$price = "";
+				$description = "";
+				$category = "";
+				$required = "required";
+				$action = "created";
+				$view='update';
+				$pagetitle='Create Item';
+				require_once (File::build_path(array("view", "view.php")));
+			} else {
+				static::$object = "home";
+				echo "ALERTE : Vous devez être admin pour créer un objet";
+				$view='marketplace';
+				$pagetitle='home';
+				require (File::build_path(array("view", "view.php")));
+			}
+		} else {
+			static::$object = "user";
+			echo "ALERTE : Vous devez être connecté et administrateur pour créer un objet";
+			$view='connect';
+			$pagetitle='connection';
+			require (File::build_path(array("view", "view.php")));
+		}
+
 	}
 
 	public static function created() {
@@ -75,6 +93,7 @@ class ControllerItem {
 	}
 
 	public static function update() {
+		if (Conf::getDebug() == True) { $method = "get"; } else { $method = "post";}
 		$id = Routeur::myGet('id');
 		$item = ModelItem::select($id);
 		$name = $item->get('name');

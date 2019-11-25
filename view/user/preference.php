@@ -1,5 +1,5 @@
 
-    <form method="get" action="personalisation.php">
+<form method=<?php echo $method ?>  action="personalisation.php">
     <fieldset>
         <legend> Preference :
             <p>

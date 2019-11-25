@@ -15,15 +15,27 @@ class Routeur {
     }
 }
 
-if (Routeur::myGet('controller') !== NULL) { 
+$tab_controller = array (
+    "administration",
+    "category",
+    "home",
+    "inventory",
+    "item",
+    "test",
+    "user",
+    "wishlist"
+);
+
+if (Routeur::myGet('controller') !== NULL /*&& in_array($tab_controller, Routeur::myGet('controller'))*/) {
     $controller = Routeur::myGet('controller');
 } else {
     $controller = 'home';
 }
 
 $controller_class = "Controller" . ucfirst($controller);
-
 $array = array("controller", $controller_class);
+
+
 
 require_once (File::build_path($array) . ".php");
 

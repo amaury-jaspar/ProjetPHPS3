@@ -1,7 +1,7 @@
 <?php
 
 echo <<< EOT
-    <form method="get" action="index.php?">
+    <form method=$method action="index.php?">
         <fieldset>
             <legend>Mon formulaire :
                 <p>

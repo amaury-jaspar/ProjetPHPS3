@@ -37,6 +37,7 @@ class ControllerUser {
     }
 
     public static function create() {
+        if (Conf::getDebug() == True) { $method = "get"; } else { $method = "post";}
         $login = "";
         $lastName = "";
         $surname = "";
@@ -118,6 +119,7 @@ class ControllerUser {
     */
 	public static function update() {
         if (Session::is_user(Routeur::myGet('login')) || Session::is_admin()) {
+            if (Conf::getDebug() == True) { $method = "get"; } else { $method = "post";}
             $user = ModelUser::select(Routeur::myGet('login'));
             $login = htmlspecialchars($user->get('login'));
             $lastName = htmlspecialchars($user->get('lastName'));
@@ -163,6 +165,7 @@ class ControllerUser {
 			$pagetitle='Modication of a user finished';
 			require (File::build_path(array("view", "view.php")));
 		} else {
+            if (Conf::getDebug() == True) { $method = "get"; } else { $method = "post";}
 			echo "The passwords don't match, please retry";
 			$login = Routeur::myGet('login');
 			$lastName = Routeur::myGet('lastname');
@@ -182,6 +185,7 @@ class ControllerUser {
     }
 
     public static function connect() {
+        if (Conf::getDebug() == True) { $method = "get"; } else { $method = "post";}
         $view='connect';
         $pagetitle='connection';
         require (File::build_path(array("view", "view.php")));

@@ -28,6 +28,7 @@ class ControllerCategory {
 	}
 
 	public static function create() {
+		if (Conf::getDebug() == True) { $method = "get"; } else { $method = "post";}
 		$id = NULL;
 		$name = "";
         $description = "";
@@ -63,6 +64,7 @@ class ControllerCategory {
 	}
 
 	public static function update() {
+		if (Conf::getDebug() == True) { $method = "get"; } else { $method = "post";}
 		$id = Routeur::myGet('id');
 		$category = ModelCategory::select($id);
 		$name = $category->get('name');
