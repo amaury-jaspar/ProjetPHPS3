@@ -86,7 +86,6 @@ class ControllerItem {
 		$id = Routeur::myGet('id');
 		ModelItem::deleteById($id);
 		$tab_item = ModelItem::selectAll();
-		$controller= static::$object;
 		$view='deleted';
 		$pagetitle='Delete Item';
 		require_once (File::build_path(array("view", "view.php")));
@@ -114,6 +113,7 @@ class ControllerItem {
 			'price' => Routeur::myGet('price')
 		);
 		ModelItem::updateByID($data);
+		if(!empty($_FILES['img'])) { ImageUploader::uploadImg();}
 		$tab_item = ModelItem::selectAll();
 		$view='updated';
 		$pagetitle='Item updated';
@@ -216,6 +216,7 @@ class ControllerItem {
 	}
 
 	public static function deleteFromBasket() {
+		$item = ModelItem::select(Routeur::myGet('id'));
 		if(isset($_COOKIE['basket'])) {
 			$tab_basket = unserialize($_COOKIE['basket']);
 		} else {
@@ -233,20 +234,17 @@ class ControllerItem {
 		setcookie('basket', serialize($tab_basket), time() + (60 * 60 * 24));
 		ControllerItem::actualizeSumBasket();
 
-		// code de readFromBasket
-/*		$sumBasket = $_SESSION['sumBasket'];
+		$sumBasket = $_SESSION['sumBasket'];
 		$tab_basket = unserialize($_COOKIE['basket']);
 		foreach($tab_basket as $key => $value) {
 			if ($value > 0) {
 			$currentBasket[$key] = ModelItem::select($key);
 			}
 		}
-*/
-		ControllerItem::readBasket();
 
-//		$view='basket';
-//		$pagetitle='Basket';
-//		require (File::build_path(array("view", "view.php")));
+		$view='DeletedFromBasket';
+		$pagetitle='Removed from basket';
+		require (File::build_path(array("view", "view.php")));
 	}
 
 		// Envoie vers une page qui permet une dernière visualisation du panier avant de confirmer l'achat
@@ -315,7 +313,7 @@ class ControllerItem {
 
 //				unset($_SESSION['basket']); // on efface le panier dans la Session
 
-				/*				Si on ne fait pas de trigger dans la BDD
+/*				Si on ne fait pas de trigger dans la BDD
 				foreach($tab_basket as $key => $value) {
 					for($i = 0; $i < $value; $i++) {
 						ControllerInventory::addToInventory($id, $user->getLogin());
@@ -326,6 +324,20 @@ class ControllerItem {
 //				$_SESSION['sumBasket'] = 0; // on remet la valeur du panier à zéro
 
 
+/*		// la partie qui permet de sauvegarder une commande en autant de tuple dans la relation command
+				require_once (File::build_path(array('controller', 'ControllerCommand.php'))); // on importe controllerCommand
+				foreach($tab_basket as $item_id => $quantity) {
+					// Et pour chaque item, on va créer un tuple dans la 
+					$data = array (
+						'login_user' => $user->get('login'),
+						'id_item' => $item_id,
+						'quantity_item' => $quantity
+					);
+					$command = ControllerCommand::create($data);
+				}
+*/
+
+				// Pour chaque item, il faut incrémenter l'attribut nbAchat 
 
 				$view='bought';
 				$pagetitle='Basket bought';
