@@ -9,7 +9,7 @@ class ControllerWishlist {
 
   public static function read() {
     $login_user = $_SESSION['login'];
-    $tab_item = ModelWishlist::selectWhere('login_user', $login_user);
+    $tab_item = ModelWishlist::selectItems('login_user', $login_user);
     $view = 'list';
     $pagetitle = 'Wishlist';
     require(File::build_path(array('view','view.php')));

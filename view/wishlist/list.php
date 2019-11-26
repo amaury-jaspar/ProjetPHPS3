@@ -1,21 +1,30 @@
 <?php
 
     // $sumBasket = htmlspecialchars($_SESSION['sumBasket']);
+    require_once(File::build_path(array('model','ModelItem.php')));
 
     echo "<h1>YOUR WISHLIST</h1>";
 
-    foreach($tab_item as $item) {
+    $tab_wishes = array();
+    foreach ($tab_item as $tuple) {
+      $current_item = ModelItem::select($tuple['item_id']);
+      $tab_wishes[] = $current_item;
+    }
+    // print_r($tab_wishes);
+
+
+    foreach($tab_wishes as $item) {
 
         $itemName = htmlspecialchars($item->get('name'));
-        $itemQuantity = htmlspecialchars($tab_basket[$item->getId()]);
+        // $itemQuantity = htmlspecialchars($tab_basket[$item->getId()]);
         $itemIdURL = rawurlencode($item->get('id'));
         $itemPriceURL = rawurlencode($item->get('price'));
 
         echo "<div style='border: 1px solid black;text-align:left;padding:1em;margin:1em;'>";
 
         echo "<h6>" . $itemName . "</h6>";
-//        echo '<img src="../image/produit/'. $item->getName() .'.jpg" alt="">';
-        echo "quantity : ". $itemQuantity;
+       // echo '<img src="../image/produit/'. $item->getName() .'.jpg" alt="">';
+        // echo "quantity : ". $itemQuantity;
         echo '<br>';
         echo "Transfert item from wishlist to basket: ";
         echo '<br>';
