@@ -5,7 +5,7 @@ $userLastname = htmlspecialchars($user->get('lastName'));
 $userName = htmlspecialchars($user->get('surname'));
 $userMail = htmlspecialchars($user->get('mail'));
 $userAdmin = htmlspecialchars($user->get('admin'));
-$userIdURL = rawurlencode($user->getLogin());
+$userIdURL = rawurlencode($user->get('login'));
 
     echo "login : " . $userLogin;
     echo '<br>';

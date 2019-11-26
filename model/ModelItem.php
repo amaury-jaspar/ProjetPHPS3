@@ -33,21 +33,21 @@ class ModelItem extends Model {
 
 	// utile à la pagination de article afin de compter tous les produits qui sont à vendre
     public static function countCatalog() {
-		$primary_key = static::$primary;
-		$table_name = static::$object;
-		try {
-			$rep = Model::$pdo->query("SELECT COUNT($primary_key) as nb_Id FROM $table_name WHERE catalog = 1");
-			$answer = $rep->fetch(PDO::FETCH_ASSOC);
-		} catch (PDOException $e) {
-			if(Conf::getDebug()) {
-				echo $e->getMessage();
-			} else {
-				echo 'Une erreur est survenue <a href="index.php?action=buildFrontPage&controller=home"> retour à la page d\'acceuil </a>';
+			$primary_key = static::$primary;
+			$table_name = static::$object;
+			try {
+				$rep = Model::$pdo->query("SELECT COUNT($primary_key) as nb_Id FROM $table_name WHERE catalog = 1");
+				$answer = $rep->fetch(PDO::FETCH_ASSOC);
+			} catch (PDOException $e) {
+				if(Conf::getDebug()) {
+					echo $e->getMessage();
+				} else {
+					echo 'Une erreur est survenue <a href="index.php?action=buildFrontPage&controller=home"> retour à la page d\'acceuil </a>';
+				}
+				die();
 			}
-			die();
+			return $answer['nb_Id'];
 		}
-		return $answer['nb_Id'];
-	}
 
     public static function countCatalogCategory($condition) {
         $primary_key = static::$primary;
