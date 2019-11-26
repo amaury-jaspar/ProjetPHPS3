@@ -58,7 +58,6 @@ class ControllerItem {
 			$pagetitle='connection';
 			require (File::build_path(array("view", "view.php")));
 		}
-
 	}
 
 	public static function created() {
@@ -320,6 +319,8 @@ class ControllerItem {
 					}
 				}
 */
+
+				// n efface 
 //				setcookie('basket', "", time() - 1); // on efface les cookies relatif au panier
 //				$_SESSION['sumBasket'] = 0; // on remet la valeur du panier à zéro
 

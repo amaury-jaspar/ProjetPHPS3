@@ -7,7 +7,7 @@ class ControllerHome {
 	protected static $object = "home";
 
     public static function buildFrontPage() {
-
+        
         $tab_category = array(
             "alchimist" => "Welcome to the Alchimist", 
             "tavern"  => "Welcome to the Tavern",
@@ -18,7 +18,6 @@ class ControllerHome {
         $view='marketplace';
         $pagetitle='frontpage';
         require (File::build_path(array("view", "view.php")));
-
     }
 
 }

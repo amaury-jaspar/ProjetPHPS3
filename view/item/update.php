@@ -15,7 +15,6 @@ echo <<< EOT
                     <input type="text" placeholder="" name="description" id="description_id" value="$description"/>
                     <br>
 
-
                 <label for="id_categorisation">Add this item to a category</label><br/>
                     <select name="category" id="id_categorisation">
                         <option value="black-smith">blacksmith</option>
@@ -34,10 +33,8 @@ echo <<< EOT
                      </label>
                      </p>
 
-                     <!-- <label for="fileToUpload">Select image to upload :</label> -->
-                     <!-- <input type="file" value="Upload Image" name="fileToUpload" accept="image/png, image/jpeg" id="fileToUpload"/> -->
-
-                     <input type="file" name="img"/>
+                     <label for="fileToUpload">Select image to upload :</label>
+                     <input type="file" value="Upload Image" name="img" accept="image/png, image/jpeg" id="fileToUpload"/>
 
                      <br>
                     <input type='hidden' name='id' value=$id>
