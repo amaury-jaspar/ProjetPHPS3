@@ -1,7 +1,8 @@
 <?php
 
 require_once (File::build_path(array('model', 'ModelCategory.php')));
-	
+require_once (File::build_path(array('lib', 'ImageUploader.php')));
+
 class ControllerCategory {
 
 	protected static $object = "category";
@@ -45,6 +46,8 @@ class ControllerCategory {
 			'name' => Routeur::myGet('name'),
 			'description' => Routeur::myGet('description')
 		);
+		var_dump($_FILES);
+		if(!empty($_FILES['img'])) { ImageUploader::uploadImg();}
 		$category = new ModelCategory($data);
 		$category->save($data);
 		$tab_category = ModelCategory::selectAll();

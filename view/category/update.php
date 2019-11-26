@@ -1,8 +1,8 @@
 <?php
 
 echo <<< EOT
-    <form method=$method action="index.php" enctype="multipart/form-data">
-    <legend> Create / Update
+    <form method="post" action="index.php" enctype="multipart/form-data">
+    <legend> Update Category
         <fieldset>
                 <p>
 
