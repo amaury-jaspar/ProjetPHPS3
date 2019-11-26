@@ -1,5 +1,6 @@
 <h1>OUR CATALOG</h1>
 
+
 <div class="row">
     <form method="get" action="index.php?" class="col s12">
         <div class="row" id="test">
@@ -7,7 +8,7 @@
                     <input type='hidden' name='action' value='paging'>
                     <input type='hidden' name='controller' value='item'>
                     <select id="select" name="condition">
-                        <option id="select" value="" disabled selected>Got to another shop</option>
+                        <option id="select" value="" disabled selected>Tri : All shop</option>
                         <option value="alchimist">Tri : Alchimist</option>
                         <option value="tavern">Tri : Tavern</option>
                         <option value="bookstore">Tri : Bookstore</option>
@@ -32,9 +33,11 @@ $itemIdURL = rawurldecode($item->get('id'));
 $itemIdHTML = htmlspecialchars($item->get('id'));
 $itemNameHTML = htmlspecialchars($item->get('name'));
 
-echo '<div >';
-echo '<p><a href="index.php?controller=item&action=read&id='.$itemIdURL.'">'.$itemNameHTML.'</a>.</p>';
-echo '<img src="../image/produit/'. $itemNameHTML .'.jpg" alt="">';
+echo "<div style='border: 1px solid black;text-align:left;padding:1em;margin:1em;'>";
+
+    echo '<p><a href="index.php?controller=item&action=read&id='.$itemIdURL.'">'.$itemNameHTML.'</a>.</p>';
+    echo '<img class="responsive-img" width="200" height="200" src="../images/'.$itemNameHTML.'.png" alt="">';
+
 echo "</div>";
 
 }

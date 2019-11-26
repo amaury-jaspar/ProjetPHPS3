@@ -9,6 +9,7 @@ class ModelItem extends Model {
 	private $price;
 	private $description;
 	private $category;
+	private $catalog;
 
 	protected static $object = "item";
 	protected static $primary = "id";
@@ -19,7 +20,8 @@ class ModelItem extends Model {
             $this->name = $data['name'];
             $this->price = $$data['price'];
             $this->description = $data['description'];
-            $this->category = $data['category'];
+			$this->category = $data['category'];
+			$this->catalog = $data['catalog'];
         }
     }
 

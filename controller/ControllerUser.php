@@ -116,6 +116,7 @@ class ControllerUser {
 	public static function update() {
         if (Session::is_user(Routeur::myGet('login')) || Session::is_admin()) {
             if (Conf::getDebug() == True) { $method = "get"; } else { $method = "post";}
+            if(Session::is_admin()) { $checked = "checked=\"checked\""; } else { $checked = NULL;}
             $user = ModelUser::select(Routeur::myGet('login'));
             $login = htmlspecialchars($user->get('login'));
             $lastName = htmlspecialchars($user->get('lastName'));
@@ -151,7 +152,7 @@ class ControllerUser {
 				'surname' => htmlspecialchars(Routeur::myGet('surname')),
 				'password' => Security::chiffrer(Routeur::myGet('password1')),
                 'mail' => htmlspecialchars(Routeur::myGet('mail')),
-                'admin' => htmlspecialchars(Routeur::myGet('admin')),
+                'admin' => $admin,
                 'nonce' => NULL,
                 'level' => htmlspecialchars(Routeur::myGet('level')),
                 'spend' => htmlspecialchars(Routeur::myGet('spend')),

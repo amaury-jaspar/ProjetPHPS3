@@ -28,7 +28,7 @@ echo <<< EOT
 
                      <p>
                      <label for="catalog_id">
-                         <input type="checkbox" name="catalog" id="catalog_id" value="1"/>
+                         <input type="checkbox" $checked name="catalog" id="catalog_id" value="1"/>
                          <span>Does this item have to be in front sale ?</span>
                      </label>
                      </p>

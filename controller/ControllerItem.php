@@ -92,6 +92,7 @@ class ControllerItem {
 		if (Conf::getDebug() == True) { $method = "get"; } else { $method = "post";}
 		$id = Routeur::myGet('id');
 		$item = ModelItem::select($id);
+		if($item->get('catalog') == 1) { $checked = "checked=\"checked\""; } else { $checked = NULL;}
 		$name = $item->get('name');
 		$price = $item->get('price');
 		$description = $item->get('description');
@@ -107,10 +108,11 @@ class ControllerItem {
 			'id' => Routeur::myGet('id'),
 			'name' => Routeur::myGet('name'),
 			'description' => Routeur::myGet('description'),
-			'price' => Routeur::myGet('price')
+			'price' => Routeur::myGet('price'),
+			'catalog' => Routeur::myGet('catalog')
 		);
 		ModelItem::updateByID($data);
-		if(!empty($_FILES['img'])) { ImageUploader::uploadImg();}
+//		if(!empty($_FILES['img']) &&  ) { ImageUploader::uploadImg();}
 		$tab_item = ModelItem::selectAll();
 		$view='updated';
 		$pagetitle='Item updated';

@@ -22,13 +22,13 @@ echo <<< EOT
                     <br>
                     <label for="mail_id">Mail</label>
                     <input type="text" placeholder="" name="mail" id="mail_id" value="$mail" required>
-                    <br>                
+                    <br>
 EOT;
                     if (Session::is_admin() && $action == 'updated') {
 echo <<< EOT
                     <p>
                     <label for="admin_id">
-                        <input type="checkbox" name="admin" id="admin_id"/>
+                        <input type="checkbox" value=$admin" $checked name="admin" id="admin_id"/>
                         <span>Administrator ?</span>
                     </label>
                     </p>

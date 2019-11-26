@@ -7,22 +7,17 @@ $userMail = htmlspecialchars($user->get('mail'));
 $userAdmin = htmlspecialchars($user->get('admin'));
 $userIdURL = rawurlencode($user->get('login'));
 
-    echo "login : " . $userLogin;
-    echo '<br>';
-    echo "last name : " . $userLastname;
-    echo '<br>';
-    echo "surname : " . $userName;
-    echo '<br>';
-    echo "mail : " . $userMail;
-    echo '<br>';
-    echo "is admin ? : " . $userAdmin;
+
+    echo "<div>login : " . $userLogin."</div>";
+    echo "<div>last name : " . $userLastname."</div>";
+    echo "<div>surname : " . $userName."</div>";
+    echo "<div>mail : " . $userMail."</div>";
+    echo "<div>is admin ? : " . $userAdmin."</div>";
 
 
     if (Session::is_user($user->get('login'))  || Session::is_admin()) {
-        echo '<br>';
-        echo '<a href="index.php?controller=user&action=delete&login=' . $userIdURL . ' ">Delete this user from DataBase</a>';
-        echo '<br>';
-        echo '<a href="index.php?controller=user&action=update&login=' . $userIdURL . ' ">Modificate the data of this user</a>';
+        echo '<div><a href="index.php?controller=user&action=delete&login=' . $userIdURL . ' ">Delete this user from DataBase</a></div>';
+        echo '<div><a href="index.php?controller=user&action=update&login=' . $userIdURL . ' ">Modificate the data of this user</a></div>';
     }
 
 ?>
