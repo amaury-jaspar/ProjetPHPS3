@@ -13,9 +13,7 @@ class ControllerItem {
 		$id = htmlspecialchars(Routeur::myGet('id'));
 		$item = ModelItem::select($id);
 		if ($item == false) {
-			$view='error';
-            $pagetitle='Error page';
-			require_once (File::build_path(array("view", "view.php")));
+			self::error();
 		} else {
             $view='detail';
 			$pagetitle='Detail item';
@@ -188,10 +186,9 @@ class ControllerItem {
 
 	public static function addToBasket() {
 		$item = ModelItem::select(Routeur::myGet('id'));
+        $tab_basket = NULL;
 		if(isset($_COOKIE['basket'])) {
 			$tab_basket = unserialize($_COOKIE['basket']);
-		} else {
-			$tab_basket;
 		}
 		if(isset($tab_basket[Routeur::myGet('id')])) {
 			$tab_basket[Routeur::myGet('id')] += 1;
@@ -220,9 +217,7 @@ class ControllerItem {
 		if(isset($_COOKIE['basket'])) {
 			$tab_basket = unserialize($_COOKIE['basket']);
 		} else {
-			$view='error';
-			$pagetitle='Error';
-			require (File::build_path(array("view", "view.php")));
+			self::error();
 		}
 		if(isset($tab_basket[Routeur::myGet('id')])) {
 			$tab_basket[Routeur::myGet('id')] -= 1;
@@ -252,7 +247,7 @@ class ControllerItem {
 		// On confirme
 		// Ou bien on demande à modifier, ce qui revient à appeler readBasket
 	public static function beforeBuyBasket() {
-		
+
 		if (Session::is_connected()) { // on vérifie que la personne est connecté
 			ControllerItem::actualizeSumBasket(); // on recalcule la valeur du panier
 			$sumBasket = $_SESSION['sumBasket']; // on récupère la valeur du panier que l'on a placé dans $_SESSION
@@ -308,7 +303,7 @@ class ControllerItem {
 				$user->set('wallet', $user->get('wallet') - $sumBasket); // on lui retire l'argent de son compte
 				$user->saveCurrentState($user); // et on sauvegarde le nouvel état de l'utilisateur
 				$user->checkLevel();
-				// faire un trigger, si 'after update on depense', faire un if et déterminer le niveau du joueur, puis s'il y a changement de niveau, l'annoncer dans un message 
+				// faire un trigger, si 'after update on depense', faire un if et déterminer le niveau du joueur, puis s'il y a changement de niveau, l'annoncer dans un message
 				$tab_basket = $_SESSION['basket']; // on prépare un tableau qui sera le panier
 
 //				unset($_SESSION['basket']); // on efface le panier dans la Session
@@ -355,6 +350,12 @@ class ControllerItem {
 			require (File::build_path(array("view", "view.php")));
 		}
 	}
+
+    public static function error() {
+        $view='error';
+        $pagetitle='Page d\'erreur';
+        require File::build_path(array('view','view.php'));
+    }
 
 //-------------------------------------------------------------------------------------------------------------------------
 

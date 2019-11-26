@@ -2,7 +2,7 @@
 
 $itemName = htmlspecialchars($item->get('name'));
 $itemPrice = htmlspecialchars($item->get('price'));
-$itemDescription = htmlspecialchars($item->get('price'));
+$itemDescription = htmlspecialchars($item->get('description'));
 
 $idURL = rawurlencode($item->get('id'));
 $priceURL = rawurlencode($item->get('price'));

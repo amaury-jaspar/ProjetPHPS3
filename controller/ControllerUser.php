@@ -13,9 +13,7 @@ class ControllerUser {
         $login = Routeur::myGet('login');
         $user = ModelUser::select($login);
         if ($user == false) {
-            $view='error';
-            $pagetitle='Error page';
-            require_once (File::build_path(array("view", "view.php")));
+            self::error();
         } else {
             $view='detail';
             $pagetitle='Detail user';
@@ -30,9 +28,7 @@ class ControllerUser {
             $pagetitle='Users list';
             require (File::build_path(array("view", "view.php")));
         } else {
-            $view='error';
-            $pagetitle='Error page';
-            require_once (File::build_path(array("view", "view.php")));
+            self::error();
         }
     }
 
@@ -226,10 +222,14 @@ class ControllerUser {
             $pagetitle='accueil';
             require (File::build_path(array("view", "view.php")));
         } else {
-            $view='error';
-            $pagetitle='Page d\'erreur';
-            require_once (File::build_path(array("view", "view.php")));
+            self::error();
         }
+    }
+
+    public static function error() {
+        $view='error';
+        $pagetitle='Page d\'erreur';
+        require File::build_path(array('view','view.php'));
     }
 
 /*

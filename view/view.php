@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html>
 
     <head>
@@ -27,8 +26,7 @@
             <main>
                 <?php
                     // on intégre la vue que l'on veut voir apparaitre
-                    $filepath = File::build_path(array("view", static::$object, $view . ".php"));
-                    require ($filepath);
+                    require (File::build_path(array("view", static::$object, $view . ".php")));
                 ?>
             </main>
    

@@ -18,9 +18,7 @@ class ControllerHome {
         $view='marketplace';
         $pagetitle='frontpage';
         require (File::build_path(array("view", "view.php")));
-
     }
-
 }
 
 ?>
