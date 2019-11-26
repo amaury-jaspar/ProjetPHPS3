@@ -9,12 +9,11 @@
 
 echo "<br>";
 
-require_once ('dashboardNav.php');
-
 echo "<h1>LE CONTENU COURANT DU DASHBOARD</h1>";
 
+/*
 // Ici, trouver le moyen d'inclure le contenu d'une vue correspondant à la demande du lien
 $cibleDashboard = File::build_path(array("view", Routeur::myGet('cible'), Routeur::myGet('view') . ".php"));
-include ($cibleDashboard);
+include ($cibleDashboard); */
 
 ?>

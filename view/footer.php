@@ -11,11 +11,6 @@ echo <<< EOT
               <div class="col l4 offset-l2 s12">
                 <ul>
                   <li><a class="grey-text text-lighten-3" href="index.php?action=contact&controller=home">Contact</a></li>
-EOT;
-if (Session::is_admin()) {
-                    echo '<li><a class="grey-text text-lighten-3" href="index.php?action=dashboard&controller=administration">Administration</a></li>';
-}
-echo <<< EOT
                   <li><a class="grey-text text-lighten-3" href="#!">À Propos</a></li>
                   <li><a class="grey-text text-lighten-3" href="#!">Equipe</a></li>
                 </ul>
