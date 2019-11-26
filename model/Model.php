@@ -161,6 +161,7 @@ class Model {
 	}
 
 	public function save($data) {
+		var_dump($data);
 		$primary_key = static::$primary;
 		$table_name = static::$object;
 		$INSERINTO = "INSERT INTO " . $table_name . "(";

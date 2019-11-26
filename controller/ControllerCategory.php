@@ -1,6 +1,6 @@
 <?php
 
-	require_once (File::build_path(array('model', 'ModelCategory.php')));
+require_once (File::build_path(array('model', 'ModelCategory.php')));
 	
 class ControllerCategory {
 
@@ -34,14 +34,14 @@ class ControllerCategory {
         $description = "";
 		$required = "required";
 		$action = "created";
-		$view='update';
+		$view='create';
 		$pagetitle='Create Category';
 		require_once (File::build_path(array("view", "view.php")));
 	}
 
 	public static function created() {
 		$data = array (
-			'id' => Routeur::myGet('id'),
+			'id' => NULL,
 			'name' => Routeur::myGet('name'),
 			'description' => Routeur::myGet('description')
 		);
@@ -57,7 +57,6 @@ class ControllerCategory {
 		$category = Routeur::myGet('id');
 		ModelCategory::deleteById($id);
 		$tab_category = ModelCategory::selectAll();
-		$controller= static::$object;
 		$view='deleted';
 		$pagetitle='Delete Category';
 		require_once (File::build_path(array("view", "view.php")));
@@ -88,12 +87,6 @@ class ControllerCategory {
 		$pagetitle='Category updated';
 		require_once (File::build_path(array("view", "view.php")));
 	}
-
-
-
-
-
-
 
 }
 

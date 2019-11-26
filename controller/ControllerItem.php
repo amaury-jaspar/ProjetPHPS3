@@ -13,9 +13,7 @@ class ControllerItem {
 		$id = htmlspecialchars(Routeur::myGet('id'));
 		$item = ModelItem::select($id);
 		if ($item == false) {
-			$view='error';
-            $pagetitle='Error page';
-			require_once (File::build_path(array("view", "view.php")));
+			self::error();
 		} else {
             $view='detail';
 			$pagetitle='Detail item';
@@ -58,7 +56,6 @@ class ControllerItem {
 			$pagetitle='connection';
 			require (File::build_path(array("view", "view.php")));
 		}
-
 	}
 
 	public static function created() {
@@ -86,7 +83,6 @@ class ControllerItem {
 		$id = Routeur::myGet('id');
 		ModelItem::deleteById($id);
 		$tab_item = ModelItem::selectAll();
-		$controller= static::$object;
 		$view='deleted';
 		$pagetitle='Delete Item';
 		require_once (File::build_path(array("view", "view.php")));
@@ -114,6 +110,7 @@ class ControllerItem {
 			'price' => Routeur::myGet('price')
 		);
 		ModelItem::updateByID($data);
+		if(!empty($_FILES['img'])) { ImageUploader::uploadImg();}
 		$tab_item = ModelItem::selectAll();
 		$view='updated';
 		$pagetitle='Item updated';
@@ -188,10 +185,9 @@ class ControllerItem {
 
 	public static function addToBasket() {
 		$item = ModelItem::select(Routeur::myGet('id'));
+        $tab_basket = NULL;
 		if(isset($_COOKIE['basket'])) {
 			$tab_basket = unserialize($_COOKIE['basket']);
-		} else {
-			$tab_basket;
 		}
 		if(isset($tab_basket[Routeur::myGet('id')])) {
 			$tab_basket[Routeur::myGet('id')] += 1;
@@ -216,12 +212,11 @@ class ControllerItem {
 	}
 
 	public static function deleteFromBasket() {
+		$item = ModelItem::select(Routeur::myGet('id'));
 		if(isset($_COOKIE['basket'])) {
 			$tab_basket = unserialize($_COOKIE['basket']);
 		} else {
-			$view='error';
-			$pagetitle='Error';
-			require (File::build_path(array("view", "view.php")));
+			self::error();
 		}
 		if(isset($tab_basket[Routeur::myGet('id')])) {
 			$tab_basket[Routeur::myGet('id')] -= 1;
@@ -233,20 +228,17 @@ class ControllerItem {
 		setcookie('basket', serialize($tab_basket), time() + (60 * 60 * 24));
 		ControllerItem::actualizeSumBasket();
 
-		// code de readFromBasket
-/*		$sumBasket = $_SESSION['sumBasket'];
+		$sumBasket = $_SESSION['sumBasket'];
 		$tab_basket = unserialize($_COOKIE['basket']);
 		foreach($tab_basket as $key => $value) {
 			if ($value > 0) {
 			$currentBasket[$key] = ModelItem::select($key);
 			}
 		}
-*/
-		ControllerItem::readBasket();
 
-//		$view='basket';
-//		$pagetitle='Basket';
-//		require (File::build_path(array("view", "view.php")));
+		$view='DeletedFromBasket';
+		$pagetitle='Removed from basket';
+		require (File::build_path(array("view", "view.php")));
 	}
 
 		// Envoie vers une page qui permet une dernière visualisation du panier avant de confirmer l'achat
@@ -254,7 +246,7 @@ class ControllerItem {
 		// On confirme
 		// Ou bien on demande à modifier, ce qui revient à appeler readBasket
 	public static function beforeBuyBasket() {
-		
+
 		if (Session::is_connected()) { // on vérifie que la personne est connecté
 			ControllerItem::actualizeSumBasket(); // on recalcule la valeur du panier
 			$sumBasket = $_SESSION['sumBasket']; // on récupère la valeur du panier que l'on a placé dans $_SESSION
@@ -310,22 +302,38 @@ class ControllerItem {
 				$user->set('wallet', $user->get('wallet') - $sumBasket); // on lui retire l'argent de son compte
 				$user->saveCurrentState($user); // et on sauvegarde le nouvel état de l'utilisateur
 				$user->checkLevel();
-				// faire un trigger, si 'after update on depense', faire un if et déterminer le niveau du joueur, puis s'il y a changement de niveau, l'annoncer dans un message 
+				// faire un trigger, si 'after update on depense', faire un if et déterminer le niveau du joueur, puis s'il y a changement de niveau, l'annoncer dans un message
 				$tab_basket = $_SESSION['basket']; // on prépare un tableau qui sera le panier
 
 //				unset($_SESSION['basket']); // on efface le panier dans la Session
 
-				/*				Si on ne fait pas de trigger dans la BDD
+/*				Si on ne fait pas de trigger dans la BDD
 				foreach($tab_basket as $key => $value) {
 					for($i = 0; $i < $value; $i++) {
 						ControllerInventory::addToInventory($id, $user->getLogin());
 					}
 				}
 */
+
+				// n efface 
 //				setcookie('basket', "", time() - 1); // on efface les cookies relatif au panier
 //				$_SESSION['sumBasket'] = 0; // on remet la valeur du panier à zéro
 
 
+/*		// la partie qui permet de sauvegarder une commande en autant de tuple dans la relation command
+				require_once (File::build_path(array('controller', 'ControllerCommand.php'))); // on importe controllerCommand
+				foreach($tab_basket as $item_id => $quantity) {
+					// Et pour chaque item, on va créer un tuple dans la 
+					$data = array (
+						'login_user' => $user->get('login'),
+						'id_item' => $item_id,
+						'quantity_item' => $quantity
+					);
+					$command = ControllerCommand::create($data);
+				}
+*/
+
+				// Pour chaque item, il faut incrémenter l'attribut nbAchat 
 
 				$view='bought';
 				$pagetitle='Basket bought';
@@ -343,6 +351,12 @@ class ControllerItem {
 			require (File::build_path(array("view", "view.php")));
 		}
 	}
+
+    public static function error() {
+        $view='error';
+        $pagetitle='Page d\'erreur';
+        require File::build_path(array('view','view.php'));
+    }
 
 //-------------------------------------------------------------------------------------------------------------------------
 
