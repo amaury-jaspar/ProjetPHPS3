@@ -1,6 +1,6 @@
 <?php
 
-require_once (File::build_path(array('lib', 'queryBuilder.php')));
+require_once (File::build_path(array('lib', 'QueryBuilder.php')));
 
 class ControllerHome {
 
