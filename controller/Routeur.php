@@ -1,8 +1,11 @@
 <?php
 require_once File::build_path(array('controller',"ControllerAdministration.php"));
 require_once File::build_path(array('controller',"ControllerCategory.php"));
+require_once File::build_path(array('controller',"ControllerCommand.php"));
 require_once File::build_path(array('controller',"ControllerHome.php"));
+require_once File::build_path(array('controller',"ControllerInventory.php"));
 require_once File::build_path(array('controller',"ControllerItem.php"));
+require_once File::build_path(array('controller',"ControllerTest.php"));
 require_once File::build_path(array('controller',"ControllerUser.php"));
 require_once File::build_path(array('controller',"ControllerWishlist.php"));
 
