@@ -1,8 +1,8 @@
 <?php
 
 echo <<< EOT
-    <form method="get" action="index.php" enctype="multipart/form-data">
-    <legend> Create
+    <form method="post" action="index.php" enctype="multipart/form-data">
+    <legend> Create Category
         <fieldset>
                 <p>
 
@@ -23,6 +23,7 @@ echo <<< EOT
                     <input type='hidden' name='id' value=$id>
                     <input type='hidden' name='controller' value='category'>
                     <input type='hidden' name='action' value=$action>
+                    
                 </p>
                 <input type="submit" value="Send" name="submit">
             </legend>

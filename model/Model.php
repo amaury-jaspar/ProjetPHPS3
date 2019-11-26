@@ -161,7 +161,6 @@ class Model {
 	}
 
 	public function save($data) {
-		var_dump($data);
 		$primary_key = static::$primary;
 		$table_name = static::$object;
 		$INSERINTO = "INSERT INTO " . $table_name . "(";
@@ -175,7 +174,6 @@ class Model {
 		$VALUES = rtrim($VALUES, ", ");
 		$VALUES = $VALUES . ")";
 		$sql = $INSERINTO . " " . $VALUES;
-		echo $sql;
 		try {
 			$req_prep = Model::$pdo->prepare($sql);
 			$values = array();
