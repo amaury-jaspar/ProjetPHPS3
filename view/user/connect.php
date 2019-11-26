@@ -1,3 +1,5 @@
+<p>Compte admin: login = admin, password = p</p>
+<p>Compte visiteur: login = visiteur, password = p</p>
 <form method=<?php echo $method ?> action="index.php?">
     <legend>
         <label for="login_id">Login</label>

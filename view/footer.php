@@ -11,8 +11,8 @@ echo <<< EOT
               <div class="col l4 offset-l2 s12">
                 <ul>
                   <li><a class="grey-text text-lighten-3" href="index.php?action=contact&controller=home">Contact</a></li>
-                  <li><a class="grey-text text-lighten-3" href="#!">À Propos</a></li>
-                  <li><a class="grey-text text-lighten-3" href="#!">Equipe</a></li>
+                  <li><a class="grey-text text-lighten-3" href="#!">About</a></li>
+                  <li><a class="grey-text text-lighten-3" href="#!">Team</a></li>
                 </ul>
               </div>
             </div>
@@ -20,7 +20,7 @@ echo <<< EOT
           <div class="footer-copyright">
             <div class="container">
             <p class="left">© 2019 Copyright Text</p>
-            <p class="right">Par <a class="grey-text text-lighten-4" href="http://webinfo.iutmontp.univ-montp2.fr/~simondonj/">Jean Simondon</a>, <a class="grey-text text-lighten-4" href="https://amaury-jaspar.github.io/portfolio">Amaury Jaspar</a>, <a class="grey-text text-lighten-4" href="https://mathieu-lagny.github.io/">Mathieu Lagny</a></p>
+            <p class="right">By <a class="grey-text text-lighten-4" href="http://webinfo.iutmontp.univ-montp2.fr/~simondonj/">Jean Simondon</a>, <a class="grey-text text-lighten-4" href="https://amaury-jaspar.github.io/portfolio">Amaury Jaspar</a>, <a class="grey-text text-lighten-4" href="https://mathieu-lagny.github.io/">Mathieu Lagny</a></p>
             </div>
           </div>
         </footer>

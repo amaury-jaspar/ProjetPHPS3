@@ -116,13 +116,12 @@ class ControllerUser {
 	public static function update() {
         if (Session::is_user(Routeur::myGet('login')) || Session::is_admin()) {
             if (Conf::getDebug() == True) { $method = "get"; } else { $method = "post";}
-            if(Session::is_admin()) { $checked = "checked=\"checked\""; } else { $checked = NULL;}
             $user = ModelUser::select(Routeur::myGet('login'));
+            if($user->get('admin') == 0) { $checked = NULL; } else { $checked = 'checked="checked"';}
             $login = htmlspecialchars($user->get('login'));
             $lastName = htmlspecialchars($user->get('lastName'));
             $surname = htmlspecialchars($user->get('surname'));
             $mail = htmlspecialchars($user->get('mail'));
-            $admin = htmlspecialchars($user->get('admin'));
             $password1 = "";
             $password2 = "";
             $required = "readonly";
@@ -144,13 +143,12 @@ class ControllerUser {
     */
 	public static function updated() {
         if (Session::is_user(Routeur::myGet('login')) || Session::is_admin()) {
-            if (Routeur::myGet('password1') == Routeur::myGet('password2')) {
+            if (Routeur::myGet('password1') == Routeur::myGet('password2') && ModelUser::checkPassword(Routeur::myGet('login'), Security::chiffrer(Routeur::myGet('password1')))) {
             if (Routeur::myGet('admin') !== NULL && Routeur::myGet('admin') == on) { $admin = 1; } else { $admin = 0; }
             $data = array (
 				'login' => htmlspecialchars(Routeur::myGet('login')),
 				'lastName' => htmlspecialchars(Routeur::myGet('lastname')),
 				'surname' => htmlspecialchars(Routeur::myGet('surname')),
-				'password' => Security::chiffrer(Routeur::myGet('password1')),
                 'mail' => htmlspecialchars(Routeur::myGet('mail')),
                 'admin' => $admin,
                 'nonce' => NULL,
@@ -189,7 +187,7 @@ class ControllerUser {
     }
 
     public static function connected() {
-        if (ModelUser::checkPassword(Routeur::myGet('login'), Security::chiffrer(Routeur::myGet('password'))) && ModelUser::checkNonce(Routeur::myGet('login'))) {
+        if (ModelUser::checkPassword(Routeur::myGet('login'), Security::chiffrer(Routeur::myGet('password'))) !== 0 && ModelUser::checkNonce(Routeur::myGet('login'))) {
             $_SESSION['login'] = Routeur::myGet('login');
             $user = ModelUser::select(Routeur::myGet('login'));
             if ($user->get('admin') == true) {

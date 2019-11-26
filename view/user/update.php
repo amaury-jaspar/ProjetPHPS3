@@ -15,10 +15,10 @@ echo <<< EOT
                     <input type="text" placeholder="" name="surname" id="fonction_id" value="$surname" required/>
                     <br>
                     <label for="password_id1">Password</label>
-                    <input type="password" name="password1" id="password_id1" value="$password1"/>
+                    <input type="password" name="password1" id="password_id1" value="$password1" required/>
                     <br>
                     <label for="password_id2">Repeat the password</label>
-                    <input type="password" name="password2" id="password_id2" value="$password2"/>
+                    <input type="password" name="password2" id="password_id2" value="$password2" required/>
                     <br>
                     <label for="mail_id">Mail</label>
                     <input type="text" placeholder="" name="mail" id="mail_id" value="$mail" required>
@@ -28,7 +28,7 @@ EOT;
 echo <<< EOT
                     <p>
                     <label for="admin_id">
-                        <input type="checkbox" value=$admin" $checked name="admin" id="admin_id"/>
+                        <input type="checkbox" value="on" $checked name="admin" id="admin_id"/>
                         <span>Administrator ?</span>
                     </label>
                     </p>

@@ -16,9 +16,6 @@ class ModelUser extends Model {
 	protected static $object = "user";
 	protected static $primary = "login";
 
-	// passer les construteur avec un $data en argument pour rendre ça plus conçis
-	// et déclarer le tableau directement dans les parenthèses d'une fonction
-
 	public function __construct($data = NULL) {
 		if (!is_null($data)) {
 			$this->login = $data['login'];
@@ -60,9 +57,9 @@ class ModelUser extends Model {
 			die();
 		}
 		if ($answer['COUNT(*)'] == 0) {
-			return false;
+			return FALSE;
 		} else {
-			return true;
+			return TRUE;
 		}
 	}
 
