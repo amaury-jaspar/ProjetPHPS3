@@ -1,7 +1,7 @@
 <?php
 
 echo <<< EOT
-    <form method="post"  action="index.php" enctype="multipart/form-data">
+    <form class="container" method="post"  action="index.php" enctype="multipart/form-data">
     <legend> Create / Update
         <fieldset>
                 <p>
@@ -13,6 +13,10 @@ echo <<< EOT
                     <br>
                     <label for="description_id">Description</label>
                     <input type="text" placeholder="" name="description" id="description_id" value="$description"/>
+                    <br>
+
+                    <label for="levelAccess_id">Level Acces</label>
+                    <input type="number" placeholder="" name="levelAccess" id="levelAccess_id" value="$levelAccess"/>
                     <br>
 
                 <label for="id_categorisation">Add this item to a category</label><br/>

@@ -10,7 +10,7 @@ $priceURL = rawurlencode($item->get('price'));
 
 echo '<div>Name : '.$itemName.'</div> <div>Price : '.$itemPrice.'</div> Description '.$itemDescription.'</div>';
 
-echo '<img class="responsive-img" width="200" height="200" src="../images/'.$itemName.'.png" alt="">';
+echo '<img class="responsive-img" width="200" height="200" src="../images/'.$itemName.'.jpg" alt="">';
 
 echo '<br>';
 

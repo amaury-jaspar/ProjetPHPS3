@@ -1,7 +1,7 @@
 <?php
 
 echo <<< EOT
-    <form method=$method action="index.php?">
+    <form class="container" method=$method action="index.php?">
         <fieldset>
             <legend>Mon formulaire :
                 <p>

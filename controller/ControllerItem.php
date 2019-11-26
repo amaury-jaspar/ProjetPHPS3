@@ -37,6 +37,7 @@ class ControllerItem {
 				$price = "";
 				$description = "";
 				$category = "";
+				$levelaccess = "";
 				$required = "required";
 				$action = "created";
 				$view='update';
@@ -68,7 +69,9 @@ class ControllerItem {
 			'catalog' => $catalog,
 			'nbbuy' => 0,
 			'dateadd' => date("Y-m-d"),
-			'category' => Routeur::myGet('category')
+			'category' => Routeur::myGet('category'),
+			'nbbuy' =>  0,
+			'levelaccess' =>  Routeur::myGet('levelaccess'),
 		);
 		$item = new ModelItem($data);
 		if(!empty($_FILES['img'])) { ImageUploader::uploadImg();}
@@ -95,6 +98,7 @@ class ControllerItem {
 		if($item->get('catalog') == 1) { $checked = "checked=\"checked\""; } else { $checked = NULL;}
 		$name = $item->get('name');
 		$price = $item->get('price');
+		$levelaccess = $item->get('levelaccess');
 		$description = $item->get('description');
 		$required = "readonly";
 		$action = "updated";
@@ -109,10 +113,11 @@ class ControllerItem {
 			'name' => Routeur::myGet('name'),
 			'description' => Routeur::myGet('description'),
 			'price' => Routeur::myGet('price'),
-			'catalog' => Routeur::myGet('catalog')
+			'catalog' => Routeur::myGet('catalog'),
+			'levelaccess' => Routeur::myGet('catalog'),
 		);
 		ModelItem::updateByID($data);
-//		if(!empty($_FILES['img']) &&  ) { ImageUploader::uploadImg();}
+		if(!empty($_FILES['img'])) { ImageUploader::uploadImg();}
 		$tab_item = ModelItem::selectAll();
 		$view='updated';
 		$pagetitle='Item updated';

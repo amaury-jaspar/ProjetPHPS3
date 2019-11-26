@@ -10,6 +10,9 @@ class ModelItem extends Model {
 	private $description;
 	private $category;
 	private $catalog;
+	private $nbbuy;
+	private $dateadd;
+	private $levelaccess;
 
 	protected static $object = "item";
 	protected static $primary = "id";
@@ -22,6 +25,9 @@ class ModelItem extends Model {
             $this->description = $data['description'];
 			$this->category = $data['category'];
 			$this->catalog = $data['catalog'];
+			$this->$nbbuy = $data['nbbuy'];
+			$this->$dateadd = $data['dateadd'];
+			$this->$levelaccess = $data['levelaccess'];
         }
     }
 

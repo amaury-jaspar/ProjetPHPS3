@@ -23,27 +23,43 @@
 
 <?php
 
+echo '<div class="center-align">';
 for ($i = 1; $i <= $nbPage; $i++) {
     echo '<a href="index.php?action=paging&controller=item&currentpage='.$i.'"> '.$i.' </a>';
 }
+echo '</div>';
 
+echo '<div class="row">';
 foreach($tab_result as $item) {
 
 $itemIdURL = rawurldecode($item->get('id'));
 $itemIdHTML = htmlspecialchars($item->get('id'));
 $itemNameHTML = htmlspecialchars($item->get('name'));
 
-echo "<div style='border: 1px solid black;text-align:left;padding:1em;margin:1em;'>";
+if ($user->get('level') >= $item->get())
 
-    echo '<p><a href="index.php?controller=item&action=read&id='.$itemIdURL.'">'.$itemNameHTML.'</a>.</p>';
-    echo '<img class="responsive-img" width="200" height="200" src="../images/'.$itemNameHTML.'.png" alt="">';
-
-echo "</div>";
+echo <<< EOT
+    <div class="col s2 m2">
+    <div class="card medium">
+        <div class="card-image">
+        <img class="responsive-img" width="100" height="100" src="../images/$itemNameHTML.jpg">
+        </div>
+            <div class="card-content">
+            <p>$itemNameHTML</p>
+            </div>
+                <div class="card-action">
+                <a href="index.php?controller=item&action=read&id=$itemIdURL">$itemNameHTML</a>
+                </div>
+        </div>
+    </div>
+EOT;
 
 }
+echo '</div>';
 
+echo '<div class="center-align">';
 for ($i = 1; $i <= $nbPage; $i++) {
-    echo '<a href="index.php?action=paging&controller=item&currentpage='.$i.'"> '.$i.' </a>';
- }
-
+        echo '<a href="index.php?action=paging&controller=item&currentpage='.$i.'"> '.$i.' </a>';
+    }
+echo '</div>';
 ?>
