@@ -7,7 +7,9 @@ class ControllerHome {
 	protected static $object = "home";
 
     public static function buildFrontPage() {
-        
+//        require_once (File::build_path(array('controller', 'ControllerCategory.php')));
+//        $tab_category = ControllerCategory::selectAll();
+
         $tab_category = array(
             "alchimist" => "Welcome to the Alchimist", 
             "tavern"  => "Welcome to the Tavern",
@@ -15,6 +17,7 @@ class ControllerHome {
             "temple" => "Welcome to the Temple",
             "armory" => "Welcome to the Armory"
         );
+
         $view='marketplace';
         $pagetitle='frontpage';
         require (File::build_path(array("view", "view.php")));
