@@ -28,10 +28,10 @@ class ModelWishlist extends Model {
   public static function selectItems($value) {
     $primary_key = static::$primary;
     $table_name = static::$object;
+    echo $value;
     try {
-      $req_prep = Model::$pdo->prepare("SELECT * FROM $table_name WHERE :attribute = :value");
+      $req_prep = Model::$pdo->prepare("SELECT * FROM $table_name WHERE login_user = :value");
       $values = array(
-        "attribute" => $primary_key,
         "value" => $value
       );
       $req_prep->execute($values);
