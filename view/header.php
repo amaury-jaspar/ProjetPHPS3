@@ -29,7 +29,9 @@ EOT;
 if (Session::is_admin()) {
 echo <<< EOT
         <div class="nav-content">
+
             <ul class="tabs tabs-transparent">
+            <a data-target="slide-out" class="brand-logo sidenav-trigger">Admin panel</a>            
                 <!-- Général : vision du nombre de membres, fréquentation globale, ventes de la journée et de la semaine -->
                 <li class="tab"><a href="index.php?action=readAll&controller=administration">Général</a></li>
                 <!-- Accès vers readAll de produit -->

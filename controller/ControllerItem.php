@@ -95,7 +95,7 @@ class ControllerItem {
 		if (Conf::getDebug() == True) { $method = "get"; } else { $method = "post";}
 		$id = Routeur::myGet('id');
 		$item = ModelItem::select($id);
-		if($item->get('catalog') == 1) { $checked = "checked=\"checked\""; } else { $checked = NULL;}
+		if($item->get('catalog') == 1) { $checked = 'checked="checked"'; } else { $checked = NULL;}
 		$name = $item->get('name');
 		$price = $item->get('price');
 		$levelaccess = $item->get('levelaccess');
@@ -108,13 +108,14 @@ class ControllerItem {
 	}
 
 	public static function updated() {
+		if (Routeur::myGet('levelaccess') !== NULL && Routeur::myGet('levelaccess') == on) { $catalog = 1; } else { $catalog = 0; }
 		$data = array (
 			'id' => Routeur::myGet('id'),
 			'name' => Routeur::myGet('name'),
 			'description' => Routeur::myGet('description'),
 			'price' => Routeur::myGet('price'),
-			'catalog' => Routeur::myGet('catalog'),
-			'levelaccess' => Routeur::myGet('catalog'),
+			'catalog' => $catalog,
+			'levelaccess' => Routeur::myGet('levelaccess'),
 		);
 		ModelItem::updateByID($data);
 		if(!empty($_FILES['img'])) { ImageUploader::uploadImg();}

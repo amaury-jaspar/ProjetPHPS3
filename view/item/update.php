@@ -16,7 +16,7 @@ echo <<< EOT
                     <br>
 
                     <label for="levelAccess_id">Level Acces</label>
-                    <input type="number" placeholder="" name="levelAccess" id="levelAccess_id" value="$levelAccess"/>
+                    <input type="number" placeholder="" name="levelAccess" id="levelAccess_id" value="$levelaccess"/>
                     <br>
 
                 <label for="id_categorisation">Add this item to a category</label><br/>
