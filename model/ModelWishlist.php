@@ -33,9 +33,8 @@ class ModelWishlist extends Model {
     $primary_key = static::$primary;
     $table_name = static::$object;
     try {
-      $req_prep = Model::$pdo->prepare("SELECT * FROM $table_name WHERE :attribute = :value");
+      $req_prep = Model::$pdo->prepare("SELECT * FROM $table_name WHERE login_user = :value");
       $values = array(
-        "attribute" => $primary_key,
         "value" => $value
       );
       $req_prep->execute($values);
@@ -54,6 +53,25 @@ class ModelWishlist extends Model {
 			return false;
 		return $tab_obj;
   }
+
+  public static function deleteItem($login_user, $item_id) {
+		$table_name = static::$object;
+		try {
+			$req_prep = Model::$pdo->prepare("DELETE FROM $table_name WHERE login_user= :primary AND item_id= :item_id");
+			$values = array(
+				"primary" => $login_user,
+        "item_id" => $item_id
+			);
+			$req_prep->execute($values);
+		} catch (PDOException $e) {
+			if(Conf::getDebug()) {
+				echo $e->getMessage();
+			} else {
+				echo 'Une erreur est survenue <a href="index.php?action=buildFrontPage&controller=home"> retour à la page d\'acceuil </a>';
+			}
+			die();
+		}
+	}
 }
 
 ?>

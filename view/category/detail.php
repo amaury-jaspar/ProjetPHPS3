@@ -12,7 +12,7 @@ echo '<br>';
 if (Session::is_admin()) {
     echo '<a href="index.php?controller=category&action=delete&id=' .$idURL . ' ">Delete this category from DataBase</a>';
     echo '<br>';
-    echo '<a href="index.php?controller=category&action=update&id=' . $idURL . ' ">Modificate the data of this category</a>';
+    echo '<a href="index.php?controller=category&action=update&id=' . $idURL . ' ">Modify the data of this category</a>';
     echo '<br>';
 }
 
