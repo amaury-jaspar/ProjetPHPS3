@@ -20,7 +20,7 @@ echo '<a href="index.php?action=preference&controller=user">Preference</a>';
 // Préférence, pour savoir ce que l'on veut en particulier sur le site
 echo '<br>';
 echo '<br>';
-echo '<a href="index.php?action=&controller=user">Vos commandes</a>';
+echo '<a href="index.php?action=&controller=command">Vos commandes</a>';
 echo '<br>';
 echo '<br>';
 echo '<a href="index.php?action=&controller=user">Paramètre de sécurité et connexion</a>';

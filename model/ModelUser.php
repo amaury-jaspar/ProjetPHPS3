@@ -30,11 +30,15 @@ class ModelUser extends Model {
 	}
 
 	public function get($nom_attribut) {
-		return $this->$nom_attribut;
+        if (property_exists($this, $nom_attribut))
+            return $this->$nom_attribut;
+        return false;
 	}
 
 	public function set($nom_attribut, $valeur) {
-		$this->$nom_attribut = $valeur;
+        if (property_exists($this, $nom_attribut))
+            $this->$nom_attribut = $valeur;
+        return false;
 	}
 
 	public static function checkPassword($login, $mot_de_passe_chiffre) {
