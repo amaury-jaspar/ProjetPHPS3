@@ -159,7 +159,6 @@ class ControllerItem {
 		$view='paging';
 		$pagetitle='paging';
 		require_once (File::build_path(array("view", "view.php")));
-
 	}
 
     public static function error() {
