@@ -1,4 +1,6 @@
 <?php
+
+require_once File::build_path(array('controller',"ControllerBasket.php"));
 require_once File::build_path(array('controller',"ControllerAdministration.php"));
 require_once File::build_path(array('controller',"ControllerCategory.php"));
 require_once File::build_path(array('controller',"ControllerCommand.php"));
@@ -10,8 +12,6 @@ require_once File::build_path(array('controller',"ControllerUser.php"));
 require_once File::build_path(array('controller',"ControllerWishlist.php"));
 
 
-// Une fonction qui va servir à convertir facilement le type de méthode que l'on souhaite dans les formulaire
-// Passer de GET à POST facilement
 class Routeur {
     public static function myGet($nomvar) {
         if (isset($_GET[$nomvar])) {
@@ -45,7 +45,7 @@ if (class_exists($controller_class)) {
         ControllerHome::buildFrontPage();
     }
 } else {
-    ControllerUser::error();
+    ControllerHome::buildFrontPage();
 }
 
 

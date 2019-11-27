@@ -10,7 +10,7 @@ echo <<< EOT
             <ul id="nav-mobile" class="right hide-on-med-and-down">
                 <li><a href="index.php?action=buildFrontPage&controller=home">Marketplace</a></li>
                 <li><a href="index.php?action=paging&controller=item">Catalog</a></li>
-                <li><a href="index.php?action=readBasket&controller=item">Basket</a></li>
+                <li><a href="index.php?action=readBasket&controller=basket">Basket</a></li>
 EOT;
 if (!empty($_SESSION['login'])) {
                 echo '<li><a href="index.php?action=read&controller=inventory">Inventory</a></li>';

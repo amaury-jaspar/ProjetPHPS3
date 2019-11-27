@@ -19,7 +19,7 @@
         echo '<br>';
         echo "Transfert item from basket to wishlist: ";
         echo '<br>';
-        echo '<a href="index.php?action=deleteFromBasket&controller=item&id='.$itemIdURL.'&prix='.$itemPriceURL.'">Remove from basket</a>';
+        echo '<a href="index.php?action=deleteFromBasket&controller=basket&id='.$itemIdURL.'&prix='.$itemPriceURL.'">Remove from basket</a>';
         echo '<br>';
         echo 'Detail page of this item : <p><a href="index.php?controller=item&action=read&id='.$itemIdURL.'">'.Detail.'</a></p>';
         echo "</div>";
@@ -29,10 +29,10 @@
     echo "TOTAL COST : " . $sumBasket;
     echo '<br>';
     echo '<br>';
-    echo '<a href="index.php?action=beforeBuyBasket&controller=item">Purchase</a>';
+    echo '<a href="index.php?action=beforeBuyBasket&controller=basket">Purchase</a>';
     echo '<br>';
     echo '<br>';    
-    echo '<a href="index.php?action=resetBasket&controller=item">Empty the basket</a>';
+    echo '<a href="index.php?action=resetBasket&controller=basket">Empty the basket</a>';
 
     // Prix du panier ici, une fois que je suis parvenu à reconstruire un tableau d'objet et non pas d'idée.
 
