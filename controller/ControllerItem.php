@@ -240,7 +240,7 @@ class ControllerItem {
 			}
 		}
 		setcookie('basket', serialize($tab_basket), time() + (60 * 60 * 24));
-		ControllerItem::actualizeSumBasket();		
+		ControllerItem::actualizeSumBasket();
 		$sumBasket = $_SESSION['sumBasket'];
 		$tab_basket = unserialize($_COOKIE['basket']);
 		foreach($tab_basket as $key => $value) {
@@ -340,7 +340,7 @@ class ControllerItem {
 						'quantity_item' =>  $value,
 						'date_buy' => date("Y-m-d"),
 					);
-				ModelCommand::save($data);					
+				ModelCommand::save($data);
 			}
 
 
@@ -354,7 +354,7 @@ class ControllerItem {
 
 */
 
-				// n efface 
+				// n efface
 //				setcookie('basket', "", time() - 1); // on efface les cookies relatif au panier
 //				$_SESSION['sumBasket'] = 0; // on remet la valeur du panier à zéro
 
@@ -362,7 +362,7 @@ class ControllerItem {
 /*		// la partie qui permet de sauvegarder une commande en autant de tuple dans la relation command
 				require_once (File::build_path(array('controller', 'ControllerCommand.php'))); // on importe controllerCommand
 				foreach($tab_basket as $item_id => $quantity) {
-					// Et pour chaque item, on va créer un tuple dans la 
+					// Et pour chaque item, on va créer un tuple dans la
 					$data = array (
 						'login_user' => $user->get('login'),
 						'id_item' => $item_id,
@@ -372,7 +372,7 @@ class ControllerItem {
 				}
 */
 
-				// Pour chaque item, il faut incrémenter l'attribut nbAchat 
+				// Pour chaque item, il faut incrémenter l'attribut nbAchat
 
 				$view='bought';
 				$pagetitle='Basket bought';
