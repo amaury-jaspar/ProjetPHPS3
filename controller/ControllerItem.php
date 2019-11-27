@@ -147,6 +147,11 @@ class ControllerItem {
 			$tab_result = ModelItem::selectPage($currentPage, $parPage);
 		}
 
+		if (Session::is_connected()) {
+			require_once (File::build_path(array('controller', 'ControllerUser.php')));
+			$user = ModelUser::select($_SESSION['login']);
+		}
+
 		$view='paging';
 		$pagetitle='paging';
 		require_once (File::build_path(array("view", "view.php")));

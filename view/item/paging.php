@@ -32,11 +32,12 @@ echo '</div>';
 echo '<div class="row">';
 foreach($tab_result as $item) {
 
+        // On n'affiche que les articles dont l'aventurier à le niveau pour y accéder
+if (Session::is_connected() && $user->get('level') >= $item->get('levelaccess') || $item->get('levelaccess') < 1 || Session::is_admin()) {
+
 $itemIdURL = rawurldecode($item->get('id'));
 $itemIdHTML = htmlspecialchars($item->get('id'));
 $itemNameHTML = htmlspecialchars($item->get('name'));
-
-if ($user->get('level') >= $item->get())
 
 echo <<< EOT
     <div class="col s2 m2">
@@ -53,6 +54,8 @@ echo <<< EOT
         </div>
     </div>
 EOT;
+
+    }
 
 }
 echo '</div>';
