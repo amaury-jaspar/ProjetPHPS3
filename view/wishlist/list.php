@@ -13,7 +13,6 @@
         $current_item = ModelItem::select($tuple['item_id']);
         $tab_wishes[] = $current_item;
       }
-      print_r($tab_wishes);
       foreach($tab_wishes as $item) {
         $itemName = htmlspecialchars($item->get('name'));
         $itemIdURL = rawurlencode($item->get('id'));

@@ -32,7 +32,7 @@ class ControllerWishlist {
       );
       $wishlist->save($data);
       $view = 'addedToWishlist';
-      $pagetitle = 'Item added to wishlist';
+      $pagetitle = 'Item added to wishlis}t';
       require (File::build_path(array("view","view.php")));
     } else {
       $view = 'alreadyInWishlist';
