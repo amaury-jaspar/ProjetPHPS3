@@ -174,6 +174,7 @@ class Model {
 		$VALUES = rtrim($VALUES, ", ");
 		$VALUES = $VALUES . ")";
 		$sql = $INSERINTO . " " . $VALUES;
+		echo $sql;
 		try {
 			$req_prep = Model::$pdo->prepare($sql);
 			$values = array();

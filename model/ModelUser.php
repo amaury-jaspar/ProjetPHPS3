@@ -123,24 +123,6 @@ class ModelUser extends Model {
 			die();
 		}
 	}
-/*
-    public function addMoney($credit) {
-        $amount = $this->get('wallet');
-        $amount += $credit;
-        $user->set('wallet', $amount);
-		Model::updateWhere('wallet', $amount);
-    }
-
-    public function substractMoney($debit) {
-		echo 'substractMoney';
-		var_dump($this);
-		$amount = $this->get('wallet');
-
-		$amount -= $debit;
-        $this->set('wallet', $amount);
-		Model::updateWhere('wallet', $amount);
-    }
-*/
 
 }
 
