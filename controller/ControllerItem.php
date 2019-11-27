@@ -1,6 +1,9 @@
 <?php
 
 	require_once (File::build_path(array('model', 'ModelItem.php')));
+	require_once (File::build_path(array('model', 'ModelUser.php')));
+	require_once (File::build_path(array('model', 'ModelInventory.php')));
+	require_once (File::build_path(array('model', 'ModelCommand.php')));
 	require_once (File::build_path(array('lib', 'Security.php')));
 	require_once (File::build_path(array('lib', 'Session.php')));
 	require_once (File::build_path(array('lib', 'ImageUploader.php')));
@@ -185,7 +188,6 @@ class ControllerItem {
 		ControllerItem::actualizeSumBasket();
 		$sumBasket = $_SESSION['sumBasket'];
 		$tab_basket = unserialize($_COOKIE['basket']);
-
 		foreach($tab_basket as $key => $value) {
 			if ($value > 0) {
 			$currentBasket[$key] = ModelItem::select($key);
@@ -231,16 +233,14 @@ class ControllerItem {
 		} else {
 			self::error();
 		}
-		if(isset($tab_basket[Routeur::myGet('id')])) {
+		if(isset($tab_basket[$item->get('id')])) {
 			$tab_basket[Routeur::myGet('id')] -= 1;
-			if($tab_basket[Routeur::myGet('id')] == 0 ) {
-				if (isset($_GET['id'])) { unset($_GET['id']);}
-				if (isset($_POST['id'])) { unset($_POST['id']);}
+			if($tab_basket[Routeur::myGet('id')] <= 0) {
+				unset($tab_basket[$item->get('id')]);
 			}
 		}
 		setcookie('basket', serialize($tab_basket), time() + (60 * 60 * 24));
-		ControllerItem::actualizeSumBasket();
-
+		ControllerItem::actualizeSumBasket();		
 		$sumBasket = $_SESSION['sumBasket'];
 		$tab_basket = unserialize($_COOKIE['basket']);
 		foreach($tab_basket as $key => $value) {
@@ -259,7 +259,6 @@ class ControllerItem {
 		// On confirme
 		// Ou bien on demande à modifier, ce qui revient à appeler readBasket
 	public static function beforeBuyBasket() {
-
 		if (Session::is_connected()) { // on vérifie que la personne est connecté
 			ControllerItem::actualizeSumBasket(); // on recalcule la valeur du panier
 			$sumBasket = $_SESSION['sumBasket']; // on récupère la valeur du panier que l'on a placé dans $_SESSION
@@ -308,24 +307,51 @@ class ControllerItem {
 
 	public static function confirmBuyBasket() {
 		if (Session::is_connected()) {
+			// On commence par récupérer la somme du panier qui est dans la session
 			$sumBasket = $_SESSION['sumBasket']; // On récupère la somme du panier
-			require_once (File::build_path(array('controller', 'ControllerUser.php'))); // on importe controllerUser
-			$user = ModelUser::select($_SESSION['login']); // on reconstruit l'utilisateur
-			if ($user->get('wallet') >= $sumBasket) { // si l'utilisateur a suffisamment d'argent, on continue
-				$user->set('wallet', $user->get('wallet') - $sumBasket); // on lui retire l'argent de son compte
-				$user->saveCurrentState($user); // et on sauvegarde le nouvel état de l'utilisateur
-				$user->checkLevel();
-				// faire un trigger, si 'after update on depense', faire un if et déterminer le niveau du joueur, puis s'il y a changement de niveau, l'annoncer dans un message
-				$tab_basket = $_SESSION['basket']; // on prépare un tableau qui sera le panier
 
-//				unset($_SESSION['basket']); // on efface le panier dans la Session
+			// On instancie un utilisateur afin de pouvoir lui soustraite le montant du panier
+
+			$user = ModelUser::select($_SESSION['login']);
+			if ($user->get('wallet') >= $sumBasket) {
+				$user->set('wallet', $user->get('wallet') - $sumBasket);
+				$data = array ('login' => $user->get('login'), 'wallet' => $user->get('wallet'));
+				ModelUser::updateByID($data);
+
+// maintenant, on va travailler à ajouter les item à l'inventaire de l'utilisateur
+				$tab_basket = $_SESSION['basket'];
+				foreach($tab_basket as $key => $value) {
+						$data = array (
+							'login' => $user->get('login'),
+							'id_item' => $key,
+							'quantity' => $value,
+							'operator' => '+',
+						);
+					ModelInventory::addToInventory($data);
+				}
+
+			// Ensuite on enregistre la commande dans la table commande
+
+			foreach($tab_basket as $key => $value) {
+					$data = array (
+						'id_command' => NULL,
+						'login_user' => $user->get('login'),
+						'id_item' => $key,
+						'quantity_item' =>  $value,
+						'date_buy' => date("Y-m-d"),
+					);
+				ModelCommand::save($data);					
+			}
+
+
+
+
+
+			// On finit en vidant le panier de la session, des cookies
+				unset($_SESSION['basket']); // on efface le panier dans la Session
 
 /*				Si on ne fait pas de trigger dans la BDD
-				foreach($tab_basket as $key => $value) {
-					for($i = 0; $i < $value; $i++) {
-						ControllerInventory::addToInventory($id, $user->getLogin());
-					}
-				}
+
 */
 
 				// n efface 

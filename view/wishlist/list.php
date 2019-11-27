@@ -26,11 +26,11 @@ echo <<< EOT
 <h6>$itemName</h6>
 <img src="../images/$itemName.png" alt="image">
 <br>
-Transfer item from wishlist to basket:
+<a href="index.php?controller=item&action=addToBasket&prix=$itemPriceURL&id=$itemIdURL">Add item to basket</a>
 <br>
 <a href="index.php?controller=wishlist&action=removeFromWishlist&id=$itemIdURL">Remove from wishlist</a>
 <br>
-Detail page of this item : <p><a href="index.php?controller=item&action=read&id=$itemIdURL">Detail</a></p>
+<p><a href="index.php?controller=item&action=read&id=$itemIdURL">More about this item</a></p>
 </div>
 EOT;
 
