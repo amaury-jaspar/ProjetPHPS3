@@ -231,18 +231,6 @@ class ControllerUser {
         require File::build_path(array('view','view.php'));
     }
 
-/*
-    public function payBill() {
-        echo 'paybill';
-        ModelUser::substractMoney();
-    }
-*/
-
-    public function saveCurrentState($data) {
-        echo 'passe ici';
-        ModelUser::updateByID($this);
-    }
-
     public function checkLevel() {
         if ($this->depense >= 0 && $this->depense < 100) {
             $level = 1;

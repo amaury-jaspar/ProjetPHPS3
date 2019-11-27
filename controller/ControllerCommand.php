@@ -1,6 +1,6 @@
 <?php
 
-	require_once (File::build_path(array('model', 'ModelCommand.php')));
+require_once (File::build_path(array('model', 'ModelCommand.php')));
 
 class ControllerCommand {
 
