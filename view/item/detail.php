@@ -17,7 +17,7 @@ echo '<br>';
 if (Session::is_admin()) {
     echo '<a href="index.php?controller=item&action=delete&id=' .$idURL . ' ">Delete this item from DataBase</a>';
     echo '<br>';
-    echo '<a href="index.php?controller=item&action=update&id=' . $idURL . ' ">Modificate the data of this item</a>';
+    echo '<a href="index.php?controller=item&action=update&id=' . $idURL . ' ">Modify the data of this item</a>';
     echo '<br>';
 }
 

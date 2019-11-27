@@ -41,6 +41,15 @@ class ControllerWishlist {
     }
   }
 
+  public static function removeFromWishlist() {
+    $login_user = $_SESSION['login'];
+    $item_id = Routeur::myGet('id');
+    ModelWishlist::deleteItem($login_user, $item_id);
+    $view = 'removedFromWishlist';
+    $pagetitle = 'Item removed from wishlist';
+    require (File::build_path(array("view","view.php")));
+  }
+
 
 }
 

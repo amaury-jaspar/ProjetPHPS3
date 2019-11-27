@@ -28,7 +28,7 @@ echo <<< EOT
 <br>
 Transfer item from wishlist to basket:
 <br>
-<a href="index.php?action=deleteItem&controller=wishlist&id=$itemIdURL&prix=$itemPriceURL">Remove from wishlist</a>
+<a href="index.php?controller=wishlist&action=removeFromWishlist&id=$itemIdURL">Remove from wishlist</a>
 <br>
 Detail page of this item : <p><a href="index.php?controller=item&action=read&id=$itemIdURL">Detail</a></p>
 </div>
