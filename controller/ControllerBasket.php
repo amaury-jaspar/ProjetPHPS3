@@ -147,14 +147,21 @@ public static function beforeBuyBasket() {
 */
 
 public static function confirmBuyBasket() {
+    $user = ModelUser::select($_SESSION['login']);
     if (Session::is_connected()) {
+        if ($user->get('billingaddress') !== NULL && $user->get('shippingaddress')) {
         // On commence par récupérer la somme du panier qui est dans la session
         $sumBasket = $_SESSION['sumBasket']; // On récupère la somme du panier
         // On instancie un utilisateur afin de pouvoir lui soustraite le montant du panier
-        $user = ModelUser::select($_SESSION['login']);
+
         if ($user->get('wallet') >= $sumBasket) {
             $user->set('wallet', $user->get('wallet') - $sumBasket);
-            $data = array ('login' => $user->get('login'), 'wallet' => $user->get('wallet'));
+            $newLevel = $user->get('spend') / 100;
+            if ($newLevel !== $user->get('level')) {
+                echo 'Bravo, vous passez du  niveau '.$user->get('level'). ' au niveau ' .$newLevel;
+                $user->set('level', $newLevel);
+            }
+            $data = array ('login' => $user->get('login'), 'wallet' => $user->get('wallet'), 'spend' => $user->get('spend'));
             ModelUser::updateByID($data);
         // maintenant, on va travailler à ajouter les item à l'inventaire de l'utilisateur
             $tab_basket = $_SESSION['basket'];
@@ -197,6 +204,13 @@ public static function confirmBuyBasket() {
             static::$object = "user";
             $view='profil';
             $pagetitle='profile';
+            require (File::build_path(array("view", "view.php")));
+        }
+        } else {
+            static::$object = "user";
+            echo "You didn't told us about your billing and shipping address. Please, fill the form in the update menu of you profile detail view";
+            $view='connect';
+            $pagetitle='connection';
             require (File::build_path(array("view", "view.php")));
         }
     } else {

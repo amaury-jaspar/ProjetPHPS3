@@ -12,6 +12,8 @@ class ModelUser extends Model {
 	private $wallet;
 	private $level;
 	private $spend;
+	private $shippingaddress;
+	private $billingaddress;
 
 	protected static $object = "user";
 	protected static $primary = "login";
@@ -26,6 +28,8 @@ class ModelUser extends Model {
 			$this->wallet = $data['wallet'];
 			$this->level = $data['level'];
 			$this->spend = $data['spend'];
+			$this->shippingaddress = $data['shippingaddress'];
+			$this->billingaddress = $data['billingaddress'];
 		}
 	}
 

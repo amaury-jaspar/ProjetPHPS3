@@ -59,7 +59,9 @@ class ControllerUser {
                 'nonce' => Security::generateRandomHex(),
                 'wallet' => 0,
                 'level' => 0,
-                'spend' => 0
+                'spend' => 0,
+                'billingaddress' => Routeur::myGet('billingaddress'),
+                'shippingaddress' => Routeur::myGet('shippingaddress'),
             );
             $user = new ModelUser($data);
             $user->save($data);
@@ -122,6 +124,8 @@ class ControllerUser {
             $lastName = htmlspecialchars($user->get('lastName'));
             $surname = htmlspecialchars($user->get('surname'));
             $mail = htmlspecialchars($user->get('mail'));
+            $shippingaddress = htmlspecialchars($user->get('shippingaddress'));
+            $billingaddress = htmlspecialchars($user->get('billingaddress'));
             $password1 = "";
             $password2 = "";
             $required = "readonly";
@@ -154,6 +158,8 @@ class ControllerUser {
                 'nonce' => NULL,
                 'level' => htmlspecialchars(Routeur::myGet('level')),
                 'spend' => htmlspecialchars(Routeur::myGet('spend')),
+                'shippingaddress' => htmlspecialchars(Routeur::myGet('shippingaddress')),
+                'billingaddress' => htmlspecialchars(Routeur::myGet('billingaddress')),
             );
 			ModelUser::updateByID($data);
 			$view='updated';
@@ -166,6 +172,8 @@ class ControllerUser {
 			$lastName = Routeur::myGet('lastname');
 			$surname = Routeur::myGet('surname');
 			$mail = Routeur::myGet('mail');
+            $shippingaddress = Routeur::myGet('shippingaddress');
+            $billingaddress = Routeur::myGet('billingaddress');
             $required = "required";
 			$action = "updated";
 			$view = 'update';
@@ -187,7 +195,7 @@ class ControllerUser {
     }
 
     public static function connected() {
-        if (ModelUser::checkPassword(Routeur::myGet('login'), Security::chiffrer(Routeur::myGet('password'))) !== 0 && ModelUser::checkNonce(Routeur::myGet('login'))) {
+        if (ModelUser::checkPassword(Routeur::myGet('login'), Security::chiffrer(Routeur::myGet('password'))) && ModelUser::checkNonce(Routeur::myGet('login'))) {
             $_SESSION['login'] = Routeur::myGet('login');
             $user = ModelUser::select(Routeur::myGet('login'));
             if ($user->get('admin') == true) {
@@ -229,26 +237,6 @@ class ControllerUser {
         $view='error';
         $pagetitle='Page d\'erreur';
         require File::build_path(array('view','view.php'));
-    }
-
-    public function checkLevel() {
-        if ($this->depense >= 0 && $this->depense < 100) {
-            $level = 1;
-            echo "Felicitation, vous êtes monté de niveau";
-        } else if ($this->depense >= 100 && $this->depense < 1000) {
-            $level = 2;
-            echo "Felicitation, vous êtes monté de niveau";
-        } else if ($this->depense >= 1000 && $this->depense < 10000) {
-            $level = 3;
-            echo "Felicitation, vous êtes monté de niveau";
-        } else if ($this->depense >= 100000 && $this->depense < 1000000) {
-            $level = 4;
-            echo "Felicitation, vous êtes monté de niveau";
-        } else if ($this->depense >= 1000000 && $this->depense < 10000000) {
-            $level = 5;
-        }
-        $this->set('level', $level);
-        $this->saveCurrentState($this);
     }
 
 //----------------------------------- VALIDATION COMPTE --------------------------------------------------------------------------------------

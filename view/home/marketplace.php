@@ -3,24 +3,23 @@
 echo '<div class="container row">';
 echo '<h3>Greetings my friend, choose a shop and have fun shopping</h3>';
 
-foreach ($tab_category as $categoryName => $catDescription) {
+foreach ($tab_category as $category) {
 
-//    $catName = htmlspecialchars($category->get('name'));
-//    $catDescription = htmlspecialchars($category->get('description'));
-$catName = ucfirst($categoryName);
+$catName = ucfirst($category->get('name'));
+$catDesc = ucfirst($category->get('description'));
 
 echo <<< EOT
   <div class="col s6 m6">
         <div class="card medium">
           <div class="card-image">
-            <img src="../images/$categoryName.jpeg">
+            <img src="../images/$catName.jpeg">
             <span class="card-title">$catName</span>
           </div>
           <div class="card-content">
-            <p>$catDescription</p>
+            <p>$catDesc</p>
           </div>
           <div class="card-action">
-            <a href="index.php?action=paging&controller=item&condition=$categoryName">Enter</a>
+            <a href="index.php?action=paging&controller=item&condition=$catName">Enter</a>
         </div>
       </div>
   </div>
