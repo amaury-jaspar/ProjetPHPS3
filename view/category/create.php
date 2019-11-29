@@ -18,6 +18,7 @@ echo <<< EOT
 
                     <label for="fileToUpload">Select image to upload :</label>
                     <input type="file" value="Upload Image" name="img" accept="image/png, image/jpeg" id="fileToUpload"/>
+                    <p>Veuillez nommer l'image du même nom que la category et avec un extention .jpeg</p>
 
                      <br>
                     <input type='hidden' name='id' value=$id>

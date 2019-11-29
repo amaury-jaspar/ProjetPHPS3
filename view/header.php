@@ -10,7 +10,7 @@ echo <<< EOT
             <ul id="nav-mobile" class="right hide-on-med-and-down">
                 <li><a href="index.php?action=buildFrontPage&controller=home">Marketplace</a></li>
                 <li><a href="index.php?action=paging&controller=item">Catalog</a></li>
-                <li><a href="index.php?action=readBasket&controller=item">Basket</a></li>
+                <li><a href="index.php?action=readBasket&controller=basket">Basket</a></li>
 EOT;
 if (!empty($_SESSION['login'])) {
                 echo '<li><a href="index.php?action=read&controller=inventory">Inventory</a></li>';
@@ -34,12 +34,12 @@ echo <<< EOT
             <a data-target="slide-out" class="brand-logo sidenav-trigger">Admin panel</a>            
                 <!-- Général : vision du nombre de membres, fréquentation globale, ventes de la journée et de la semaine -->
                 <li class="tab"><a href="index.php?action=readAll&controller=administration">Général</a></li>
-                <!-- Accès vers readAll de produit -->
-                <li class="tab"><a href="index.php?controller=produit&action=readAll">Gestion des produits</a></li>
+                <!-- Accès vers readAll de item -->
+                <li class="tab"><a href="index.php?controller=item&action=readAll">Items management</a></li>
                 <!-- Général : vision du nombre de membres, fréquentation globale, ventes de la journée et de la semaine -->
-                <li class="tab"><a href="index.php?action=readAll&controller=user">Gestion des utilisateurs</a></li>
+                <li class="tab"><a href="index.php?action=readAll&controller=user">Users Management</a></li>
                 <!-- Calendrier des ventes, visualisation totale, des ventes par jours et par semaine -->
-                <li class="tab"><a href="index.php?action= &controller= ">Vue sur les ventes</a></li>
+                <li class="tab"><a href="index.php?action= &controller= ">Sells management</a></li>
                 <!-- Général : vision du nombre de membres, fréquentation globale, ventes de la journée et de la semaine
                     Incrémentation à chaque nouvelle visite
                     Compteur de vue, qui permet d'incrémenter une variable à chaque fois que l'on charge une page.

@@ -23,6 +23,12 @@ echo <<< EOT
                     <label for="mail_id">Mail</label>
                     <input type="text" placeholder="" name="mail" id="mail_id" value="$mail" required>
                     <br>
+                    <label for="shippingaddress_id">Shipping Address</label>
+                    <input type="text" placeholder="" name="shippingaddress" id="shippingaddress_id" value="$shippingaddress" required>
+                    <br>
+                    <label for="billingaddress_id">Billing Address</label>
+                    <input type="text" placeholder="" name="billingaddress" id="billingaddress_id" value="$billingaddress" required>
+                    <br>
 EOT;
                     if (Session::is_admin() && $action == 'updated') {
 echo <<< EOT
