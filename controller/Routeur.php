@@ -11,24 +11,19 @@ require_once File::build_path(array('controller',"ControllerTest.php"));
 require_once File::build_path(array('controller',"ControllerUser.php"));
 require_once File::build_path(array('controller',"ControllerWishlist.php"));
 
-function alert($a){
-echo "<script>alert('$a')</script>";
-}
 
-class Routeur {
-    public static function myGet($nomvar) {
-        if (isset($_GET[$nomvar])) {
-        return $_GET[$nomvar];
-        } else if (isset($_POST[$nomvar])) {
-            return $_POST[$nomvar];
-        } else {
-            return NULL;
-        }
+function myGet($nomvar) {
+    if (isset($_GET[$nomvar])) {
+    return $_GET[$nomvar];
+    } else if (isset($_POST[$nomvar])) {
+        return $_POST[$nomvar];
+    } else {
+        return NULL;
     }
 }
 
-if (Routeur::myGet('controller') !== NULL) {
-    $controller_class = 'Controller' . Routeur::myGet('controller');
+if (myGet('controller') !== NULL) {
+    $controller_class = 'Controller' . myGet('controller');
 } else {
     $controller_class =  'ControllerHome';
 }
@@ -37,8 +32,8 @@ $array = array("controller", $controller_class);
 
 if (class_exists($controller_class)) {
     $class_methods = get_class_methods($controller_class);
-    if (Routeur::myGet('action') !== NULL) {
-        $action = Routeur::myGet('action');
+    if (myGet('action') !== NULL) {
+        $action = myGet('action');
         if (in_array($action, $class_methods)) {
             $controller_class::$action();
         } else {

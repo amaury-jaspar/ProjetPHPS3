@@ -7,13 +7,14 @@
 	require_once (File::build_path(array('lib', 'Security.php')));
 	require_once (File::build_path(array('lib', 'Session.php')));
 	require_once (File::build_path(array('lib', 'ImageUploader.php')));
-
+	require_once (File::build_path(array('lib', 'Messenger.php')));
+	
 class ControllerItem {
 
 	protected static $object = "item";
 
 	public static function read() {
-		$id = htmlspecialchars(Routeur::myGet('id'));
+		$id = htmlspecialchars(myGet('id'));
 		$item = ModelItem::select($id);
 		if ($item == false) {
 			self::error();
@@ -63,18 +64,18 @@ class ControllerItem {
 	}
 
 	public static function created() {
-		if (Routeur::myGet('catalog') !== NULL) {$catalog = 1;} else { $catalog = 0;}
+		if (myGet('catalog') !== NULL) {$catalog = 1;} else { $catalog = 0;}
 		$data = array (
 			'id' => Security::generateRandomHex(),
-			'name' => Routeur::myGet('name'),
-			'price' => Routeur::myGet('price'),
-			'description' => Routeur::myGet('description'),
+			'name' => myGet('name'),
+			'price' => myGet('price'),
+			'description' => myGet('description'),
 			'catalog' => $catalog,
 			'nbbuy' => 0,
 			'dateadd' => date("Y-m-d"),
-			'category' => Routeur::myGet('category'),
+			'category' => myGet('category'),
 			'nbbuy' =>  0,
-			'levelaccess' =>  Routeur::myGet('levelaccess'),
+			'levelaccess' => myGet('levelaccess'),
 		);
 		$item = new ModelItem($data);
 		if(!empty($_FILES['img'])) { ImageUploader::uploadImg();}
@@ -86,7 +87,7 @@ class ControllerItem {
 	}
 
 	public static function delete() {
-		$id = Routeur::myGet('id');
+		$id = myGet('id');
 		ModelItem::deleteById($id);
 		$tab_item = ModelItem::selectAll();
 		$view='deleted';
@@ -96,7 +97,7 @@ class ControllerItem {
 
 	public static function update() {
 		if (Conf::getDebug() == True) { $method = "get"; } else { $method = "post";}
-		$id = Routeur::myGet('id');
+		$id = myGet('id');
 		$item = ModelItem::select($id);
 		if($item->get('catalog') == 1) { $checked = 'checked="checked"'; } else { $checked = NULL;}
 		$name = $item->get('name');
@@ -111,14 +112,14 @@ class ControllerItem {
 	}
 
 	public static function updated() {
-		if (Routeur::myGet('levelaccess') !== NULL && Routeur::myGet('levelaccess') == on) { $catalog = 1; } else { $catalog = 0; }
+		if (myGet('levelaccess') !== NULL && myGet('levelaccess') == on) { $catalog = 1; } else { $catalog = 0; }
 		$data = array (
-			'id' => Routeur::myGet('id'),
-			'name' => Routeur::myGet('name'),
-			'description' => Routeur::myGet('description'),
-			'price' => Routeur::myGet('price'),
+			'id' => myGet('id'),
+			'name' => myGet('name'),
+			'description' => myGet('description'),
+			'price' => myGet('price'),
 			'catalog' => $catalog,
-			'levelaccess' => Routeur::myGet('levelaccess'),
+			'levelaccess' => myGet('levelaccess'),
 		);
 		ModelItem::updateByID($data);
 		if(!empty($_FILES['img'])) { ImageUploader::uploadImg();}
@@ -130,8 +131,8 @@ class ControllerItem {
 
 	public static function paging() {
 
-		if (Routeur::myGet('condition') !== NULL && Routeur::myGet('condition') != "") {
-			$nb_Id = Modelitem::countCatalogCategory(Routeur::myGet('condition'));
+		if (myGet('condition') !== NULL && myGet('condition') != "") {
+			$nb_Id = Modelitem::countCatalogCategory(myGet('condition'));
 		} else {
 			$nb_Id = ModelItem::countCatalog(); // le nombre d'item qui ont 1 pour l'attribut catalog
 		}
@@ -139,14 +140,14 @@ class ControllerItem {
 		$parPage = 5; // le nombre d'item que l'on veut afficher par page
 		$nbPage = ceil($nb_Id / $parPage); // On calcule le nombre de page par division nbProduit / Produit par page
 
-		if( Routeur::myGet('currentpage') !== NULL && Routeur::myGet('currentpage') > 0 && Routeur::myGet('currentpage') <= $nbPage) {
-			$currentPage = Routeur::myGet('currentpage');
+		if(myGet('currentpage') !== NULL && myGet('currentpage') > 0 && myGet('currentpage') <= $nbPage) {
+			$currentPage = myGet('currentpage');
 		} else {
 			$currentPage = 1;
 		}
 
-		if (Routeur::myGet('condition') !== NULL) {
-			$tab_result = Modelitem::selectPageCategory($currentPage, $parPage, Routeur::myGet('condition'));
+		if (myGet('condition') !== NULL) {
+			$tab_result = Modelitem::selectPageCategory($currentPage, $parPage, myGet('condition'));
 		} else {
 			$tab_result = ModelItem::selectPage($currentPage, $parPage);
 		}

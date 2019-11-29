@@ -3,6 +3,7 @@
 require_once (File::build_path(array('model', 'ModelWishlist.php')));
 require_once (File::build_path(array('model', 'ModelItem.php')));
 require_once (File::build_path(array('lib', 'Session.php')));
+require_once (File::build_path(array('lib', 'Messenger.php')));
 
 class ControllerWishlist {
 
@@ -18,7 +19,7 @@ class ControllerWishlist {
 
   public static function addItem() {
     $login_user = $_SESSION['login'];
-    $item_id = Routeur::myGet('id');
+    $item_id = myGet('id');
     $current_wishlist = ModelWishlist::selectItems('login_user', $login_user);
     foreach ($current_wishlist as $tuple) {
       $current_item = ModelItem::select($tuple['item_id']);
@@ -43,7 +44,7 @@ class ControllerWishlist {
 
   public static function removeFromWishlist() {
     $login_user = $_SESSION['login'];
-    $item_id = Routeur::myGet('id');
+    $item_id = myGet('id');
     ModelWishlist::deleteItem($login_user, $item_id);
     $view = 'removedFromWishlist';
     $pagetitle = 'Item removed from wishlist';

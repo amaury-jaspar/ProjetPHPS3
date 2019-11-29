@@ -1,7 +1,7 @@
 <?php
 
 require_once (File::build_path(array('lib', 'QueryBuilder.php')));
-
+require_once (File::build_path(array('lib', 'Messenger.php')));
 
 class ControllerHome {
 

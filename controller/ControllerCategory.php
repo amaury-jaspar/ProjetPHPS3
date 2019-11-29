@@ -2,13 +2,14 @@
 
 require_once (File::build_path(array('model', 'ModelCategory.php')));
 require_once (File::build_path(array('lib', 'ImageUploader.php')));
+require_once (File::build_path(array('lib', 'Messenger.php')));
 
 class ControllerCategory {
 
 	protected static $object = "category";
 
 	public static function read() {
-		$id = htmlspecialchars(Routeur::myGet('id'));
+		$id = htmlspecialchars(myGet('id'));
 		$category = ModelCategory::select($id);
 		if ($category == false) {
 			$view='error';
@@ -43,8 +44,8 @@ class ControllerCategory {
 	public static function created() {
 		$data = array (
 			'id' => NULL,
-			'name' => Routeur::myGet('name'),
-			'description' => Routeur::myGet('description')
+			'name' => myGet('name'),
+			'description' => myGet('description')
 		);
 		var_dump($_FILES);
 		if(!empty($_FILES['img'])) { ImageUploader::uploadImg();}
@@ -57,7 +58,7 @@ class ControllerCategory {
 	}
 
 	public static function delete() {
-		$category = Routeur::myGet('id');
+		$category = myGet('id');
 		ModelCategory::deleteById($id);
 		$tab_category = ModelCategory::selectAll();
 		$view='deleted';
@@ -67,7 +68,7 @@ class ControllerCategory {
 
 	public static function update() {
 		if (Conf::getDebug() == True) { $method = "get"; } else { $method = "post";}
-		$id = Routeur::myGet('id');
+		$id = myGet('id');
 		$category = ModelCategory::select($id);
 		$name = $category->get('name');
 		$description = $category->get('description');
@@ -80,9 +81,9 @@ class ControllerCategory {
 
     public static function updated() {
 		$data = array (
-			'id' => Routeur::myGet('id'),
-			'name' => Routeur::myGet('name'),
-			'description' => Routeur::myGet('description'),
+			'id' => myGet('id'),
+			'name' => myGet('name'),
+			'description' => myGet('description'),
 		);
 		ModelCategory::updateByID($data);
 		$tab_category = ModelCategory::selectAll();
