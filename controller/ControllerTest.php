@@ -35,6 +35,8 @@ class ControllerTest {
                           ->join('categorisation', 'C', 'P', 'id_produit', 'id')
                           ->join('categorie', 'CA', 'C', 'id', 'id_categorie')
                           ->where('prix', '=', 10)
+                          ->and("condition1", "value1")
+                          ->and("condition2", "value2")
                           ->orderBy('prix', 'DESC')
                           ->limit(10)
                           ->offset(20);

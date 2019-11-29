@@ -118,14 +118,14 @@ public static function beforeBuyBasket() {
             require (File::build_path(array("view", "view.php")));
         } else {
             static::$object = "user";
-            echo "ALERTE : vous n'avez pas suffisament d'argent";
+            alert("ALERTE : vous n'avez pas suffisament d'argent");
             $view='profil';
             $pagetitle='profil';
             require (File::build_path(array("view", "view.php")));
         }
     } else {
         static::$object = "user";
-        echo "ALERTE : Vous devez être connecté pour acheter le contenu de votre panier";
+        alert("YOUR ATTENTION PLEASE : You need to be connected before be allowed to buy the content of your basket");
         $view='connect';
         $pagetitle='connection';
         require (File::build_path(array("view", "view.php")));
@@ -200,7 +200,7 @@ public static function confirmBuyBasket() {
             $pagetitle='Basket bought';
             require (File::build_path(array("view", "view.php")));
         } else {
-            echo "You do not have enought money, you should add money to your account first";
+            alert("You do not have enought money, you should add money to your account first");
             static::$object = "user";
             $view='profil';
             $pagetitle='profile';
@@ -208,13 +208,14 @@ public static function confirmBuyBasket() {
         }
         } else {
             static::$object = "user";
-            echo "You didn't told us about your billing and shipping address. Please, fill the form in the update menu of you profile detail view";
-            $view='connect';
-            $pagetitle='connection';
+            alert("YOUR ATTENTION PLEASE : You didn\'t told us about your billing and shipping address. Please, fill the form in profil -> detail -> update data"); #function call
+            $view='profil';
+            $pagetitle='profile';
             require (File::build_path(array("view", "view.php")));
         }
     } else {
         static::$object = "user";
+        alert("YOUR ATTENTION PLEASE : You need to be connected before be allowed to buy the content of your basket");
         $view='connect';
         $pagetitle='connection';
         require (File::build_path(array("view", "view.php")));

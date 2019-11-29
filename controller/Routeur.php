@@ -11,6 +11,17 @@ require_once File::build_path(array('controller',"ControllerTest.php"));
 require_once File::build_path(array('controller',"ControllerUser.php"));
 require_once File::build_path(array('controller',"ControllerWishlist.php"));
 
+/*
+if (Routeur::myGet('message') !== NULL) {
+    echo "<script type=\"text/javascript\">window.alert('You must enter your full name.');
+    window.location.href = '/index.html';</script>";
+    exit;
+}
+*/
+
+function alert($a){
+echo "<script>alert('$a')</script>";
+}
 
 class Routeur {
     public static function myGet($nomvar) {
