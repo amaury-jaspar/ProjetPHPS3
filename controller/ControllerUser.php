@@ -48,30 +48,42 @@ class ControllerUser {
     }
 
     public static function created() {
-        if (Routeur::myGet('password1') == Routeur::myGet('password2') && filter_var(Routeur::myGet('mail'), FILTER_VALIDATE_EMAIL)) {
-            $data = array (
-                'login' => Routeur::myGet('login'),
-                'lastName' => Routeur::myGet('lastname'),
-                'surname' => Routeur::myGet('surname'),
-                'password' => Security::chiffrer(Routeur::myGet('password1')),
-                'mail' => Routeur::myGet('mail'),
-                'admin' => 0,
-                'nonce' => Security::generateRandomHex(),
-                'wallet' => 0,
-                'level' => 0,
-                'spend' => 0,
-                'billingaddress' => Routeur::myGet('billingaddress'),
-                'shippingaddress' => Routeur::myGet('shippingaddress'),
-            );
-            $user = new ModelUser($data);
-            $user->save($data);
-            $tab_user = ModelUser::selectAll();
-            Validate::sendValidationMail($data);
-            $view='created';
-            $pagetitle='user created';
-            require (File::build_path(array("view", "view.php")));
+        if (Routeur::myGet('password1') === Routeur::myGet('password2')) {
+            if(filter_var(Routeur::myGet('mail'), FILTER_VALIDATE_EMAIL)) {
+                $data = array (
+                    'login' => Routeur::myGet('login'),
+                    'lastName' => Routeur::myGet('lastname'),
+                    'surname' => Routeur::myGet('surname'),
+                    'password' => Security::chiffrer(Routeur::myGet('password1')),
+                    'mail' => Routeur::myGet('mail'),
+                    'admin' => 0,
+                    'nonce' => Security::generateRandomHex(),
+                    'wallet' => 0,
+                    'level' => 0,
+                    'spend' => 0,
+                    'billingaddress' => Routeur::myGet('billingaddress'),
+                    'shippingaddress' => Routeur::myGet('shippingaddress'),
+                );
+                $user = new ModelUser($data);
+                $user->save($data);
+                $tab_user = ModelUser::selectAll();
+                Validate::sendValidationMail($data);
+                $view='created';
+                $pagetitle='user created';
+                require (File::build_path(array("view", "view.php")));
+            } else {
+                alert("YOUR ATTENTION PLEASE : Not a valid email address");
+                $login = Routeur::myGet('login');
+                $lastName = Routeur::myGet('lastname');
+                $surname = Routeur::myGet('surname');
+                $required = "required";
+                $action = "create";
+                $view='update';
+                $pagetitle='user creation';
+                require (File::build_path(array("view", "view.php")));
+            }
         } else {
-            echo "The passwords don't match, please retry";
+            alert("YOUR ATTENTION PLEASE : The passwords don't match, please retry");
             $login = Routeur::myGet('login');
             $lastName = Routeur::myGet('lastname');
             $surname = Routeur::myGet('surname');

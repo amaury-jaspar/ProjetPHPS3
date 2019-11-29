@@ -11,16 +11,16 @@ class Validate {
         }
     }
 
-//    https://webinfo.iutmontp.univ-montp2.fr/my/
-
     public static function sendValidationMail($data) {
-        $message = 'Ce mail vous est envoyé afin de valider votre compte : "'.__DIR__.'/index.php?controller=user&action=validation&login='.$data['login'].'&nonce='.$data['nonce'].'"';
+//        $message = __DIR__ . "http//webinfo.iutmontp.univ-montp2.fr/~simondonj/ecommerce/index.php?controller=user&action=validation&login=$data['login']&nonce=$data['nonce']";
+//        $DIR = __DIR__;
+        echo __DIR__;
+        $DIR = "http://webinfo.iutmontp.univ-montp2.fr/~simondonj/ecommerce/public/";
+        $message2 = $DIR . 'index.php?controller=user&action=validation&login=$data'.['login'].'&nonce=$data'.['nonce'];
         $headers = "FROM : Mystic Market Everywhere";
-        echo $_SERVER['DOCUMENT_ROOT'];
-        echo '<br>';
-        echo $message;
-        echo '<br>';
-        echo $headers;
+
+//        http://webinfo.iutmontp.univ-montp2.fr/~simondonj/ecommerce/public/index.php?controller=user&action=validation&login=3333&nonce=7b4b39951a2e0e6612f8c8a2aafcaf17
+
         mail($data['mail'], "validation", $message, $headers);
         echo "le mail a bien été envoyé";
     }
