@@ -48,6 +48,41 @@ class Model {
 		return $tab[0];
 	}
 
+	public static function selectFromArray($data) {
+		$table_name = static::$object;
+		$class_name = 'Model' . ucfirst($table_name);
+		$sql_query = "SELECT * FROM $table_name WHERE ";
+		$length = count($data);
+		foreach ($data as $key => $value) {
+			$sql_query = $sql_query . $key . "=" . " :value_" . $key;
+			if (--$length) {
+				$sql_query = $sql_query . " AND ";
+			}
+		}
+		try {
+			$req_prep = Model::$pdo->prepare($sql_query);
+			var_dump($sql_query);
+			$values = array();
+			foreach ($data as $key => $value) {
+				$values['value_' . $key] = $value;
+			}
+			$req_prep->execute($values);
+			$req_prep->setFetchMode(PDO::FETCH_CLASS, $class_name);
+			$tab = $req_prep->fetchAll();
+		} catch (PDOException $e) {
+			if(Conf::getDebug()) {
+				echo $e->getMessage();
+			} else {
+				echo 'Une erreur est survenue <a href="index.php?action=buildFrontPage&controller=home"> retour à la page d\'acceuil </a>';
+			}
+			die();
+		}
+		if (empty($tab))
+			return false;
+		return $tab[0];
+	}
+
+
 	public static function selectAll() {
 		$table_name = static::$object;
 		$class_name = 'Model' . ucfirst($table_name);
@@ -91,6 +126,39 @@ class Model {
 			die();
 		}
 		if (empty($tab_obj))
+			return false;
+		return $tab_obj;
+	}
+
+	public static function selectWhereFromArray($data) {
+		$table_name = static::$object;
+		$class_name = 'Model' . ucfirst($table_name);
+		$sql_query = "SELECT * FROM $table_name WHERE ";
+		$length = count($data);
+		foreach ($data as $key => $value) {
+			$sql_query = $sql_query . $key . "=" . " :value_" . $key;
+			if (--$length) {
+				$sql_query = $sql_query . " AND ";
+			}
+		}
+		try {
+			$req_prep = Model::$pdo->prepare($sql_query);
+			$values = array();
+			foreach ($data as $key => $value) {
+				$values['value_' . $key] = $value;
+			}
+			$req_prep->execute($values);
+      $req_prep->setFetchMode(PDO::FETCH_ASSOC);
+      $tab_obj = $req_prep->fetchAll();
+    } catch (PDOException $e) {
+      if(Conf::getDebug()) {
+        echo $e->getMessage();
+      } else {
+        echo 'Une erreur est survenue <a href="index.php?action=buildFrontPage&controller=home"> retour à la page d\'acceuil </a>';
+      }
+      die();
+    }
+    if (empty($tab_obj))
 			return false;
 		return $tab_obj;
 	}

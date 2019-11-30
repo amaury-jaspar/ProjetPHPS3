@@ -25,31 +25,6 @@ class ModelWishlist extends Model {
     $this->$attribute = $value;
   }
 
-  public static function selectItems($value) {
-    $primary_key = static::$primary;
-    $table_name = static::$object;
-    try {
-      $req_prep = Model::$pdo->prepare("SELECT * FROM $table_name WHERE login_user = :value");
-      $values = array(
-        "value" => $value
-      );
-      $req_prep->execute($values);
-      $req_prep->setFetchMode(PDO::FETCH_ASSOC);
-      $tab_obj = $req_prep->fetchAll();
-      // $tab_obj = $req_prep->fetch(PDO::FETCH_ASSOC);
-    } catch (PDOException $e) {
-      if(Conf::getDebug()) {
-        echo $e->getMessage();
-      } else {
-        echo 'Une erreur est survenue <a href="index.php?action=buildFrontPage&controller=home"> retour à la page d\'acceuil </a>';
-      }
-      die();
-    }
-    if (empty($tab_obj))
-			return false;
-		return $tab_obj;
-  }
-
   public static function deleteItem($login_user, $item_id) {
 		$table_name = static::$object;
 		try {
