@@ -4,16 +4,14 @@ require_once (File::build_path(array('model', 'Model.php')));
 
 class ModelCategory extends Model {
 
-    private $id;
     private $name;
     private $description;
 
     protected static $object = "category";
-    protected static $primary = "id";
+    protected static $primary = "name";
 
   public function __construct($data = NULL) {
     if (!is_null($data)) {
-      $this->id = $data['id'];
       $this->name = $data['name'];
       $this->description = $data['description'];      
     }

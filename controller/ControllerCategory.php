@@ -9,8 +9,8 @@ class ControllerCategory {
 	protected static $object = "category";
 
 	public static function read() {
-		$id = htmlspecialchars(myGet('id'));
-		$category = ModelCategory::select($id);
+		$name = htmlspecialchars(myGet('name'));
+		$category = ModelCategory::select($name);
 		if ($category == false) {
 			$view='error';
             $pagetitle='Error page';
@@ -24,26 +24,24 @@ class ControllerCategory {
 
 	public static function readAll() {
         $tab_category = ModelCategory::selectAll();
-        $view='list';
+		$view='list';
         $pagetitle='Category list';
         require (File::build_path(array("view", "view.php")));
 	}
 
 	public static function create() {
 		if (Conf::getDebug() == True) { $method = "get"; } else { $method = "post";}
-		$id = NULL;
 		$name = "";
         $description = "";
 		$required = "required";
 		$action = "created";
-		$view='create';
+		$view='update';
 		$pagetitle='Create Category';
 		require_once (File::build_path(array("view", "view.php")));
 	}
 
 	public static function created() {
 		$data = array (
-			'id' => NULL,
 			'name' => myGet('name'),
 			'description' => myGet('description')
 		);
@@ -58,8 +56,8 @@ class ControllerCategory {
 	}
 
 	public static function delete() {
-		$category = myGet('id');
-		ModelCategory::deleteById($id);
+		$category = myGet('name');
+		ModelCategory::deleteById(myGet('name'));
 		$tab_category = ModelCategory::selectAll();
 		$view='deleted';
 		$pagetitle='Delete Category';
@@ -67,11 +65,11 @@ class ControllerCategory {
 	}
 
 	public static function update() {
+		// tester si le nom de la categorie n'existe pas déjà dans la BDD et renvoyer vers le formulaire si c'est le cas
 		if (Conf::getDebug() == True) { $method = "get"; } else { $method = "post";}
-		$id = myGet('id');
-		$category = ModelCategory::select($id);
-		$name = $category->get('name');
-		$description = $category->get('description');
+		$category = ModelCategory::select(myGet('name'));
+		$name = htmlspecialchars($category->get('name'));
+		$description = htmlspecialchars($category->get('description'));
 		$required = "readonly";
 		$action = "updated";
 		$view='update';
@@ -81,15 +79,14 @@ class ControllerCategory {
 
     public static function updated() {
 		$data = array (
-			'id' => myGet('id'),
 			'name' => myGet('name'),
 			'description' => myGet('description'),
 		);
 		ModelCategory::updateByID($data);
-		$tab_category = ModelCategory::selectAll();
 		$view='updated';
 		$pagetitle='Category updated';
 		require_once (File::build_path(array("view", "view.php")));
+
 	}
 
 }

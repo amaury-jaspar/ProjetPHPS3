@@ -11,7 +11,6 @@ require_once File::build_path(array('controller',"ControllerTest.php"));
 require_once File::build_path(array('controller',"ControllerUser.php"));
 require_once File::build_path(array('controller',"ControllerWishlist.php"));
 
-
 function myGet($nomvar) {
     if (isset($_GET[$nomvar])) {
     return $_GET[$nomvar];
@@ -45,7 +44,5 @@ if (class_exists($controller_class)) {
 } else {
     ControllerHome::buildFrontPage();
 }
-
-
 
 ?>

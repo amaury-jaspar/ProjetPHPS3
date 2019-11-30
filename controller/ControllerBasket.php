@@ -153,10 +153,10 @@ public static function confirmBuyBasket() {
         if ($user->get('billingaddress') !== NULL && $user->get('shippingaddress')) {
         // On commence par récupérer la somme du panier qui est dans la session
         $sumBasket = $_SESSION['sumBasket']; // On récupère la somme du panier
-        // On instancie un utilisateur afin de pouvoir lui soustraite le montant du panier
-
+        // On instancie un utilisateur afin de pouvoir lui soustraite le montant du panier et d'augmenter son attribut spend
         if ($user->get('wallet') >= $sumBasket) {
             $user->set('wallet', $user->get('wallet') - $sumBasket);
+            $user->set('spend', $user->get('spend') + $sumBasket);
             $newLevel = $user->get('spend') / 100;
             if ($newLevel != $user->get('level')) {
                 echo 'Bravo, vous passez du  niveau '.$user->get('level'). ' au niveau ' .$newLevel;

@@ -40,9 +40,9 @@ class ControllerUser {
         $surname = "";
         $password1 = "";
         $password2 = "";
+        $mail = "";
         $shippingaddress = "";
         $billingaddress = "";
-        $mail = "";
         $required = "required";
         $action = "created";
         $view='update';
@@ -51,7 +51,7 @@ class ControllerUser {
     }
 
     public static function created() {
-        if (is_null(myGet('login')) || is_null(myGet('mail')) || is_null(myGet('password1')) || is_null(myGet('password2'))) {
+        if (is_null(myGet('login')) || is_null(myGet('lastName')) || is_null(myGet('surname')) || is_null(myGet('password1')) || is_null(myGet('password2')) || is_null(myGet('mail')) || is_null(myGet('shippingaddress')) || is_null(myGet('billingaddress'))) {
             $errorMessage = 'YOUR ATTENTION PLEASE : Some of the attribut are NULL';
         } else if (ModelUser::select(myGet('login')) !== false) {
             $errorMessage = 'YOUR ATTENTION PLEASE : This login is already use';
@@ -63,7 +63,7 @@ class ControllerUser {
         if (!isset($errorMessage)) {
             $data = array (
                 'login' => myGet('login'),
-                'lastName' => myGet('lastname'),
+                'lastName' => myGet('lastName'),
                 'surname' => myGet('surname'),
                 'password' => Security::chiffrer(myGet('password1')),
                 'mail' => myGet('mail'),
@@ -84,7 +84,7 @@ class ControllerUser {
         } else {
             Messenger::alert($errorMessage);
             $login = myGet('login');
-            $lastName = myGet('lastname');
+            $lastName = myGet('lastName');
             $surname = myGet('surname');
             $password1 = "";
             $password2 = "";
@@ -128,7 +128,7 @@ class ControllerUser {
 
     /*
     * Seul l'admin ou l'utilisateur en question peuvent faire update sur l'utilisateur
-    * On préremplie les champs lastname, surname et mail
+    * On préremplie les champs lastName, surname et mail
     */
 	public static function update() {
         if (Session::is_user(myGet('login')) || Session::is_admin()) {
@@ -166,7 +166,7 @@ class ControllerUser {
             if (myGet('admin') !== NULL && myGet('admin') == on) { $admin = 1; } else { $admin = 0; }
             $data = array (
 				'login' => htmlspecialchars(myGet('login')),
-				'lastName' => htmlspecialchars(myGet('lastname')),
+				'lastName' => htmlspecialchars(myGet('lastName')),
 				'surname' => htmlspecialchars(myGet('surname')),
                 'mail' => htmlspecialchars(myGet('mail')),
                 'admin' => $admin,
@@ -178,13 +178,13 @@ class ControllerUser {
             );
 			ModelUser::updateByID($data);
 			$view='updated';
-			$pagetitle='Modication of a user finished';
+			$pagetitle='User modificated';
 			require (File::build_path(array("view", "view.php")));
 		} else {
             if (Conf::getDebug() == True) { $method = "get"; } else { $method = "post";}
             Messenger::alert("The passwords don't match, please retry");
 			$login = myGet('login');
-			$lastName = myGet('lastname');
+			$lastName = myGet('lastName');
 			$surname = myGet('surname');
 			$mail = myGet('mail');
             $shippingaddress = myGet('shippingaddress');

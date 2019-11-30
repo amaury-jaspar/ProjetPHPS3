@@ -16,7 +16,7 @@ class Validate {
 //        $DIR = __DIR__;
         echo __DIR__;
         $DIR = "http://webinfo.iutmontp.univ-montp2.fr/~simondonj/ecommerce/public/";
-        $message2 = $DIR . 'index.php?controller=user&action=validation&login=$data'.['login'].'&nonce=$data'.['nonce'];
+//        $message2 = $DIR . "index.php?controller=user&action=validation&login=".$data'.['login']."&nonce=".$data['nonce']";
         $headers = "FROM : Mystic Market Everywhere";
 
 //        http://webinfo.iutmontp.univ-montp2.fr/~simondonj/ecommerce/public/index.php?controller=user&action=validation&login=3333&nonce=7b4b39951a2e0e6612f8c8a2aafcaf17
