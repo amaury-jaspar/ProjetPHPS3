@@ -31,7 +31,7 @@ class ControllerCommand {
 	public static function create($data) {
 		$command = new ModelItem($data);
         $command->save($data);
-    }
+  }
 
 	public static function delete() {
 		$id = myGet('id');
