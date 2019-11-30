@@ -11,6 +11,11 @@ require_once File::build_path(array('controller',"ControllerTest.php"));
 require_once File::build_path(array('controller',"ControllerUser.php"));
 require_once File::build_path(array('controller',"ControllerWishlist.php"));
 
+if (isset($_COOKIE['basket'])) {
+    $tab_basket = unserialize($_COOKIE['basket']);
+    $_SESSION['basket'] = $tab_basket;  
+}
+
 function myGet($nomvar) {
     if (isset($_GET[$nomvar])) {
     return $_GET[$nomvar];

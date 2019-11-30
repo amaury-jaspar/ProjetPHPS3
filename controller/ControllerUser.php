@@ -11,14 +11,23 @@ class ControllerUser {
     protected static $object = "user";
 
     public static function read() {
-        $login = myGet('login');
-        $user = ModelUser::select($login);
-        if ($user == false) {
-            self::error();
+        if (is_null(myGet('login'))) {
+            $message = "YOUR ATTENTION PLEASE : some attribut are NULL";
+        }
+
+        if (!isset($message)) {
+            $login = myGet('login');
+            $user = ModelUser::select($login);
+            if ($user == false) {
+                self::error();
+            } else {
+                $view='detail';
+                $pagetitle='Detail user';
+                require_once (File::build_path(array("view", "view.php")));
+            }
         } else {
-            $view='detail';
-            $pagetitle='Detail user';
-            require_once (File::build_path(array("view", "view.php")));
+            Messenger::alert($message);
+            self::error();
         }
     }
 
