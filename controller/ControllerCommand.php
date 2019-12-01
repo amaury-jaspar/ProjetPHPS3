@@ -22,10 +22,21 @@ class ControllerCommand {
 	}
 
 	public static function readAll() {
-        $tab_command = ModelCommand::selectAll();
-        $view='list';
-        $pagetitle='Command list';
-        require (File::build_path(array("view", "view.php")));
+			$login_user = $_SESSION['login'];
+		  $data = array(
+		    "login_user" => $login_user
+		  );
+		  $tab_commands = ModelCommand::selectWhereFromArray($data);
+		  if (!empty($tab_commands)) {
+		    $tab_items = array();
+		    foreach ($items as $tuple) {
+		      $current_item = ModelItem::select($tuple['item_id']);
+		      $tab_items[] = $current_item;
+	    }
+	  }
+	  $view='list';
+	  $pagetitle='Command list';
+	  require (File::build_path(array("view", "view.php")));
 	}
 
 	public static function create($data) {

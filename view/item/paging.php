@@ -1,7 +1,6 @@
 <h1>OUR CATALOG</h1>
 
-
-<div class="row">
+<div class="row container">
     <form method="get" action="index.php?" class="col s12">
         <div class="row" id="test">
             <div class="input-field col s12">
@@ -20,7 +19,7 @@
             </div>
         </div>
     </form>
-<div>
+</div>
 
 <?php
 
