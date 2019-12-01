@@ -60,6 +60,7 @@ class ControllerUser {
     }
 
     public static function created() {
+        if (isset($errorMessage)) { unset($errorMessage); }
         if (is_null(myGet('login')) || is_null(myGet('lastName')) || is_null(myGet('surname')) || is_null(myGet('password1')) || is_null(myGet('password2')) || is_null(myGet('mail')) || is_null(myGet('shippingaddress')) || is_null(myGet('billingaddress'))) {
             $errorMessage = 'Some of the attribut are NULL';
         } else if (ModelUser::select(myGet('login')) !== false) {
@@ -226,6 +227,7 @@ class ControllerUser {
             if ($user->get('admin') == true) {
                 $_SESSION['admin'] = true;
             }
+            $_SESSION['connected'] = true;
             $view='profil';
             $pagetitle='User\'s detail';
             require (File::build_path(array("view", "view.php")));

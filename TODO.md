@@ -1,5 +1,56 @@
 TODO :
 
+Vérification du mail :
+Dans le cas ou l'utilisateur fait une faute de frappe dans le mail, et qu'il est envoyé à quelqu'un d'autre.
+le nonce est envoyé à la mauvaise addresse, et donc un autre utilisateur peut valider le mail avec le nonce.
+Il faut donc demander à l'utilisateur d'être connecté pour pouvoir valider une addresse email grâce au nonce.
+DONC il faut un champ email_validated dans la dession qui fait que quand on est connecté sans avoir validé, alors on ne peut que valider son email.
+
+
+Comment faire un vrai chemin URL absolu :
+http//{$_SERVER['HTTP_HOST']}{$_SERVER['PHP_SELF']}
+A PLACER DANS VALIDATE
+tenter un echo de "http//".{$_SERVER['HTTP_HOST']}{$_SERVER['PHP_SELF']}; dans index.php
+
+LA NOTATION :
+
+HTML/CSS :
+validé et séparés (chercher s'il n'y a pas un peu de inline qui traine)
+charset='utf-8' DONE
+Tester le HTML et CSS sur W3C : https://validator.w3.org/
+factoriser le code (include pour header, footer et content) DONE
+Utilisation de div pour la mise en page
+CSS responsive
+
+FORMULAIRE :
+vérification en html5
+préremplissage avec placeholder
+préremplissage données en php DONE
+
+BACK-OFFICE :
+Message de bienvenue
+Securisation de quelques pages (manuellement), surtout les update et créate, exactement comment est protégé la vue create de user à l'heure actuelle
+Sécurisation de toutes les pages (automatisé via le controleur) : peut-être qu'en fonction de l'action demandé, on peut vérifier si la personne est admin ou user etc...
+
+SESSION :
+Il faut l'information que l'on s'est identifié (is_connected ?)
+Donc il faut vérifier l'état de connection très souvent, pour toutes les vues qui le nécessite.
+
+CRUD :
+Faire une fonctionnalité qui nécessite une jointure
+
+MVC :
+Aucun code HTML hors des vues
+Aucun SQL hors du modèle
+Aucun calcul dans les vue (les if sont des calculs, et on en a plein)
+
+
+La qualité de la démonstration est noté, il faut se faire une liste des fonctionnalités que l'on veut montrer !!!!!!!!!!!!!
+
+Pour checkPassword dans user, il faudrait utiliser ModelUser::selectWhere($data) qui fait un select sur les champs de $data (login et mpd), et non pas utilisé ModelUser::select($data)
+
+
+
 Transfert to wish list ne fonctionne pas
 
 Faire l’autorisation d’upload dans le tuto d’uploading d’images
@@ -9,6 +60,22 @@ Voir problèmes de sessions avec addToBasket
 Faire que le disconnect renvoie vers la page home
 
 Les vues à sécuriser les plus importantes sont du genre update ou delete car ce sont elles qui font véritablement le script, les autres ne font que construire les pages.
+
+https://www.php.net/manual/fr/book.password.php
+
+Prévention de hijacking :
+	On peut authentifier les utilisateurs en stockant leur adresse IP, en plus d'autres détails
+	$_SESSION['ip'] = $_SERVER['REMOTE_ADDR'];
+	A chaque fois que l'on charge une page et qu'une session est disponible :
+	on vérifie de cette manière :
+	if ($_SESSION['ip'] != $_SERVER['REMOTE_ADDR']) {   different_user();    } 
+	et le code dans different_user(); est encore à déterminer (rick rolled ?)
+		il est recommander de supprimer la session actuelle, et de demander à l'utilisateur de se connecter à nouveau à cause d'une erreur technique
+		
+
+
+test une concatenation de $_SERVER['HTTP_HOST'] et $_SERVER['REQUEST_URI']
+
 
 — Vérifier les triggers
 — Reprendre la grille de notation et faire le boulot demandé
