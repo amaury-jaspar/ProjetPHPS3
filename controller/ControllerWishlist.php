@@ -15,6 +15,13 @@ class ControllerWishlist {
       "login_user" => $login_user
     );
     $wishlist = ModelWishlist::selectWhereFromArray($data);
+    if (!empty($wishlist)) {
+      $tab_wishes = array();
+      foreach ($wishlist as $tuple) {
+        $current_item = ModelItem::select($tuple['item_id']);
+        $tab_wishes[] = $current_item;
+      }
+    }
     $view = 'list';
     $pagetitle = 'Wishlist';
     require(File::build_path(array('view','view.php')));
@@ -37,11 +44,13 @@ class ControllerWishlist {
         'login_user' => $login_user,
         'item_id' => $item_id
       );
+      $item = ModelItem::select(myGet('id'));
       $wishlist->save($data);
       $view = 'addedToWishlist';
       $pagetitle = 'Item added to wishlis}t';
       require (File::build_path(array("view","view.php")));
     } else {
+      $item = ModelItem::select(myGet('id'));
       $view = 'alreadyInWishlist';
       $pagetitle = 'Item already in wishlist';
       require (File::build_path(array("view","view.php")));

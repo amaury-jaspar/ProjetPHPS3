@@ -91,7 +91,7 @@ public static function deleteFromBasket() {
         }
     }
     setcookie('basket', serialize($tab_basket), time() + (60 * 60 * 24));
-    ControllerBasket::actualizeSumBasket();		
+    ControllerBasket::actualizeSumBasket();
     $sumBasket = $_SESSION['sumBasket'];
     $tab_basket = unserialize($_COOKIE['basket']);
     foreach($tab_basket as $key => $value) {
@@ -186,7 +186,7 @@ public static function confirmBuyBasket() {
                     'quantity_item' =>  $value,
                     'date_buy' => date("Y-m-d"),
                 );
-                ModelCommand::save($data);					
+                ModelCommand::save($data);
             }
             // On finit en vidant le panier de la session, des cookies
             // Il faut en faire plus ici, car il existe plusieurs moyens de conserver des cookie
@@ -194,7 +194,7 @@ public static function confirmBuyBasket() {
             setcookie('basket', "", time() - 1);
             unset($_SESSION['basket']); // on efface le panier dans la Session
             $_SESSION['sumBasket'] = 0;
-            // Pour chaque item, il faut incrémenter l'attribut nbAchat 
+            // Pour chaque item, il faut incrémenter l'attribut nbAchat
             foreach($tab_basket as $key => $value) {
                 $item = ModelItem::select($key);
                 $item->set('nbbuy', $item->get('nbbuy') + $value);
