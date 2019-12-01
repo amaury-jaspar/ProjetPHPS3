@@ -65,15 +65,11 @@ class ModelInventory extends Model {
     var_dump($data);
     echo '</pre>';
     $sql = "UPDATE $table_name SET quantity = quantity $operator :quantity WHERE $primary_key1 = :login AND $primary_key2 = :id_item";
-
     $values = array(
       'quantity' => $data['quantity'],
       'login' => $data['login'],
       'id_item' => $data['id_item'],
     );
-
-    echo $sql;
-
     try {
 			$req_prep = Model::$pdo->prepare($sql);
 			$req_prep->execute($values);

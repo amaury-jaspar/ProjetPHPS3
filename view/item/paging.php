@@ -9,11 +9,12 @@
                     <input type='hidden' name='controller' value='item'>
                     <select id="select" name="condition">
                         <option id="select" value="" disabled selected>Tri : All shop</option>
-                        <option value="alchimist">Tri : Alchimist</option>
-                        <option value="tavern">Tri : Tavern</option>
-                        <option value="bookstore">Tri : Bookstore</option>
-                        <option value="temple">Tri : Temple</option>
-                        <option value="armory">Tri : Armory</option>
+                        <?php
+                        foreach($tab_category as $category) {
+                            $tabName = htmlspecialchars($category->get('name'));
+                            echo " <option value=".$tabName.">Tri : ".ucfirst($tabName)."</option>  ";
+                        }
+                        ?>
                     </select>
                     <input type="submit" value="Envoyer">
             </div>

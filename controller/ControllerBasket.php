@@ -5,11 +5,12 @@
 	require_once (File::build_path(array('model', 'ModelUser.php')));
 	require_once (File::build_path(array('model', 'ModelInventory.php')));
 	require_once (File::build_path(array('model', 'ModelCommand.php')));
+    require_once (File::build_path(array('lib', 'Messenger.php')));
 
 class ControllerBasket {
 
     protected static $object = "basket";
-    
+
 //-----------------------------------BASKET--------------------------------------------------------------------------------------
 
 /*
@@ -22,6 +23,8 @@ class ControllerBasket {
 *			à actualiser le plus souvent possible grâce à la fonction actualiserSommePanier
 */
 
+
+// si is_connected est faux, alors on lit le panier côté cookie, sinon on lit le panier côté serveur
 public static function readBasket() {
     ControllerBasket::actualizeSumBasket();
     $sumBasket = $_SESSION['sumBasket'];
@@ -47,15 +50,15 @@ public static function actualizeSumBasket() {
 }
 
 public static function addToBasket() {
-    $item = ModelItem::select(Routeur::myGet('id'));
+    $item = ModelItem::select(myGet('id'));
     $tab_basket = NULL;
     if(isset($_COOKIE['basket'])) {
         $tab_basket = unserialize($_COOKIE['basket']);
     }
-    if(isset($tab_basket[Routeur::myGet('id')])) {
-        $tab_basket[Routeur::myGet('id')] += 1;
+    if(isset($tab_basket[myGet('id')])) {
+        $tab_basket[myGet('id')] += 1;
     } else {
-        $tab_basket[Routeur::myGet('id')] = 1;
+        $tab_basket[myGet('id')] = 1;
     }
     setcookie('basket', serialize($tab_basket), time()+ (60 * 60 * 24));
     ControllerBasket::actualizeSumBasket();
@@ -75,15 +78,15 @@ public static function resetBasket() {
 }
 
 public static function deleteFromBasket() {
-    $item = ModelItem::select(Routeur::myGet('id'));
+    $item = ModelItem::select(myGet('id'));
     if(isset($_COOKIE['basket'])) {
         $tab_basket = unserialize($_COOKIE['basket']);
     } else {
         self::error();
     }
     if(isset($tab_basket[$item->get('id')])) {
-        $tab_basket[Routeur::myGet('id')] -= 1;
-        if($tab_basket[Routeur::myGet('id')] <= 0) {
+        $tab_basket[myGet('id')] -= 1;
+        if($tab_basket[myGet('id')] <= 0) {
             unset($tab_basket[$item->get('id')]);
         }
     }
@@ -118,14 +121,14 @@ public static function beforeBuyBasket() {
             require (File::build_path(array("view", "view.php")));
         } else {
             static::$object = "user";
-            echo "ALERTE : vous n'avez pas suffisament d'argent";
+            Messenger::alert("ALERTE : vous n'avez pas suffisament d'argent");
             $view='profil';
             $pagetitle='profil';
             require (File::build_path(array("view", "view.php")));
         }
     } else {
         static::$object = "user";
-        echo "ALERTE : Vous devez être connecté pour acheter le contenu de votre panier";
+        Messenger::alert("YOUR ATTENTION PLEASE : You need to be connected before be allowed to buy the content of your basket");
         $view='connect';
         $pagetitle='connection';
         require (File::build_path(array("view", "view.php")));
@@ -152,12 +155,12 @@ public static function confirmBuyBasket() {
         if ($user->get('billingaddress') !== NULL && $user->get('shippingaddress')) {
         // On commence par récupérer la somme du panier qui est dans la session
         $sumBasket = $_SESSION['sumBasket']; // On récupère la somme du panier
-        // On instancie un utilisateur afin de pouvoir lui soustraite le montant du panier
-
+        // On instancie un utilisateur afin de pouvoir lui soustraite le montant du panier et d'augmenter son attribut spend
         if ($user->get('wallet') >= $sumBasket) {
             $user->set('wallet', $user->get('wallet') - $sumBasket);
+            $user->set('spend', $user->get('spend') + $sumBasket);
             $newLevel = $user->get('spend') / 100;
-            if ($newLevel !== $user->get('level')) {
+            if ($newLevel != $user->get('level')) {
                 echo 'Bravo, vous passez du  niveau '.$user->get('level'). ' au niveau ' .$newLevel;
                 $user->set('level', $newLevel);
             }
@@ -200,7 +203,7 @@ public static function confirmBuyBasket() {
             $pagetitle='Basket bought';
             require (File::build_path(array("view", "view.php")));
         } else {
-            echo "You do not have enought money, you should add money to your account first";
+            Messenger::alert("You do not have enought money, you should add money to your account first");
             static::$object = "user";
             $view='profil';
             $pagetitle='profile';
@@ -208,13 +211,14 @@ public static function confirmBuyBasket() {
         }
         } else {
             static::$object = "user";
-            echo "You didn't told us about your billing and shipping address. Please, fill the form in the update menu of you profile detail view";
-            $view='connect';
-            $pagetitle='connection';
+            Messenger::alert("YOUR ATTENTION PLEASE : You didn\'t told us about your billing and shipping address. Please, fill the form in profil -> detail -> update data"); #function call
+            $view='profil';
+            $pagetitle='profile';
             require (File::build_path(array("view", "view.php")));
         }
     } else {
         static::$object = "user";
+        Messenger::alert("YOUR ATTENTION PLEASE : You need to be connected before be allowed to buy the content of your basket");
         $view='connect';
         $pagetitle='connection';
         require (File::build_path(array("view", "view.php")));

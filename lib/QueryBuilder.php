@@ -212,6 +212,8 @@
         
                 echo "<br>";
         
+        // select * from commande join lignecommande on id_commande = id_commande
+
                 $myRequest2 = new QueryBuilder;
         
                 $myRequest2->select('*')

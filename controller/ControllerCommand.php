@@ -1,13 +1,14 @@
 <?php
 
 require_once (File::build_path(array('model', 'ModelCommand.php')));
+require_once (File::build_path(array('lib', 'Messenger.php')));
 
 class ControllerCommand {
 
 	protected static $object = "command";
 
 	public static function read() {
-		$id = htmlspecialchars(Routeur::myGet('id'));
+		$id = htmlspecialchars(myGet('id'));
 		$command = ModelCommand::select($id);
 		if ($command == false) {
 			$view='error';
@@ -30,10 +31,10 @@ class ControllerCommand {
 	public static function create($data) {
 		$command = new ModelItem($data);
         $command->save($data);
-    }
+  }
 
 	public static function delete() {
-		$id = Routeur::myGet('id');
+		$id = myGet('id');
 		ModelCommand::deleteById($id);
 		$tab_command = ModelCommand::selectAll();
 		$view='deleted';

@@ -2,10 +2,10 @@
 
 foreach ($tab_category as $category) {
 
-	$categoryId = rawurldecode($category->get('id'));
-	$categoryName = htmlspecialchars($category->get('name'));
+	$categoryNameURL = rawurldecode($category->get('name'));
+	$categoryNameHTML = htmlspecialchars($category->get('name'));
 
-	echo '<p> Category : <a href="index.php?controller=category&action=read&id='. $categoryId . '"> ' . $categoryName . '</a>.</p>';
+	echo '<p> Category : <a href="index.php?controller=category&action=read&name='. $categoryNameURL . '"> ' . $categoryNameHTML . '</a></p>';
 
 }
 

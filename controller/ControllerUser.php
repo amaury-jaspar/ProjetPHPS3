@@ -4,20 +4,30 @@
     require_once (File::build_path(array('lib', 'Security.php')));
     require_once (File::build_path(array('lib', 'Session.php')));
     require_once (File::build_path(array('lib', 'Validate.php')));
+    require_once (File::build_path(array('lib', 'Messenger.php')));
 
 class ControllerUser {
 
     protected static $object = "user";
 
     public static function read() {
-        $login = Routeur::myGet('login');
-        $user = ModelUser::select($login);
-        if ($user == false) {
-            self::error();
+        if (is_null(myGet('login'))) {
+            $message = "YOUR ATTENTION PLEASE : some attribut are NULL";
+        }
+
+        if (!isset($message)) {
+            $login = myGet('login');
+            $user = ModelUser::select($login);
+            if ($user == false) {
+                self::error();
+            } else {
+                $view='detail';
+                $pagetitle='Detail user';
+                require_once (File::build_path(array("view", "view.php")));
+            }
         } else {
-            $view='detail';
-            $pagetitle='Detail user';
-            require_once (File::build_path(array("view", "view.php")));
+            Messenger::alert($message);
+            self::error();
         }
     }
 
@@ -40,6 +50,8 @@ class ControllerUser {
         $password1 = "";
         $password2 = "";
         $mail = "";
+        $shippingaddress = "";
+        $billingaddress = "";
         $required = "required";
         $action = "created";
         $view='update';
@@ -48,33 +60,45 @@ class ControllerUser {
     }
 
     public static function created() {
-        if (Routeur::myGet('password1') == Routeur::myGet('password2') && filter_var(Routeur::myGet('mail'), FILTER_VALIDATE_EMAIL)) {
+        if (is_null(myGet('login')) || is_null(myGet('lastName')) || is_null(myGet('surname')) || is_null(myGet('password1')) || is_null(myGet('password2')) || is_null(myGet('mail')) || is_null(myGet('shippingaddress')) || is_null(myGet('billingaddress'))) {
+            $errorMessage = 'Some of the attribut are NULL';
+        } else if (ModelUser::select(myGet('login')) !== false) {
+            $errorMessage = 'This login is already use';
+        } else if (myGet('password1') !== myGet('password2')) {
+            $errorMessage = 'problem of password that do no match';
+        } else if (!(filter_var(myGet('mail'), FILTER_VALIDATE_EMAIL))) {
+            $errorMessage = 'invalid email address format';
+        }
+        if (!isset($errorMessage)) {
             $data = array (
-                'login' => Routeur::myGet('login'),
-                'lastName' => Routeur::myGet('lastname'),
-                'surname' => Routeur::myGet('surname'),
-                'password' => Security::chiffrer(Routeur::myGet('password1')),
-                'mail' => Routeur::myGet('mail'),
+                'login' => myGet('login'),
+                'lastName' => myGet('lastName'),
+                'surname' => myGet('surname'),
+                'password' => Security::chiffrer(myGet('password1')),
+                'mail' => myGet('mail'),
                 'admin' => 0,
                 'nonce' => Security::generateRandomHex(),
                 'wallet' => 0,
                 'level' => 0,
                 'spend' => 0,
-                'billingaddress' => Routeur::myGet('billingaddress'),
-                'shippingaddress' => Routeur::myGet('shippingaddress'),
+                'billingaddress' => myGet('billingaddress'),
+                'shippingaddress' => myGet('shippingaddress'),
             );
             $user = new ModelUser($data);
             $user->save($data);
-            $tab_user = ModelUser::selectAll();
             Validate::sendValidationMail($data);
             $view='created';
             $pagetitle='user created';
             require (File::build_path(array("view", "view.php")));
         } else {
-            echo "The passwords don't match, please retry";
-            $login = Routeur::myGet('login');
-            $lastName = Routeur::myGet('lastname');
-            $surname = Routeur::myGet('surname');
+            Messenger::alert($errorMessage);
+            $login = myGet('login');
+            $lastName = myGet('lastName');
+            $surname = myGet('surname');
+            $password1 = "";
+            $password2 = "";
+            $shippingaddress = myGet('shippingaddress');
+            $billingaddress = myGet('billingaddress');
             $required = "required";
             $action = "create";
             $view='update';
@@ -84,12 +108,13 @@ class ControllerUser {
     }
 
     public static function delete() {
-        $login = Routeur::myGet('login');
-        if (Session::is_user(Routeur::myGet('login')) || Session::is_admin()) {
+        $login = myGet('login');
+        if (Session::is_user(myGet('login')) || Session::is_admin()) {
             $view='delete';
             $pagetitle='Delete validation';
             require (File::build_path(array("view", "view.php")));
         } else {
+            Messenger::alert("You are not allowed to do such action");
             $view='connect';
             $pagetitle='connexion';
             require (File::build_path(array("view", "view.php")));
@@ -97,8 +122,8 @@ class ControllerUser {
     }
 
     public static function deleted() {
-        $login = Routeur::myGet('login');
-        if (Session::is_user(Routeur::myGet('login')) || Session::is_admin()) {
+        $login = myGet('login');
+        if (Session::is_user(myGet('login')) || Session::is_admin()) {
             ModelUser::deleteById($login);
             $tab_user = ModelUser::selectAll();
             $view='deleted';
@@ -113,12 +138,12 @@ class ControllerUser {
 
     /*
     * Seul l'admin ou l'utilisateur en question peuvent faire update sur l'utilisateur
-    * On préremplie les champs lastname, surname et mail
+    * On préremplie les champs lastName, surname et mail
     */
 	public static function update() {
-        if (Session::is_user(Routeur::myGet('login')) || Session::is_admin()) {
+        if (Session::is_user(myGet('login')) || Session::is_admin()) {
             if (Conf::getDebug() == True) { $method = "get"; } else { $method = "post";}
-            $user = ModelUser::select(Routeur::myGet('login'));
+            $user = ModelUser::select(myGet('login'));
             if($user->get('admin') == 0) { $checked = NULL; } else { $checked = 'checked="checked"';}
             $login = htmlspecialchars($user->get('login'));
             $lastName = htmlspecialchars($user->get('lastName'));
@@ -146,34 +171,34 @@ class ControllerUser {
     *
     */
 	public static function updated() {
-        if (Session::is_user(Routeur::myGet('login')) || Session::is_admin()) {
-            if (Routeur::myGet('password1') == Routeur::myGet('password2') && ModelUser::checkPassword(Routeur::myGet('login'), Security::chiffrer(Routeur::myGet('password1')))) {
-            if (Routeur::myGet('admin') !== NULL && Routeur::myGet('admin') == on) { $admin = 1; } else { $admin = 0; }
+        if (Session::is_user(myGet('login')) || Session::is_admin()) {
+            if (myGet('password1') == myGet('password2') && ModelUser::checkPassword(myGet('login'), Security::chiffrer(myGet('password1')))) {
+            if (myGet('admin') !== NULL && myGet('admin') == on) { $admin = 1; } else { $admin = 0; }
             $data = array (
-				'login' => htmlspecialchars(Routeur::myGet('login')),
-				'lastName' => htmlspecialchars(Routeur::myGet('lastname')),
-				'surname' => htmlspecialchars(Routeur::myGet('surname')),
-                'mail' => htmlspecialchars(Routeur::myGet('mail')),
+				'login' => htmlspecialchars(myGet('login')),
+				'lastName' => htmlspecialchars(myGet('lastName')),
+				'surname' => htmlspecialchars(myGet('surname')),
+                'mail' => htmlspecialchars(myGet('mail')),
                 'admin' => $admin,
                 'nonce' => NULL,
-                'level' => htmlspecialchars(Routeur::myGet('level')),
-                'spend' => htmlspecialchars(Routeur::myGet('spend')),
-                'shippingaddress' => htmlspecialchars(Routeur::myGet('shippingaddress')),
-                'billingaddress' => htmlspecialchars(Routeur::myGet('billingaddress')),
+                'level' => htmlspecialchars(myGet('level')),
+                'spend' => htmlspecialchars(myGet('spend')),
+                'shippingaddress' => htmlspecialchars(myGet('shippingaddress')),
+                'billingaddress' => htmlspecialchars(myGet('billingaddress')),
             );
 			ModelUser::updateByID($data);
 			$view='updated';
-			$pagetitle='Modication of a user finished';
+			$pagetitle='User modificated';
 			require (File::build_path(array("view", "view.php")));
 		} else {
             if (Conf::getDebug() == True) { $method = "get"; } else { $method = "post";}
-			echo "The passwords don't match, please retry";
-			$login = Routeur::myGet('login');
-			$lastName = Routeur::myGet('lastname');
-			$surname = Routeur::myGet('surname');
-			$mail = Routeur::myGet('mail');
-            $shippingaddress = Routeur::myGet('shippingaddress');
-            $billingaddress = Routeur::myGet('billingaddress');
+            Messenger::alert("The passwords don't match, please retry");
+			$login = myGet('login');
+			$lastName = myGet('lastName');
+			$surname = myGet('surname');
+			$mail = myGet('mail');
+            $shippingaddress = myGet('shippingaddress');
+            $billingaddress = myGet('billingaddress');
             $required = "required";
 			$action = "updated";
 			$view = 'update';
@@ -195,9 +220,9 @@ class ControllerUser {
     }
 
     public static function connected() {
-        if (ModelUser::checkPassword(Routeur::myGet('login'), Security::chiffrer(Routeur::myGet('password'))) && ModelUser::checkNonce(Routeur::myGet('login'))) {
-            $_SESSION['login'] = Routeur::myGet('login');
-            $user = ModelUser::select(Routeur::myGet('login'));
+        if (ModelUser::checkPassword(myGet('login'), Security::chiffrer(myGet('password'))) && ModelUser::checkNonce(myGet('login'))) {
+            $_SESSION['login'] = myGet('login');
+            $user = ModelUser::select(myGet('login'));
             if ($user->get('admin') == true) {
                 $_SESSION['admin'] = true;
             }
@@ -205,9 +230,9 @@ class ControllerUser {
             $pagetitle='User\'s detail';
             require (File::build_path(array("view", "view.php")));
         } else {
-            echo "Problem, please try again";
+            Messenger::alert("Problem, please try again");
             $password = "";
-            $login = Routeur::myGet('login');
+            $login = myGet('login');
             $view='connect';
             $pagetitle='connection';
             require (File::build_path(array("view", "view.php")));
@@ -217,13 +242,14 @@ class ControllerUser {
     public static function disconnect() {
         unset($_SESSION['login']);
         session_destroy();
+        setcookie(session_name(),'',time()-1);
         $view='disconnected';
         $pagetitle='accueil';
         require (File::build_path(array("view", "view.php")));
     }
 
     public function profil() {
-        $user = ModelUser::select(Routeur::myGet('login'));
+        $user = ModelUser::select(myGet('login'));
         if (Session::is_user($user->get('login'))) {
             $view='profil';
             $pagetitle='accueil';
@@ -231,6 +257,20 @@ class ControllerUser {
         } else {
             self::error();
         }
+    }
+
+    public static function preference() {
+        $action = "personnalisation";
+        $view='preference';
+        $pagetitle='settings';
+        require (File::build_path(array("view", "view.php")));
+    }
+
+    public static function personnalisation() {
+        setcookie("preference", myGet('preference'), time()+3600);
+        $view='profil';
+        $pagetitle='profil';
+        require (File::build_path(array("view", "view.php")));
     }
 
     public static function error() {

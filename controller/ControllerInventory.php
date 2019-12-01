@@ -1,6 +1,7 @@
 <?php
 
 require_once (File::build_path(array('model', 'ModelInventory.php')));
+require_once (File::build_path(array('lib', 'Messenger.php')));
 
 class ControllerInventory {
 
@@ -16,7 +17,7 @@ class ControllerInventory {
 
     public static function addItem() {
         $login_user = $_SESSION['login'];
-        $item_id = Routeur::myGet('id_item');
+        $item_id = myGet('id_item');
         $inventory = new ModelInventory($login_user, $item_id);
         $inventory->save($item_id);
         $view = 'addedToInventory';

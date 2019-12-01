@@ -3,6 +3,7 @@
 require_once (File::build_path(array('model', 'ModelWishlist.php')));
 require_once (File::build_path(array('model', 'ModelItem.php')));
 require_once (File::build_path(array('lib', 'Session.php')));
+require_once (File::build_path(array('lib', 'Messenger.php')));
 
 class ControllerWishlist {
 
@@ -10,7 +11,10 @@ class ControllerWishlist {
 
   public static function read() {
     $login_user = $_SESSION['login'];
-    $wishlist = ModelWishlist::selectItems($login_user);
+    $data = array(
+      "login_user" => $login_user
+    );
+    $wishlist = ModelWishlist::selectWhereFromArray($data);
     $view = 'list';
     $pagetitle = 'Wishlist';
     require(File::build_path(array('view','view.php')));
@@ -18,8 +22,11 @@ class ControllerWishlist {
 
   public static function addItem() {
     $login_user = $_SESSION['login'];
-    $item_id = Routeur::myGet('id');
-    $current_wishlist = ModelWishlist::selectItems('login_user', $login_user);
+    $item_id = myGet('id');
+    $data = array(
+      "login_user" => $login_user
+    );
+    $current_wishlist = ModelWishlist::selectWhereFromArray($data);
     foreach ($current_wishlist as $tuple) {
       $current_item = ModelItem::select($tuple['item_id']);
       $tab_item_id[] = $current_item->get('id');
@@ -43,7 +50,7 @@ class ControllerWishlist {
 
   public static function removeFromWishlist() {
     $login_user = $_SESSION['login'];
-    $item_id = Routeur::myGet('id');
+    $item_id = myGet('id');
     ModelWishlist::deleteItem($login_user, $item_id);
     $view = 'removedFromWishlist';
     $pagetitle = 'Item removed from wishlist';

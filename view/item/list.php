@@ -5,7 +5,7 @@ foreach ($tab_item as $item) {
 	$itemId = rawurldecode($item->get('id'));
 	$itemName = htmlspecialchars($item->get('name'));
 
-	echo '<p> item : <a href="index.php?controller=item&action=read&id='. $itemId . '"> ' . $itemName . '</a>.</p>';
+	echo '<p> Item : <a href="index.php?controller=item&action=read&id='. $itemId . '"> ' . $itemName . '</a></p>';
 
 }
 

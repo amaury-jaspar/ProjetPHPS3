@@ -9,7 +9,7 @@ echo <<< EOT
                     <input type="text" placeholder="" name="login" id="immat_id" $required value="$login"/>
                     <br>
                     <label for="couleur_id">Last Name</label>
-                    <input type="text" placeholder="" name="lastname" id="couleur_id" value="$lastName" required/>
+                    <input type="text" placeholder="" name="lastName" id="couleur_id" value="$lastName" required/>
                     <br>
                     <label for="marque_id">Surname</label>
                     <input type="text" placeholder="" name="surname" id="fonction_id" value="$surname" required/>
@@ -24,10 +24,10 @@ echo <<< EOT
                     <input type="text" placeholder="" name="mail" id="mail_id" value="$mail" required>
                     <br>
                     <label for="shippingaddress_id">Shipping Address</label>
-                    <input type="text" placeholder="" name="shippingaddress" id="shippingaddress_id" value="$shippingaddress" required>
+                    <input type="text" placeholder="" name="shippingaddress" id="shippingaddress_id" value="$shippingaddress">
                     <br>
                     <label for="billingaddress_id">Billing Address</label>
-                    <input type="text" placeholder="" name="billingaddress" id="billingaddress_id" value="$billingaddress" required>
+                    <input type="text" placeholder="" name="billingaddress" id="billingaddress_id" value="$billingaddress">
                     <br>
 EOT;
                     if (Session::is_admin() && $action == 'updated') {
