@@ -23,8 +23,8 @@ echo <<< EOT
             <div class="card-action">
                 <p>$itemName</p>
                 <p>quantity : $itemQuantity</p>
-                <a href="index.php?controller=item&action=transfertToWL&id=Transfert To wishlist></a>
-                <a href="index.php?action=deleteFromBasket&controller=basket&id=$itemIdURL&prix=$itemPriceURL">Remove one exemplary</a>
+                <a href="index.php?controller=item&action=transfertToWL&id=&itemIdURL">Transfert To wish list</a>
+                <a href="index.php?controller=basket&action=deleteFromBasket&id=$itemIdURL">Remove one exemplary</a>
                 <a href="index.php?controller=item&action=read&id=$itemIdURL">Detail page</a>
             </div>
         </div>
