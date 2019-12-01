@@ -55,7 +55,4 @@ echo '<a href="index.php?action=&controller=user">Votre porte monnaie</a>';
 echo '<br>';
 echo '<br>';
 
-var_dump($_REQUEST);
-
-
 ?>

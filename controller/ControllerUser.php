@@ -61,13 +61,13 @@ class ControllerUser {
 
     public static function created() {
         if (is_null(myGet('login')) || is_null(myGet('lastName')) || is_null(myGet('surname')) || is_null(myGet('password1')) || is_null(myGet('password2')) || is_null(myGet('mail')) || is_null(myGet('shippingaddress')) || is_null(myGet('billingaddress'))) {
-            $errorMessage = 'YOUR ATTENTION PLEASE : Some of the attribut are NULL';
+            $errorMessage = 'Some of the attribut are NULL';
         } else if (ModelUser::select(myGet('login')) !== false) {
-            $errorMessage = 'YOUR ATTENTION PLEASE : This login is already use';
+            $errorMessage = 'This login is already use';
         } else if (myGet('password1') !== myGet('password2')) {
-            $errorMessage = 'YOUR ATTENTION PLEASE : problem of password that do no match';
+            $errorMessage = 'problem of password that do no match';
         } else if (!(filter_var(myGet('mail'), FILTER_VALIDATE_EMAIL))) {
-            $errorMessage = 'YOUR ATTENTION PLEASE : invalid email address format';
+            $errorMessage = 'invalid email address format';
         }
         if (!isset($errorMessage)) {
             $data = array (
@@ -114,6 +114,7 @@ class ControllerUser {
             $pagetitle='Delete validation';
             require (File::build_path(array("view", "view.php")));
         } else {
+            Messenger::alert("You are not allowed to do such action");
             $view='connect';
             $pagetitle='connexion';
             require (File::build_path(array("view", "view.php")));
@@ -241,6 +242,7 @@ class ControllerUser {
     public static function disconnect() {
         unset($_SESSION['login']);
         session_destroy();
+        setcookie(session_name(),'',time()-1);
         $view='disconnected';
         $pagetitle='accueil';
         require (File::build_path(array("view", "view.php")));
@@ -255,6 +257,20 @@ class ControllerUser {
         } else {
             self::error();
         }
+    }
+
+    public static function preference() {
+        $action = "personnalisation";
+        $view='preference';
+        $pagetitle='settings';
+        require (File::build_path(array("view", "view.php")));
+    }
+
+    public static function personnalisation() {
+        setcookie("preference", myGet('preference'), time()+3600);
+        $view='profil';
+        $pagetitle='profil';
+        require (File::build_path(array("view", "view.php")));
     }
 
     public static function error() {

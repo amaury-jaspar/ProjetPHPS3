@@ -23,6 +23,8 @@ class ControllerBasket {
 *			à actualiser le plus souvent possible grâce à la fonction actualiserSommePanier
 */
 
+
+// si is_connected est faux, alors on lit le panier côté cookie, sinon on lit le panier côté serveur
 public static function readBasket() {
     ControllerBasket::actualizeSumBasket();
     $sumBasket = $_SESSION['sumBasket'];
