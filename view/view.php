@@ -11,7 +11,7 @@
 		<link rel="stylesheet" href="https://d1azc1qln24ryf.cloudfront.net/114779/Socicon/style-cf.css?9ukd8d">
 		<!-- Materialize: Compiled and minified CSS -->
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-        <!-- On créer un lien vers le fichier CSS --> 
+        <!-- On créer un lien vers le fichier CSS -->
 		<link rel="stylesheet" type="text/css" href="../css/stylecss.css">
 
     </head>
@@ -29,7 +29,7 @@
                     require (File::build_path(array("view", static::$object, $view . ".php")));
                 ?>
             </main>
-   
+
             <?php
                 // on intégre le footer
                 require_once (File::build_path(array("view", "footer.php")));
