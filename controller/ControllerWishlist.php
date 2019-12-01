@@ -11,7 +11,10 @@ class ControllerWishlist {
 
   public static function read() {
     $login_user = $_SESSION['login'];
-    $wishlist = ModelWishlist::selectItems($login_user);
+    $data = array(
+      "login_user" => $login_user
+    );
+    $wishlist = ModelWishlist::selectWhereFromArray($data);
     $view = 'list';
     $pagetitle = 'Wishlist';
     require(File::build_path(array('view','view.php')));
@@ -20,7 +23,10 @@ class ControllerWishlist {
   public static function addItem() {
     $login_user = $_SESSION['login'];
     $item_id = myGet('id');
-    $current_wishlist = ModelWishlist::selectItems('login_user', $login_user);
+    $data = array(
+      "login_user" => $login_user
+    );
+    $current_wishlist = ModelWishlist::selectWhereFromArray($data);
     foreach ($current_wishlist as $tuple) {
       $current_item = ModelItem::select($tuple['item_id']);
       $tab_item_id[] = $current_item->get('id');
