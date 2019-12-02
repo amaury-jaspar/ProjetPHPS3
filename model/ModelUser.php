@@ -92,7 +92,8 @@ class ModelUser extends Model {
 
 	public static function nonceAndId($login, $nonce) {
 		try {
-			$req_prep = Model::$pdo->prepare("SELECT * FROM user WHERE login = :login AND nonce = :nonce");
+			$sql = "SELECT COUNT(*) FROM user WHERE login = ':login' AND nonce = ':nonce'";
+			$req_prep = Model::$pdo->prepare($sql);
 			$values = array (
 				"login" => $login,
 				"nonce" => $nonce
@@ -106,8 +107,12 @@ class ModelUser extends Model {
 				echo 'Une erreur est survenue <a href="index.php?action=buildFrontPage&controller=home"> retour à la page d\'acceuil </a>';
 			}
 			die();
-		}	
-		return $answer;
+		}
+		if ($answer !== NULL) {
+			return true;
+		} else {
+			return false;
+			}
 	}
 
 	public static function eraseNonce($login, $nonce) {

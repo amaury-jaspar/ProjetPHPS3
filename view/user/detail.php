@@ -7,6 +7,9 @@ $userMail = htmlspecialchars($user->get('mail'));
 $userAdmin = htmlspecialchars($user->get('admin'));
 $userIdURL = rawurlencode($user->get('login'));
 
+echo '<pre>';
+var_dump($user);
+echo '</pre>';
 
     echo "<div>login : " . $userLogin."</div>";
     echo "<div>last name : " . $userLastname."</div>";

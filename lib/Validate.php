@@ -3,24 +3,27 @@
 class Validate {
 
     public static function validation() {
-        if (!is_null(ModelUser::select(Routeur::myGet('login'))) && ModelUser::nonceAndId(Routeur::myGet('login'), Routeur::myGet('nonce'))) {
+        if (!is_null(ModelUser::select(myGet('login'))) && ModelUser::nonceAndId(myGet('login'), myGet('nonce'))) {
             echo "efface le nonce";
-            ModelUser::eraseNonce(Routeur::myGet('login'), Routeur::myGet('nonce'));
+            ModelUser::eraseNonce(myGet('login'), myGet('nonce'));
         } else {
             echo "Mauvaise clef de validation";
         }
     }
 
     public static function sendValidationMail($data) {
-//        $message = __DIR__ . "http//webinfo.iutmontp.univ-montp2.fr/~simondonj/ecommerce/index.php?controller=user&action=validation&login=$data['login']&nonce=$data['nonce']";
-//        $DIR = __DIR__;
-        echo __DIR__;
-        $DIR = "http://webinfo.iutmontp.univ-montp2.fr/~simondonj/ecommerce/public/";
-//        $message2 = $DIR . "index.php?controller=user&action=validation&login=".$data'.['login']."&nonce=".$data['nonce']";
+        $http = "http://";
+        $domaine = $_SERVER['HTTP_HOST'];
+        $path = $_SERVER['PHP_SELF'];
+        $data1 = "?controller=user&action=validation";
+        $data2 = "&login=".$data['login'];
+        $data3 = "&nonce=".$data['nonce'];
+        $message = $http . $domaine . $path . $data1 . $data2 . $data3;
         $headers = "FROM : Mystic Market Everywhere";
-
-//        http://webinfo.iutmontp.univ-montp2.fr/~simondonj/ecommerce/public/index.php?controller=user&action=validation&login=3333&nonce=7b4b39951a2e0e6612f8c8a2aafcaf17
-
+//      exemple de lien deçu dans le mail depuis localhost
+//      http://localhost:8888/PHP/ProjetPHPS3/public/index.php?controller=user&action=validation&login=test&nonce=c1811ba05b74e071e4fad24813fb2adb
+//      exemple de lien deçu dans le mail depuis webinfo
+//      http://webinfo.iutmontp.univ-montp2.fr/~simondonj/ecommerce/public/index.php?controller=user&action=validation&login=p&nonce=51437bc0d7ffd8affd3a6e877edce424
         mail($data['mail'], "validation", $message, $headers);
         echo "le mail a bien été envoyé";
     }
