@@ -6,16 +6,21 @@ le nonce est envoyé à la mauvaise addresse, et donc un autre utilisateur peut 
 Il faut donc demander à l'utilisateur d'être connecté pour pouvoir valider une addresse email grâce au nonce.
 DONC il faut un champ email_validated dans la dession qui fait que quand on est connecté sans avoir validé, alors on ne peut que valider son email.
 
-
 Comment faire un vrai chemin URL absolu :
 http//{$_SERVER['HTTP_HOST']}{$_SERVER['PHP_SELF']}
 A PLACER DANS VALIDATE
 tenter un echo de "http//".{$_SERVER['HTTP_HOST']}{$_SERVER['PHP_SELF']}; dans index.php
 
+Rajouter une vérification avant la suppression de quoi que ce soit. surtout item et user si ça n'est pas déjà fait.
+
+Le mail qui doit être envoyé pour valider la création de comtpe
+http://localhost:8888/PHP/ProjetPHPS3/public/index.php?controller=user&action=validation&login=test&nonce=87b48df4143301877ab74822b0cd8c4fle
+http://webinfo.iutmontp.univ-montp2.fr/~simondonj/ecommerce/public/index.php?action=buildFrontPage&controller=home
+
 LA NOTATION :
 
 HTML/CSS :
-validé et séparés (chercher s'il n'y a pas un peu de inline qui traine)
+validés et séparés (chercher s'il n'y a pas un peu de inline qui traine)
 charset='utf-8' DONE
 Tester le HTML et CSS sur W3C : https://validator.w3.org/
 factoriser le code (include pour header, footer et content) DONE

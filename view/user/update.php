@@ -1,5 +1,7 @@
 <?php
 
+
+
 echo <<< EOT
     <form class="container" method=$method action="index.php?">
         <fieldset>
@@ -21,7 +23,7 @@ echo <<< EOT
                     <input type="password" name="password2" id="password_id2" value="$password2" required/>
                     <br>
                     <label for="mail_id">Mail</label>
-                    <input type="text" placeholder="" name="mail" id="mail_id" value="$mail" required>
+                    <input type="text" placeholder="bob@yopmail.com" name="mail" id="mail_id" value="$mail" required>
                     <br>
                     <label for="shippingaddress_id">Shipping Address</label>
                     <input type="text" placeholder="" name="shippingaddress" id="shippingaddress_id" value="$shippingaddress">
@@ -51,3 +53,4 @@ echo <<< EOT
 EOT;
 
 ?>
+
