@@ -26,8 +26,17 @@ class ControllerBasket {
 
 // si is_connected est faux, alors on lit le panier côté cookie, sinon on lit le panier côté serveur
 public static function readBasket() {
+    if (isset($_SESSION['sumBasket'])) {
+        $sumBasket = $_SESSION['sumBasket'];
+    } else {
+        $sumBasket = 0;
+    }
+    if (isset($_COOKIE['basket'])) {
+        $tab_basket = unserialize($_COOKIE['basket']);        
+    } else {
+        $tab_basket = array();
+    }
     ControllerBasket::actualizeSumBasket();
-    $sumBasket = $_SESSION['sumBasket'];
     $tab_basket = unserialize($_COOKIE['basket']);
     foreach($tab_basket as $key => $value) {
         if ($value > 0) {
@@ -40,9 +49,13 @@ public static function readBasket() {
 }
 
 public static function actualizeSumBasket() {
-    $tab_item = unserialize($_COOKIE['basket']);
+    if (isset($_COOKIE['basket'])) {
+        $tab_basket = unserialize($_COOKIE['basket']);        
+    } else {
+        $tab_basket = array();
+    }
     $sum = 0;
-    foreach($tab_item as $key => $value) {
+    foreach($tab_basket as $key => $value) {
         $item = ModelItem::select($key);
         $sum += $item->get('price') * $value;
     }

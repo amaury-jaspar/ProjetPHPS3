@@ -16,6 +16,13 @@ echo <<< EOT
                     <label for="marque_id">Surname</label>
                     <input type="text" placeholder="" name="surname" id="fonction_id" value="$surname" required/>
                     <br>
+EOT;
+if ($action == "updated" && Session::is_admin() && $login !== $_SESSION['login']) { 
+    echo 'As an administrator updating the account of a member :<br>';
+    echo 'please, fill the form with your own password, <br>';
+
+}
+echo <<< EOT
                     <label for="password_id1">Password</label>
                     <input type="password" name="password1" id="password_id1" value="$password1" required/>
                     <br>

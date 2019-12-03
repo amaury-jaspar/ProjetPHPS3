@@ -11,8 +11,8 @@ echo <<< EOT
                 </div>
                 <div class="card-action">
                       <a class="red-text" href="index.php?controller=user&action=read&login=$login">No</a>
-                      <a class="blue-text" href="index.php?controller=user&action=deleted&login=$login">Yes</a>
-                </div>
+                      <a class="blue-text" href="index.php?controller=user&action=confirmDelete&login=$login">Yes</a>
+                  </div>
           </div>
     </div>
 </div>

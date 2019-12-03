@@ -11,11 +11,15 @@ class ControllerUser {
     protected static $object = "user";
 
     public static function read() {
+        if (isset($errorMessage)) { unset($errorMessage); }
         if (is_null(myGet('login'))) {
-            $message = "YOUR ATTENTION PLEASE : some attribut are NULL";
+            $errorMessage = 'Some attribut are NULL';
+        } else if (!(Session::is_connected())) {
+            $errorMessage = 'You need to be connected';
+        } else if (!(Session::is_user(myGet('login'))) && !(Session::is_admin())) {
+            $errorMessage = 'Cant access this page';
         }
-
-        if (!isset($message)) {
+        if (!isset($errorMessage)) {
             $login = myGet('login');
             $user = ModelUser::select($login);
             if ($user == false) {
@@ -26,19 +30,32 @@ class ControllerUser {
                 require_once (File::build_path(array("view", "view.php")));
             }
         } else {
-            Messenger::alert($message);
+            Messenger::alert($errorMessage);
             self::error();
         }
     }
 
     public static function readAll() {
-        if (Session::is_admin()) {
+        if (isset($errorMessage)) { unset($errorMessage); }
+        if (!(Session::is_connected())) {
+            $errorMessage = 'You need to be connected';
+        } else if (!(Session::is_admin())) {
+            $errorMessage = 'Cant access this page';
+        }
+        if(!isset($errorMessage)) {
             $tab_user = ModelUser::selectAll();
+            if($tab_user == false) {
+                self::error();
+            } else {
             $view='list';
             $pagetitle='Users list';
             require (File::build_path(array("view", "view.php")));
+            }
         } else {
-            self::error();
+            Messenger::alert($errorMessage);
+            $view='connect';
+            $pagetitle='Connection';
+            require (File::build_path(array("view", "view.php")));
         }
     }
 
@@ -64,7 +81,7 @@ class ControllerUser {
         if (is_null(myGet('login')) || is_null(myGet('lastName')) || is_null(myGet('surname')) || is_null(myGet('password1')) || is_null(myGet('password2')) || is_null(myGet('mail')) || is_null(myGet('shippingaddress')) || is_null(myGet('billingaddress'))) {
             $errorMessage = 'Some of the attribut are NULL';
         } else if (ModelUser::select(myGet('login')) !== false) {
-            $errorMessage = 'This login is already use';
+            $errorMessage = 'This login is not available';
         } else if (myGet('password1') !== myGet('password2')) {
             $errorMessage = 'problem of password that do no match';
         } else if (!(filter_var(myGet('mail'), FILTER_VALIDATE_EMAIL))) {
@@ -93,13 +110,13 @@ class ControllerUser {
             require (File::build_path(array("view", "view.php")));
         } else {
             Messenger::alert($errorMessage);
-            $login = myGet('login');
-            $lastName = myGet('lastName');
-            $surname = myGet('surname');
+            $login = htmlspecialchars(myGet('login'));
+            $lastName = htmlspecialchars(myGet('lastName'));
+            $surname = htmlspecialchars(myGet('surname'));
             $password1 = "";
             $password2 = "";
-            $shippingaddress = myGet('shippingaddress');
-            $billingaddress = myGet('billingaddress');
+            $shippingaddress = htmlspecialchars(myGet('shippingaddress'));
+            $billingaddress = htmlspecialchars(myGet('billingaddress'));
             $required = "required";
             $action = "create";
             $view='update';
@@ -110,29 +127,70 @@ class ControllerUser {
 
     public static function delete() {
         $login = myGet('login');
-        if (Session::is_user(myGet('login')) || Session::is_admin()) {
+        if (Session::is_connected() && (Session::is_user(myGet('login')) || Session::is_admin())) {
             $view='delete';
             $pagetitle='Delete validation';
             require (File::build_path(array("view", "view.php")));
         } else {
-            Messenger::alert("You are not allowed to do such action");
+            Messenger::alert('You are not allowed to do such action');
             $view='connect';
             $pagetitle='connexion';
             require (File::build_path(array("view", "view.php")));
         }
     }
 
-    public static function deleted() {
-        $login = myGet('login');
-        if (Session::is_user(myGet('login')) || Session::is_admin()) {
-            ModelUser::deleteById($login);
-            $tab_user = ModelUser::selectAll();
-            $view='deleted';
+    public static function confirmDelete() {
+        if (isset($errorMessage)) { unset($errorMessage);}
+        if (is_null(myGet('login'))) {
+            $errorMessage = 'Some of the attribut are NULL';
+        } else if (!(Session::is_connected()) || (!(Session::is_user(myGet('login'))) && !(Session::is_admin()))) {
+            $errorMessage = 'Can\'t access this page';
+        }
+        if(!isset($errorMessage)) {
+            $login = "";
+            $view='confirmDelete';
             $pagetitle='Delete validation';
             require (File::build_path(array("view", "view.php")));
         } else {
-            $view='connect';
-            $pagetitle='connexion';
+            $view='delete';
+            $pagetitle='Delete validation';
+            require (File::build_path(array("view", "view.php")));
+        }
+    }
+
+    /*
+    * Seul l'admin ou l'utilisateur en question peuvent faire delete sur l'utilisateur
+    * On préremplie les champs lastName, surname et mail
+    */
+    public static function deleted() {
+        if (isset($errorMessage)) { unset($errorMessage); }
+        if (is_null(myGet('login') && is_null('password'))) {
+            $errorMessage = 'Some of the attribut are NULL';
+        } else if (!(Session::is_user(myGet('login')) || Session::is_admin())) {
+            $errorMessage = 'Cant access this page';
+        } else if (!(Session::is_connected()) || (!(Session::is_user(myGet('login'))) && !(Session::is_admin()))) {
+            $errorMessage = 'Cant access this page';
+        } else if (!ModelUser::checkPassword(myGet('login'), Security::chiffrer(myGet('password'))) && !ModelUser::checkPassword($_SESSION['login'], Security::chiffrer(myGet('password')))  ) {
+            $errorMessage = 'Wrong password';
+        }
+        if (!isset($errorMessage) && Session::is_user(myGet('login'))) {
+            $user = ModelUser::select(myGet('login'));
+            ModelUser::deleteById(myGet('login'));
+            unset($_SESSION['login']);
+            session_destroy();
+            setcookie(session_name(),'',time()-1);
+            $view='deleted';
+            $pagetitle='Deleted';
+            require (File::build_path(array("view", "view.php")));
+        } else if (!isset($errorMessage) && Session::is_admin()) {
+            ModelUser::deleteById(myGet('login'));
+            $view='deleted';
+            $pagetitle='Deleted';
+            require (File::build_path(array("view", "view.php")));
+        } else {
+            Messenger::alert($errorMessage);
+            $view='confirmDelete';
+            $pagetitle='Delete validation';
             require (File::build_path(array("view", "view.php")));
         }
     }
@@ -172,8 +230,21 @@ class ControllerUser {
     *
     */
 	public static function updated() {
-        if (Session::is_user(myGet('login')) || Session::is_admin()) {
-            if (myGet('password1') == myGet('password2') && ModelUser::checkPassword(myGet('login'), Security::chiffrer(myGet('password1')))) {
+        if (isset($errorMessage)) { unset($errorMessage);}
+        if (is_null('login') || is_null('lastName') || is_null('surname') || is_null('mail') || is_null('shippingaddress') || is_null('billingaddress') || is_null('password1') || is_null('password2')) {
+            $codeError = 1;
+            $errorMessage = 'Some of the attribut are NULL';
+        } else if (!(Session::is_connected()) || (!(Session::is_user(myGet('login'))) && !(Session::is_admin()))) {
+            $codeError = 2;
+            $errorMessage = 'Cant access this page';
+        } else if (myGet('password1') !== myGet('password2')) {
+            $codeError = 1;
+            $errorMessage = 'The password is not matching';
+        } else if (!ModelUser::checkPassword(myGet('login'), Security::chiffrer(myGet('password1'))) && !ModelUser::checkPassword($_SESSION['login'], Security::chiffrer(myGet('password1')))) {
+            $codeError = 1;
+            $errorMessage = 'Wrong password';
+        }
+        if (!isset($errorMessage)) {
             if (myGet('admin') !== NULL && myGet('admin') == on) { $admin = 1; } else { $admin = 0; }
             $data = array (
 				'login' => htmlspecialchars(myGet('login')),
@@ -191,9 +262,9 @@ class ControllerUser {
 			$view='updated';
 			$pagetitle='User modificated';
 			require (File::build_path(array("view", "view.php")));
-		} else {
+        } else if ($codeError == 1) {
             if (Conf::getDebug() == True) { $method = "get"; } else { $method = "post";}
-            Messenger::alert("The passwords don't match, please retry");
+            Messenger::alert($errorMessage);
 			$login = myGet('login');
 			$lastName = myGet('lastName');
 			$surname = myGet('surname');
@@ -205,8 +276,8 @@ class ControllerUser {
 			$view = 'update';
 			$pagetitle='User\'s creation';
 			require (File::build_path(array("view", "view.php")));
-        }
-      }  else {
+        } else {
+            Messenger::alert($errorMessage);
             $view='connect';
             $pagetitle='connection';
             require (File::build_path(array("view", "view.php")));
@@ -252,7 +323,7 @@ class ControllerUser {
 
     public function profil() {
         $user = ModelUser::select(myGet('login'));
-        if (Session::is_user($user->get('login'))) {
+        if (Session::is_user($user->get('login')) && Session::is_connected()) {
             $view='profil';
             $pagetitle='accueil';
             require (File::build_path(array("view", "view.php")));
