@@ -10,7 +10,7 @@ class Session {
     }
 
     public static function is_connected() {
-        return (isset($_SESSION['connected']) && $_SESSION['connected'] === true);
+        return (isset($_SESSION['connected']) && $_SESSION['connected'] == true);
     }
 
 }

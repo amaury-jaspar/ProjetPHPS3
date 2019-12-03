@@ -1,4 +1,4 @@
-TODO :
+TO DO :
 
 Vérification du mail :
 Dans le cas ou l'utilisateur fait une faute de frappe dans le mail, et qu'il est envoyé à quelqu'un d'autre.
@@ -149,9 +149,6 @@ Sécuriser les vues
 		— Vérifier s’il faut être admin
 
 Commenter tout le code
-
-Ajouter plus d'item à la base de données
-
 
 Si possible, terminer le QueryBuilder et l'utiliser dans Model
 Rajouter des méthodes où l’on passe l’objet $pdo en paramètre pour faire un execute

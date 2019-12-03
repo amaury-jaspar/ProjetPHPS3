@@ -40,7 +40,7 @@ echo "<p>Hi " . $userSurname . ", welcome</p>";
 echo <<< EOT
 <div>
     <p>
-        <a href="index.php?action=read&controller=user&login=$userLogin.">Detail</a>
+        <a href="index.php?action=read&controller=user&login=$userLogin">Detail</a>
     </p>
 </div>
 <div>
@@ -48,19 +48,26 @@ echo <<< EOT
         <a href="index.php?action=preference&controller=user">Preference</a>
     </p>
     <p>
-        <a href="index.php?action=readAll&controller=command">Vos commandes</a>
+        <a href="index.php?action=readAll&controller=command">Your commands</a>
     </p>
     <p>
-        <a href="index.php?action=&controller=user">Paramètre de sécurité et connexion</a>
+        <a href="index.php?action=&controller=user">Security setting and connection</a>
     </p>
     <p>
-        <a href="index.php?action=&controller=user">Vos adresses</a>
+        <a href="index.php?action=&controller=user">Your addresses</a>
     </p>
     <p>
-        <a href="index.php?action=&controller=user">Option de paiements</a>
+        <a href="index.php?action=&controller=user">Payment option</a>
     </p>
     <p>
-        <a href="index.php?action=&controller=user">Votre porte monnaie</a>
+        <a href="index.php?action=&controller=user">Wallet</a>
     </p>
+    <p>
+        <a href="index.php?action=&controller=user&action=update&login=$userLogin">Modificate the data of your account</a>
+    </p>
+    <p>
+        <a href="index.php?action=&controller=user&action=delete&login=$userLogin">Delete your account</a>
+    </p>
+
 EOT;
 ?>

@@ -61,9 +61,9 @@ class ModelUser extends Model {
 			die();
 		}
 		if ($answer['COUNT(*)'] == 0) {
-			return FALSE;
+			return false;
 		} else {
-			return TRUE;
+			return true;
 		}
 	}
 

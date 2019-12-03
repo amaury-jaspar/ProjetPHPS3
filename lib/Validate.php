@@ -4,7 +4,6 @@ class Validate {
 
     public static function validation() {
         if (!is_null(ModelUser::select(myGet('login'))) && ModelUser::nonceAndId(myGet('login'), myGet('nonce'))) {
-            echo "efface le nonce";
             ModelUser::eraseNonce(myGet('login'), myGet('nonce'));
         } else {
             echo "Mauvaise clef de validation";
@@ -21,7 +20,7 @@ class Validate {
         $message = $http . $domaine . $path . $data1 . $data2 . $data3;
         $headers = "FROM : Mystic Market Everywhere";
 //      exemple de lien deçu dans le mail depuis localhost
-//      http://localhost:8888/PHP/ProjetPHPS3/public/index.php?controller=user&action=validation&login=test&nonce=c1811ba05b74e071e4fad24813fb2adb
+//      http://localhost:8888/PHP/ProjetPHPS3/public/index.php?controller=user&action=validation&login=test&nonce=asadzfz
 //      exemple de lien deçu dans le mail depuis webinfo
 //      http://webinfo.iutmontp.univ-montp2.fr/~simondonj/ecommerce/public/index.php?controller=user&action=validation&login=p&nonce=51437bc0d7ffd8affd3a6e877edce424
         mail($data['mail'], "validation", $message, $headers);
