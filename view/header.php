@@ -13,7 +13,6 @@ echo <<< EOT
                 <li><a href="index.php?action=readBasket&controller=basket">Basket</a></li>
 EOT;
 if (!empty($_SESSION['login'])) {
-                echo '<li><a href="index.php?action=read&controller=inventory">Inventory</a></li>';
                 echo '<li><a href="index.php?action=read&controller=wishlist">Wish List</a></li>';
                 echo '<li><a href="index.php?action=profil&controller=user'."&login=".$_SESSION['login'].'">Profile</a></li>';
                 echo '<li><a class="waves-effect waves-light btn-small" href="index.php?action=disconnect&controller=user">Log out</a></li>';
@@ -33,7 +32,7 @@ echo <<< EOT
             <a data-target="slide-out" class="brand-logo sidenav-trigger">Admin panel</a>
                 <li class="tab"><a href="index.php?controller=item&action=readAll">Items management</a></li>
                 <li class="tab"><a href="index.php?action=readAll&controller=user">Users Management</a></li>
-                <li class="tab"><a href="index.php?action=readAll&controller=category">Categories Management</a></li>                
+                <li class="tab"><a href="index.php?action=readAll&controller=category">Categories Management</a></li>
                 <li class="tab"><a href="index.php?action=readAll&controller=command">Sells management</a></li>
                 <li class="tab"><a href="index.php?action=  &controller=  ">Fréquentation</a></li>
                 <!-- <li class="tab"><a href="index.php?action=&controller=">Gestion des données</a></li> -->

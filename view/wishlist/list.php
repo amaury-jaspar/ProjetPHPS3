@@ -16,7 +16,7 @@ echo <<< EOT
 <div style="border: 1px solid black;text-align:left;padding:1em;margin:1em;">
 
 <h6>$itemName</h6>
-<img src="../images/$itemName.png" alt="image">
+<img src="../images/$itemName.jpg" alt="image">
 <br>
 <a href="index.php?controller=item&action=addToBasket&prix=$itemPriceURL&id=$itemIdURL">Add item to basket</a>
 <br>
