@@ -6,19 +6,15 @@ class ModelCommand extends Model {
 
 	private $id_command;
 	private $login_user;
-	private $id_item;
-	private $quantity_item;
 	private $date_buy;
 
 	protected static $object = "command";
-	protected static $primary = "";
+	protected static $primary = "id_command";
 
 	public function __construct($data = NULL) {
 		if (!is_null($data)) {
 			$this->id_command = NULL;
 			$this->login_user = $data['login_user'];
-			$this->id_item = $data['id_item'];
-			$this->quantity_item = $data['quantity_item'];
 			$this->date_buy = date();
 		}
 	}
@@ -35,6 +31,34 @@ class ModelCommand extends Model {
         return false;
     }
 
+    public static function findItems($id_command) {
+        try {
+            $pdo = Model::$pdo;
+            $sql = "SELECT I.*, IC.quantity FROM items I JOIN itemcommand IC ON IC.id_item=I.id WHERE IC.id_command=:tag_id_command";
+
+            $req_prep = Model::$pdo->prepare($sql);
+
+            $values = array(
+                "tag_id_command" => $id_command,
+            );
+
+            $req_prep->execute($values);
+
+            // On récupère les résultats comme précédemment
+            $req_prep->setFetchMode(PDO::FETCH_ARRAY, 'ModelUtilisateur');
+            $tab_items = $req_prep->fetchAll();
+            // Attention, si il n'y a pas de résultats, on renvoie false
+            return $tab_items;
+
+        } catch (PDOException $e) {
+            if (Conf::getDebug()) {
+                echo $e->getMessage(); // affiche un message d'erreur
+            } else {
+                echo 'Une erreur est survenue <a href=""> retour a la page d\'accueil </a>';
+            }
+            die();
+        }
+    }
 }
 
 ?>

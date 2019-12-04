@@ -123,6 +123,11 @@ public static function beforeBuyBasket() {
         ControllerBasket::actualizeSumBasket();
         $sumBasket = $_SESSION['sumBasket'];
         $tab_basket = unserialize($_COOKIE['basket']);
+        foreach($tab_basket as $key => $value) {
+            if ($value > 0) {
+                $currentBasket[$key] = ModelItem::select($key);
+            }
+        }
         require_once (File::build_path(array('controller', 'ControllerUser.php')));
         $user = ModelUser::select($_SESSION['login']);
         $moneyBefore = $user->get('wallet');
@@ -142,9 +147,7 @@ public static function beforeBuyBasket() {
     } else {
         static::$object = "user";
         Messenger::alert("YOUR ATTENTION PLEASE : You need to be connected before be allowed to buy the content of your basket");
-        $view='connect';
-        $pagetitle='connection';
-        require (File::build_path(array("view", "view.php")));
+       ControllerUser::connect();
     }
 }
 
@@ -232,11 +235,7 @@ public static function confirmBuyBasket() {
     } else {
         static::$object = "user";
         Messenger::alert("YOUR ATTENTION PLEASE : You need to be connected before be allowed to buy the content of your basket");
-        $view='connect';
-        $pagetitle='connection';
-        require (File::build_path(array("view", "view.php")));
+        ControllerUser::connect();
     }
 }
-
-
 }

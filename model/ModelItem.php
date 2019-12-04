@@ -70,7 +70,7 @@ class ModelItem extends Model {
 			$values = array("condition" => $condition);
 			$req_prep->execute($values);
 			$answer = $req_prep->fetchAll(PDO::FETCH_ASSOC);
-			} catch (PDOException $e) {
+		} catch (PDOException $e) {
 			if(Conf::getDebug()) {
 				echo $e->getMessage();
 			} else {

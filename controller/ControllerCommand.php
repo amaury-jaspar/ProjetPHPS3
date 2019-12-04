@@ -8,12 +8,10 @@ class ControllerCommand {
 	protected static $object = "command";
 
 	public static function read() {
-		$id = htmlspecialchars(myGet('id'));
+		$id = htmlspecialchars(myGet('id_command'));
 		$command = ModelCommand::select($id);
 		if ($command == false) {
-			$view='error';
-            $pagetitle='Error page';
-			require_once (File::build_path(array("view", "view.php")));
+			self::error();
 		} else {
             $view='detail';
 			$pagetitle='Detail command';
@@ -45,7 +43,7 @@ class ControllerCommand {
   }
 
 	public static function delete() {
-		$id = myGet('id');
+		$id = myGet('id_command');
 		ModelCommand::deleteById($id);
 		$tab_command = ModelCommand::selectAll();
 		$view='deleted';
@@ -53,6 +51,11 @@ class ControllerCommand {
 		require_once (File::build_path(array("view", "view.php")));
 	}
 
+	public static function error() {
+		$view='error';
+		$pagetitle='Page d\'erreur';
+		require File::build_path(array('view','view.php'));
+	}
 }
 
 ?>
