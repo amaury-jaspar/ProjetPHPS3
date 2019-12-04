@@ -17,13 +17,17 @@ class ModelCategory extends Model {
     }
   }
 
-  public function get($attribute) {
-    return $this->$attribute;
-  }
+    public function get($attribute) {
+        if (property_exists($this, $attribute))
+            return $this->$attribute;
+        return false;
+    }
 
-  public function set($attribute, $value) {
-    $this->$attribute = $value;
-  }
+    public function set($attribute, $value) {
+        if (property_exists($this, $attribute))
+            $this->$attribute = $value;
+        return false;
+    }
 }
 
 ?>

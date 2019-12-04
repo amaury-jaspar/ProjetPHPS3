@@ -8,7 +8,7 @@
 	require_once (File::build_path(array('lib', 'Session.php')));
 	require_once (File::build_path(array('lib', 'ImageUploader.php')));
 	require_once (File::build_path(array('lib', 'Messenger.php')));
-	
+
 class ControllerItem {
 
 	protected static $object = "item";
@@ -132,9 +132,8 @@ class ControllerItem {
 	}
 
 	public static function paging() {
-
 		if (myGet('condition') !== NULL && myGet('condition') != "") {
-			$nb_Id = Modelitem::countCatalogCategory(myGet('condition'));
+			$nb_Id = ModelItem::countCatalogCategory(myGet('condition'));
 		} else {
 			$nb_Id = ModelItem::countCatalog(); // le nombre d'item qui ont 1 pour l'attribut catalog
 		}

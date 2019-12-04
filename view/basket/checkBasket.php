@@ -31,7 +31,7 @@ echo <<< EOT
 <br>
 Do you really want to buy that basket ?
 <br>
-<a href="index.php?controller=basket&action=readBasket">Modificate my basket</a>
+<a href="index.php?controller=basket&action=readBasket">Modify my basket</a>
 <br>
 <a href="index.php?controller=basket&action=confirmBuyBasket">Purchase</a>
 <br>

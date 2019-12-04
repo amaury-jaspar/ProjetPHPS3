@@ -32,30 +32,34 @@ class ModelItem extends Model {
     }
 
 	public function get($nom_attribut) {
-		return $this->$nom_attribut;
+		if (property_exists($this, $nom_attribut))
+			return $this->$nom_attribut;
+		return false;
 	}
 
 	public function set($nom_attribut, $valeur) {
-		$this->$nom_attribut = $valeur;
+		if (property_exists($this, $nom_attribut))
+			$this->$nom_attribut = $valeur;
+		return false;
 	}
 
 	// utile à la pagination de article afin de compter tous les produits qui sont à vendre
     public static function countCatalog() {
-			$primary_key = static::$primary;
-			$table_name = static::$object;
-			try {
-				$rep = Model::$pdo->query("SELECT COUNT($primary_key) as nb_Id FROM $table_name WHERE catalog = 1");
-				$answer = $rep->fetch(PDO::FETCH_ASSOC);
-			} catch (PDOException $e) {
-				if(Conf::getDebug()) {
-					echo $e->getMessage();
-				} else {
-					echo 'Une erreur est survenue <a href="index.php?action=buildFrontPage&controller=home"> retour à la page d\'acceuil </a>';
-				}
-				die();
+		$primary_key = static::$primary;
+		$table_name = static::$object;
+		try {
+			$rep = Model::$pdo->query("SELECT COUNT($primary_key) as nb_Id FROM $table_name WHERE catalog = 1");
+			$answer = $rep->fetch(PDO::FETCH_ASSOC);
+		} catch (PDOException $e) {
+			if(Conf::getDebug()) {
+				echo $e->getMessage();
+			} else {
+				echo 'Une erreur est survenue <a href="index.php?action=buildFrontPage&controller=home"> retour à la page d\'acceuil </a>';
 			}
-			return $answer['nb_Id'];
+			die();
 		}
+		return $answer['nb_Id'];
+	}
 
     public static function countCatalogCategory($condition) {
         $primary_key = static::$primary;
@@ -66,7 +70,7 @@ class ModelItem extends Model {
 			$values = array("condition" => $condition);
 			$req_prep->execute($values);
 			$answer = $req_prep->fetchAll(PDO::FETCH_ASSOC);
-			} catch (PDOException $e) {
+		} catch (PDOException $e) {
 			if(Conf::getDebug()) {
 				echo $e->getMessage();
 			} else {
@@ -74,7 +78,7 @@ class ModelItem extends Model {
 			}
 			die();
 		}
-		return $answer['nb_Id'];
+		return $answer[0]['nb_Id'];
     }
 
 	// utile à la pagination de article

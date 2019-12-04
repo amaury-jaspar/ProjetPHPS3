@@ -133,9 +133,7 @@ class ControllerUser {
             require (File::build_path(array("view", "view.php")));
         } else {
             Messenger::alert('You are not allowed to do such action');
-            $view='connect';
-            $pagetitle='connexion';
-            require (File::build_path(array("view", "view.php")));
+            self::connect();
         }
     }
 
@@ -189,9 +187,7 @@ class ControllerUser {
             require (File::build_path(array("view", "view.php")));
         } else {
             Messenger::alert($errorMessage);
-            $view='confirmDelete';
-            $pagetitle='Delete validation';
-            require (File::build_path(array("view", "view.php")));
+            self::connect();
         }
     }
 
@@ -218,9 +214,7 @@ class ControllerUser {
 			$pagetitle='User modification';
 			require (File::build_path(array("view", "view.php")));
     	} else {
-            $view='connect';
-            $pagetitle='connection';
-            require (File::build_path(array("view", "view.php")));
+            self::connect();
         }
     }
 
@@ -281,9 +275,7 @@ class ControllerUser {
 			require (File::build_path(array("view", "view.php")));
         } else {
             Messenger::alert($errorMessage);
-            $view='connect';
-            $pagetitle='connection';
-            require (File::build_path(array("view", "view.php")));
+            self::connect();
         }
     }
 
@@ -349,9 +341,7 @@ class ControllerUser {
             Messenger::alert("Problem, please try again");
             $password = "";
             $login = myGet('login');
-            $view='connect';
-            $pagetitle='connection';
-            require (File::build_path(array("view", "view.php")));
+            self::connect();
         }
     }
 
@@ -364,7 +354,7 @@ class ControllerUser {
         require (File::build_path(array("view", "view.php")));
     }
 
-    public function profil() {
+    public static function profil() {
         $user = ModelUser::select(myGet('login'));
         if (Session::is_user($user->get('login')) && Session::is_connected()) {
             $view='profil';
