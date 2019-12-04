@@ -190,9 +190,7 @@ public static function confirmBuyBasket() {
                 $data = array (
                     'id_command' => NULL,
                     'login_user' => $user->get('login'),
-                    'id_item' => $key,
-                    'quantity_item' =>  $value,
-                    'date_buy' => date("Y-m-d"),
+                    'date_buy' => NULL,
                 );
                 ModelCommand::save($data);
             }
