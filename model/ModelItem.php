@@ -78,7 +78,7 @@ class ModelItem extends Model {
 			}
 			die();
 		}
-		return $answer['nb_Id'];
+		return $answer[0]['nb_Id'];
     }
 
 	// utile à la pagination de article
