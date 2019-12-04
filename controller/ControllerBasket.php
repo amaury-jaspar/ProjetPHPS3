@@ -32,17 +32,20 @@ public static function readBasket() {
         $sumBasket = 0;
     }
     if (isset($_COOKIE['basket'])) {
-        $tab_basket = unserialize($_COOKIE['basket']);        
+        $tab_basket = unserialize($_COOKIE['basket']);
     } else {
         $tab_basket = array();
     }
     ControllerBasket::actualizeSumBasket();
-    $tab_basket = unserialize($_COOKIE['basket']);
-    foreach($tab_basket as $key => $value) {
-        if ($value > 0) {
-        $currentBasket[$key] = ModelItem::select($key);
+    $currentBasket = array();
+    if (! empty($tab_basket)){
+        foreach($tab_basket as $key => $value) {
+            if ($value > 0) {
+                $currentBasket[$key] = ModelItem::select($key);
+            }
         }
     }
+
     $view='basket';
     $pagetitle='Basket';
     require (File::build_path(array("view", "view.php")));
@@ -50,7 +53,7 @@ public static function readBasket() {
 
 public static function actualizeSumBasket() {
     if (isset($_COOKIE['basket'])) {
-        $tab_basket = unserialize($_COOKIE['basket']);        
+        $tab_basket = unserialize($_COOKIE['basket']);
     } else {
         $tab_basket = array();
     }
