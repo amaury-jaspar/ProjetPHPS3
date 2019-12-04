@@ -44,8 +44,8 @@ echo <<< EOT
                     Buy or empty the basket ?
                 </div>
                 <div class="card-action">
-                      <a class="blue-text" href="index.php?action=beforeBuyBasket&controller=basket">Purchase</a>
-                      <a class="red-text" href="index.php?action=resetBasket&controller=basket">Empty The Basket</a>
+                      <a class="btn $ButtonState" href="index.php?action=beforeBuyBasket&controller=basket">Purchase</a>
+                      <a class="btn $ButtonState" href="index.php?action=resetBasket&controller=basket">Empty The Basket</a>
                 </div>
           </div>
     </div>

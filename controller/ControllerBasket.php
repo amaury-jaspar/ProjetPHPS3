@@ -31,19 +31,19 @@ public static function readBasket() {
     } else {
         $sumBasket = 0;
     }
+    $currentBasket = array();
     if (isset($_COOKIE['basket'])) {
         $tab_basket = unserialize($_COOKIE['basket']);
-    } else {
-        $tab_basket = array();
-    }
-    ControllerBasket::actualizeSumBasket();
-    $currentBasket = array();
-    if (! empty($tab_basket)){
+        ControllerBasket::actualizeSumBasket();
         foreach($tab_basket as $key => $value) {
             if ($value > 0) {
                 $currentBasket[$key] = ModelItem::select($key);
             }
         }
+        $ButtonState = null;
+    } else {
+        $tab_basket = array();
+        $ButtonState = "disabled";
     }
 
     $view='basket';
@@ -134,23 +134,23 @@ public static function beforeBuyBasket() {
         require_once (File::build_path(array('controller', 'ControllerUser.php')));
         $user = ModelUser::select($_SESSION['login']);
         $moneyBefore = $user->get('wallet');
-        $moneyAfter = $user->get('wallet') - $sumBasket;
-        if ($moneyAfter >= 0) {
+        $moneyAfter = $moneyBefore - $sumBasket;
+        if ($moneyBefore >= $sumBasket) {
             $_SESSION['basket'] = $tab_basket;
             $view='checkBasket';
             $pagetitle='Basket';
             require (File::build_path(array("view", "view.php")));
         } else {
             static::$object = "user";
-            Messenger::alert("ALERTE : vous n'avez pas suffisament d'argent");
+            Messenger::alert("ALERTE : You do not have any money");
             $view='profil';
             $pagetitle='profil';
             require (File::build_path(array("view", "view.php")));
         }
     } else {
         static::$object = "user";
-        Messenger::alert("YOUR ATTENTION PLEASE : You need to be connected before be allowed to buy the content of your basket");
-       ControllerUser::connect();
+        Messenger::alert("YOUR ATTENTION PLEASE : You need to be connected to buy the content of your basket");
+        ControllerUser::connect();
     }
 }
 
@@ -185,17 +185,6 @@ public static function confirmBuyBasket() {
             }
             $data = array ('login' => $user->get('login'), 'wallet' => $user->get('wallet'), 'spend' => $user->get('spend'));
             ModelUser::updateByID($data);
-        // maintenant, on va travailler à ajouter les item à l'inventaire de l'utilisateur
-            $tab_basket = $_SESSION['basket'];
-            foreach($tab_basket as $key => $value) {
-                    $data = array (
-                        'login' => $user->get('login'),
-                        'id_item' => $key,
-                        'quantity' => $value,
-                        'operator' => '+',
-                    );
-                ModelInventory::addToInventory($data);
-            }
             // Ensuite on enregistre la commande dans la table commande
             foreach($tab_basket as $key => $value) {
                 $data = array (

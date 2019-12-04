@@ -78,7 +78,7 @@ class ModelUser extends Model {
 			$req_prep = Model::$pdo->prepare("SELECT nonce FROM user WHERE login = :login");
 			$values = array ("login" => $login);
 			$req_prep->execute($values);
-			$answer = $req_prep->fetch(PDO::FETCH_ASSOC);	
+			$answer = $req_prep->fetch(PDO::FETCH_ASSOC);
 		} catch (PDOException $e) {
 			if(Conf::getDebug()) {
 				echo $e->getMessage();
