@@ -311,7 +311,7 @@ class ControllerUser {
         require (File::build_path(array("view", "view.php")));
     }
 
-    public function profil() {
+    public static function profil() {
         $user = ModelUser::select(myGet('login'));
         if (Session::is_user($user->get('login')) && Session::is_connected()) {
             $view='profil';
