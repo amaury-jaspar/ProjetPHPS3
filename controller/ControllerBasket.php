@@ -51,38 +51,6 @@ public static function readBasket() {
     require (File::build_path(array("view", "view.php")));
 }
 
-public static function actualizeSumBasket() {
-    if (isset($_COOKIE['basket'])) {
-        $tab_basket = unserialize($_COOKIE['basket']);
-    } else {
-        $tab_basket = array();
-    }
-    $sum = 0;
-    foreach($tab_basket as $key => $value) {
-        $item = ModelItem::select($key);
-        $sum += $item->get('price') * $value;
-    }
-    $_SESSION['sumBasket'] = $sum;
-}
-
-public static function addToBasket() {
-    $item = ModelItem::select(myGet('id'));
-    $tab_basket = NULL;
-    if(isset($_COOKIE['basket'])) {
-        $tab_basket = unserialize($_COOKIE['basket']);
-    }
-    if(isset($tab_basket[myGet('id')])) {
-        $tab_basket[myGet('id')] += 1;
-    } else {
-        $tab_basket[myGet('id')] = 1;
-    }
-    setcookie('basket', serialize($tab_basket), time()+ (60 * 60 * 24));
-    ControllerBasket::actualizeSumBasket();
-    $view='addedToBasket';
-    $pagetitle='The item have been add to the basket succesfully';
-    require (File::build_path(array("view", "view.php")));
-}
-
 public static function resetBasket() {
     $tab_basket = NULL;
     setcookie('basket', "", time() - 1);
@@ -92,34 +60,6 @@ public static function resetBasket() {
     $pagetitle='Panier';
     require (File::build_path(array("view", "view.php")));
 }
-
-public static function deleteFromBasket() {
-    $item = ModelItem::select(myGet('id'));
-    if(isset($_COOKIE['basket'])) {
-        $tab_basket = unserialize($_COOKIE['basket']);
-    } else {
-        self::error();
-    }
-    if(isset($tab_basket[$item->get('id')])) {
-        $tab_basket[myGet('id')] -= 1;
-        if($tab_basket[myGet('id')] <= 0) {
-            unset($tab_basket[$item->get('id')]);
-        }
-    }
-    setcookie('basket', serialize($tab_basket), time() + (60 * 60 * 24));
-    ControllerBasket::actualizeSumBasket();
-    $sumBasket = $_SESSION['sumBasket'];
-    $tab_basket = unserialize($_COOKIE['basket']);
-    foreach($tab_basket as $key => $value) {
-        if ($value > 0) {
-        $currentBasket[$key] = ModelItem::select($key);
-        }
-    }
-    $view='DeletedFromBasket';
-    $pagetitle='Removed from basket';
-    require (File::build_path(array("view", "view.php")));
-}
-
 
 public static function beforeBuyBasket() {
     if (Session::is_connected()) {
@@ -152,6 +92,13 @@ public static function beforeBuyBasket() {
         Messenger::alert("YOUR ATTENTION PLEASE : You need to be connected to buy the content of your basket");
         ControllerUser::connect();
     }
+}
+
+public static function addToBasket() {
+    ModelBasket::addToBasket(myGet('id'));
+    $view='addedToBasket';
+    $pagetitle='The item have been add to the basket succesfully';
+    require (File::build_path(array("view", "view.php")));
 }
 
 /* 1 - En premier lieu, l'utilisateur ne doit pas pouvoir acheter hors connexion

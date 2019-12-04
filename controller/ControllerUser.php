@@ -373,7 +373,9 @@ class ControllerUser {
     }
 
     public static function personnalisation() {
-        setcookie("preference", myGet('preference'), time()+3600);
+        $user = ModelUser::select($_SESSION['login']);
+        // setcookie("preference", myGet('preference'), time()+3600);
+        $_SESSION['preference'] = myGet('preference');
         $view='profil';
         $pagetitle='profil';
         require (File::build_path(array("view", "view.php")));
