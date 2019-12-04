@@ -157,9 +157,13 @@ class ControllerItem {
 			require_once (File::build_path(array('controller', 'ControllerUser.php')));
 			$user = ModelUser::select($_SESSION['login']);
 		}
-
-		$tab_category = ModelCategory::selectAll();
-
+		$i = 0;
+			foreach($tab_result as $item) {
+			if ((Session::is_connected() && $user->get('level') < $item->get('levelaccess')) || (!Session::is_connected() && $item->get('levelaccess') > 1)) {
+				unset($tab_result[$i]);
+			}
+			$i++;
+		}
 		$view='paging';
 		$pagetitle='paging';
 		require_once (File::build_path(array("view", "view.php")));

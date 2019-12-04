@@ -8,8 +8,8 @@ class ControllerHome {
 	protected static $object = "home";
 
     public static function buildFrontPage() {
-        $tab_category = ModelCategory::selectAll();
 
+        $tab_category = ModelCategory::selectAll();
         $view='marketplace';
         $pagetitle='frontpage';
         require (File::build_path(array("view", "view.php")));

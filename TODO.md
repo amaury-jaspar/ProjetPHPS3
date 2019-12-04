@@ -2,13 +2,8 @@ TO DO :
 
 Utiliser un serveur qui affiche les warnings et corriger tout ça
 
-Profile :
-	Faire les vues de ce menu
-	Y faire le système de préférence
-
-Getter et Setter générique :
-Rajouter des limiteurs dans les setters, et vérifier l’existante d’un attribut (à l’aide d’un tableau contenant tous les nom d’attribut ? ou bien avec une méthode particulière ?)
-Système de vérification que l’attribut existe quand on appelle un get dessus
+Faire un formulaire de contact dont le lien est donné dans le footer, formulaire et fonction mail, action dans le controller Home
+Une page de membres avec lient dans le footer
 
 Commande :
 Finir l’enregistrement des commandes
@@ -19,6 +14,7 @@ terminer la méthode qui ajoute l'item au panier et le supprime de Wishlist
 
 Basket :
 Refactoriser la vue confirmBuyBasket pour créer un système de cas d’erreur
+Envoyer dans modelBasket les éléments qui modifie les données
 
 Add ou remove item depuis le readbasket :
 Utiliser le panier de la session pour afficher le nombre de produit dans le panier courant et faire des ajout ou retrait
@@ -67,7 +63,7 @@ Prévention de hijacking :
 	et le code dans different_user(); est encore à déterminer (rick rolled ?)
 		il est recommander de supprimer la session actuelle, et de demander à l'utilisateur de se connecter à nouveau à cause d'une erreur technique
 
-Echappement des variables dans les vues à vérifier
+
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -77,6 +73,7 @@ Liste des fonctionnalités dont il faut faire la démonstration et qui les prés
 
 A LA FIN :
 
+	- Echappement des variables dans les vues à vérifier
 	— Dans le formulaire create / update d’objets, terminer en remettant la variable $method dans le formulaire
 	— Passer la valeur de Debug à False dans conf
 	— Envoyer le site sur webinfo et tester le fonctionnement des chemins
@@ -100,8 +97,12 @@ test une concatenation de $_SERVER['HTTP_HOST'] et $_SERVER['REQUEST_URI']
 ------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 QUESTION :
+
 — Comment renouveler l’identifiant de la session régulièrement, dans l’action connected ?
+
 — Regarder pourquoi les comptes partage les cookies, donc partage les mêmes panier, quand on passe d’un compte à l’autre, on partage le même panier, c’est problématique
--- Faut-il faire passer le basket dans lib ? ou bien le garder dans les controller alors même que Model Basket n’a aucun intérêt ?
+
+- Faut-il faire passer le basket dans lib ? ou bien le garder dans les controller alors même que Model Basket n’a aucun intérêt ?
+
 — Regarder pourquoi les comptes partage les cookies, donc partage les mêmes panier, quand on passe d’un compte à l’autre, on partage le même panier, c’est problématique
 Faut-il faire passer le basket dans lib ? ou bien le garder dans les controller alors même que Model Basket n’a aucun intérêt ?

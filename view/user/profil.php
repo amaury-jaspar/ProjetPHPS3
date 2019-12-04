@@ -7,8 +7,6 @@ echo "<h1>YOUR ACCOUNT</h1>";
 
 echo "<p>Hi " . $userSurname . ", welcome</p>";
 
-// Utiliser la variable $_SERVER pour afficher des données sur l'utilisateur tel que son IP etc..
-
 // Afficher les données personnelles
 // Proposer de tout modifier, on renvoie vers un update, on sauvegarde tout et on update
 // Mais attention à ne pas repasser par création
@@ -51,16 +49,13 @@ echo <<< EOT
         <a href="index.php?action=readAll&controller=command">Your commands</a>
     </p>
     <p>
-        <a href="index.php?action=&controller=user">Security setting and connection</a>
-    </p>
-    <p>
-        <a href="index.php?action=&controller=user">Your addresses</a>
+        <a href="index.php?action=securitySetting&controller=user&login=$userLogin">Security setting and connection</a>
     </p>
     <p>
         <a href="index.php?action=&controller=user">Payment option</a>
     </p>
     <p>
-        <a href="index.php?action=&controller=user">Wallet</a>
+        <a href="index.php?action=&controller=user">Manage your Wallet</a>
     </p>
     <p>
         <a href="index.php?action=&controller=user&action=update&login=$userLogin">Modificate the data of your account</a>
