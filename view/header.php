@@ -32,15 +32,9 @@ echo <<< EOT
             <a data-target="slide-out" class="brand-logo sidenav-trigger">Admin panel</a>
                 <li class="tab"><a href="index.php?controller=item&action=readAll">Items management</a></li>
                 <li class="tab"><a href="index.php?action=readAll&controller=user">Users Management</a></li>
-<<<<<<< HEAD
-                <li class="tab"><a href="index.php?action=readAll&controller=category">Categories Management</a></li>                
-                <li class="tab"><a href="index.php?action= &controller= ">Sells management</a></li>
-                <!-- <<li class="tab"><a href="index.php?action=  &controller=  ">Fréquentation</a></li>
-=======
                 <li class="tab"><a href="index.php?action=readAll&controller=category">Categories Management</a></li>
                 <li class="tab"><a href="index.php?action=readAll&controller=command">Sells management</a></li>
                 <li class="tab"><a href="index.php?action=  &controller=  ">Fréquentation</a></li>
->>>>>>> b82b47dfa8ebd2143fddb079c40995569d032ee6
                 <!-- <li class="tab"><a href="index.php?action=&controller=">Gestion des données</a></li> -->
             </ul>
         </div>
