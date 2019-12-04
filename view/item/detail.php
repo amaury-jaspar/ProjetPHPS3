@@ -21,7 +21,7 @@ if (Session::is_admin()) {
     echo '<br>';
 }
 
-echo '<a href="index.php?controller=basket&action=addToBasket&prix='. $priceURL .'&id=' . $idURL . ' ">Add to basket</a>';
+echo '<a href="index.php?controller=basket&action=addToBasket&id=' . $idURL . ' ">Add to basket</a>';
 echo "<br>";
 echo "<br>";
 echo '<a href="index.php?controller=wishlist&action=addItem&id=' . $idURL . ' ">Add to my Wishlist</a>';

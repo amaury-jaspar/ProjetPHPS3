@@ -23,39 +23,33 @@ class ControllerBasket {
 *			à actualiser le plus souvent possible grâce à la fonction actualiserSommePanier
 */
 
-
-// si is_connected est faux, alors on lit le panier côté cookie, sinon on lit le panier côté serveur
 public static function readBasket() {
-    if (isset($_SESSION['sumBasket'])) {
-        $sumBasket = $_SESSION['sumBasket'];
-    } else {
-        $sumBasket = 0;
-    }
-    $currentBasket = array();
-    if (isset($_COOKIE['basket'])) {
-        $tab_basket = unserialize($_COOKIE['basket']);
-        ControllerBasket::actualizeSumBasket();
-        foreach($tab_basket as $key => $value) {
-            if ($value > 0) {
-                $currentBasket[$key] = ModelItem::select($key);
-            }
-        }
-        $ButtonState = null;
-    } else {
-        $tab_basket = array();
-        $ButtonState = "disabled";
-    }
-
+    $sumBasket = ModelBasket::getSumBasket();
+    $tab_basket = ModelBasket::getBasketFromCookie();
+    $tab_basket = ModelBasket::buildBasket($tab_basket);
+    if (!empty($tab_basket)) { $ButtonState = null; } else { $ButtonState = "disabled"; }
     $view='basket';
     $pagetitle='Basket';
     require (File::build_path(array("view", "view.php")));
 }
 
+public static function addToBasket() {
+    $item = ModelBasket::addToBasket(myGet('id'));
+    $view='addedToBasket';
+    $pagetitle='The item have been add to the basket succesfully';
+    require (File::build_path(array("view", "view.php")));
+}
+
+public static function deleteFromBasket() {
+    $item = ModelBasket::deleteFromBasket(myGet('id'));
+    $view='DeletedFromBasket';
+    $pagetitle='Removed from basket';
+    require (File::build_path(array("view", "view.php")));
+}
+
 public static function resetBasket() {
-    $tab_basket = NULL;
-    setcookie('basket', "", time() - 1);
-    unset($_SESSION['basket']);
-    $_SESSION['sumBasket'] = 0;
+    ModelBasket::resetBasket();
+    $ButtonState = "disabled";
     $view='basketReseted';
     $pagetitle='Panier';
     require (File::build_path(array("view", "view.php")));
@@ -92,13 +86,6 @@ public static function beforeBuyBasket() {
         Messenger::alert("YOUR ATTENTION PLEASE : You need to be connected to buy the content of your basket");
         ControllerUser::connect();
     }
-}
-
-public static function addToBasket() {
-    ModelBasket::addToBasket(myGet('id'));
-    $view='addedToBasket';
-    $pagetitle='The item have been add to the basket succesfully';
-    require (File::build_path(array("view", "view.php")));
 }
 
 /* 1 - En premier lieu, l'utilisateur ne doit pas pouvoir acheter hors connexion
@@ -175,4 +162,7 @@ public static function confirmBuyBasket() {
         ControllerUser::connect();
     }
 }
+
+
+
 }

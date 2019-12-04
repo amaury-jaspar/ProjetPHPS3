@@ -2,14 +2,14 @@
 
 $sumBasket = htmlspecialchars($_SESSION['sumBasket']);
 
-echo "<h1>YOUR BUY</h1>";
+echo "<h1>YOUR BASKET</h1>";
 
 echo '<div class="row">';
 
-foreach($currentBasket as $item) {
+foreach($tab_basket as $item) {
 
     $itemName = htmlspecialchars($item->get('name'));
-    $itemQuantity = htmlspecialchars($tab_basket[$item->get('id')]);
+    $itemQuantity = htmlspecialchars($_SESSION['basket'][$item->get('id')]);
     $itemIdURL = rawurlencode($item->get('id'));
     $itemPriceURL = rawurlencode($item->get('price'));
 
@@ -35,6 +35,8 @@ EOT;
 }
 
 echo '</div>';
+
+echo "<div><h3>Total : $sumBasket</h1></div>";
 
 echo <<< EOT
 <div class="row">
