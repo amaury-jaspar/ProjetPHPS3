@@ -25,15 +25,12 @@
 
 echo '<div class="center-align">';
 for ($i = 1; $i <= $nbPage; $i++) {
-    echo '<a href="index.php?action=paging&controller=item&currentpage='.$i.'"> '.$i.' </a>';
+    echo '<a class="waves-effect waves-light btn-small" href="index.php?action=paging&controller=item&currentpage='.$i.'">'.$i.'</a>';
 }
 echo '</div>';
 
 echo '<div class="row">';
 foreach($tab_result as $item) {
-
-        // On n'affiche que les articles dont l'aventurier à le niveau pour y accéder
-if (Session::is_connected() && $user->get('level') >= $item->get('levelaccess') || $item->get('levelaccess') < 1 || Session::is_admin()) {
 
 $itemIdURL = rawurldecode($item->get('id'));
 $itemIdHTML = htmlspecialchars($item->get('id'));
@@ -55,14 +52,12 @@ echo <<< EOT
     </div>
 EOT;
 
-    }
-
 }
 echo '</div>';
 
 echo '<div class="center-align">';
 for ($i = 1; $i <= $nbPage; $i++) {
-        echo '<a href="index.php?action=paging&controller=item&currentpage='.$i.'"> '.$i.' </a>';
+    echo '<a class="waves-effect waves-light btn-small" href="index.php?action=paging&controller=item&currentpage='.$i.'">'.$i.'</a>';
     }
 echo '</div>';
 ?>

@@ -1,7 +1,5 @@
 <?php
 
-
-
 echo <<< EOT
     <form class="container" method=$method action="index.php?">
         <fieldset>

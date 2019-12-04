@@ -10,6 +10,7 @@ require_once File::build_path(array('controller',"ControllerItem.php"));
 require_once File::build_path(array('controller',"ControllerTest.php"));
 require_once File::build_path(array('controller',"ControllerUser.php"));
 require_once File::build_path(array('controller',"ControllerWishlist.php"));
+require_once (File::build_path(array('lib', 'Security.php')));
 
 if (isset($_COOKIE['basket'])) {
     $tab_basket = unserialize($_COOKIE['basket']);

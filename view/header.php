@@ -35,7 +35,7 @@ echo <<< EOT
                 <li class="tab"><a href="index.php?action=readAll&controller=user">Users Management</a></li>
                 <li class="tab"><a href="index.php?action=readAll&controller=category">Categories Management</a></li>                
                 <li class="tab"><a href="index.php?action= &controller= ">Sells management</a></li>
-                <li class="tab"><a href="index.php?action=  &controller=  ">Fréquentation</a></li>
+                <!-- <<li class="tab"><a href="index.php?action=  &controller=  ">Fréquentation</a></li>
                 <!-- <li class="tab"><a href="index.php?action=&controller=">Gestion des données</a></li> -->
             </ul>
         </div>

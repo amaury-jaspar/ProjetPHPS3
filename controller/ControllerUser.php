@@ -243,9 +243,12 @@ class ControllerUser {
         } else if (!ModelUser::checkPassword(myGet('login'), Security::chiffrer(myGet('password1'))) && !ModelUser::checkPassword($_SESSION['login'], Security::chiffrer(myGet('password1')))) {
             $codeError = 1;
             $errorMessage = 'Wrong password';
+        } else if (!Session::is_admin() && myGet('admin') !== NULL && myGet('admin') == on) {
+            $codeError = 2;
+            $errorMessage = 'CHEATER !!!';
         }
         if (!isset($errorMessage)) {
-            if (myGet('admin') !== NULL && myGet('admin') == on) { $admin = 1; } else { $admin = 0; }
+            if (Session::is_admin() && myGet('admin') !== NULL && myGet('admin') == on) { $admin = 1; } else { $admin = 0; }
             $data = array (
 				'login' => htmlspecialchars(myGet('login')),
 				'lastName' => htmlspecialchars(myGet('lastName')),
@@ -274,12 +277,52 @@ class ControllerUser {
             $required = "required";
 			$action = "updated";
 			$view = 'update';
-			$pagetitle='User\'s creation';
+			$pagetitle='Users creation';
 			require (File::build_path(array("view", "view.php")));
         } else {
             Messenger::alert($errorMessage);
             $view='connect';
             $pagetitle='connection';
+            require (File::build_path(array("view", "view.php")));
+        }
+    }
+
+    public static function securitySetting() {
+        $user = ModelUser::select(myGet('login'));
+        $login = $user->get('login');
+        $password1 = "";
+        $password2 = "";
+        $password3 = "";
+        $action = "securitySettingModified";
+        $view='securitySettings';
+        $pagetitle='connection';
+        require (File::build_path(array("view", "view.php")));
+    }
+
+    public static function securitySettingModified() {
+        if (isset($errorMessage)) { unset($errorMessage);}
+        if (!Session::is_connected()) {
+            $errorMessage = 'You need to be connected';
+        } else if (!Session::is_user(myGet('login'))) {
+            $errorMessage = 'Cant access this page';
+        } else if (is_null(myGet('password1')) || is_null(myGet('password2')) || is_null(myGet('password3'))) {
+            $errorMessage = 'Some attribute are NULL';
+        } else if (myGet('password1') !== myGet('password2')) {
+            $errorMessage = 'Problem of password';
+        } else if (myGet('password3') === myGet('password2')) {
+            $errorMessage = 'The new password cant be the same as the old one';
+        }
+        if(!isset($errorMessage)) {
+            $user = ModelUser::select(myGet('login'));
+            $user->updatePassword(Security::chiffrer(myGet('password1')), $user->get('login'), Security::chiffrer(myGet('password3')));
+            Messenger::alert('Your password have been updated');
+            $view='profil';
+            $pagetitle='accueil';
+            require (File::build_path(array("view", "view.php")));
+        } else {
+            Messenger::alert($errorMessage);
+            $view='profil';
+            $pagetitle='accueil';
             require (File::build_path(array("view", "view.php")));
         }
     }
