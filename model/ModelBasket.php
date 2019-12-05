@@ -7,7 +7,9 @@ class ModelBasket extends Model {
 
     public static function getBasketFromCookie() {
         if (isset($_COOKIE['basket'])) {
-            return unserialize($_COOKIE['basket']);
+            $tab_basket = unserialize($_COOKIE['basket']);
+            $_SESSION['basket'] = $tab_basket;
+            return $tab_basket;
         } else {
             return $tab_basket;
         }
@@ -15,6 +17,7 @@ class ModelBasket extends Model {
 
     public static function getBasketFromSession() {
         if (isset($_SESSION['basket'])) {
+            setcookie('basket', serialize($_SESSION['basket']), time() + (60 * 60 * 24));
             return $_SESSION['basket'];
         } else {
             return $tab_basket;
@@ -61,13 +64,11 @@ class ModelBasket extends Model {
     public static function addToBasket($id) {
         $item = ModelItem::select($id);
         $tab_basket = self::getBasketFromCookie();
-         if ($tab_basket !== NULL) {
             if(isset($tab_basket[$id])) {
                 $tab_basket[$id] += 1;
             } else {
                 $tab_basket[$id] = 1;
             }
-        }
         self::setBasket($tab_basket);
         ModelBasket::actualizeSumBasket();
         return $item;
@@ -76,14 +77,12 @@ class ModelBasket extends Model {
     public static function deleteFromBasket($id) {
         $item = ModelItem::select($id);
         $tab_basket = self::getBasketFromCookie();
-        if ($tab_basket !== NULL) {
             if(isset($tab_basket[$id])) {
                 $tab_basket[$id] -= 1;
                 if($tab_basket[$id] <= 0) {
                     unset($tab_basket[$id]);
                 }
             }
-        }
         self::setBasket($tab_basket);
         self::actualizeSumBasket();
         return $item;
