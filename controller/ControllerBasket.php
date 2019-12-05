@@ -25,33 +25,37 @@ class ControllerBasket {
 
 public static function readBasket() {
     $sumBasket = ModelBasket::getSumBasket();
-    $tab_basket = ModelBasket::getBasketFromCookie();
-    $tab_basket = ModelBasket::buildBasket($tab_basket);
+    $tab_basket = ModelBasket::buildBasketFromCookie();
     if (!empty($tab_basket)) { $ButtonState = null; } else { $ButtonState = "disabled"; }
     $view='basket';
     $pagetitle='Basket';
     require (File::build_path(array("view", "view.php")));
 }
 
+// rajouter un second paramètre pour pouvoir rajouter x exemplaire d'un coup
 public static function addToBasket() {
     $item = ModelBasket::addToBasket(myGet('id'));
-    $view='addedToBasket';
-    $pagetitle='The item have been add to the basket succesfully';
+    $view  ='addedToBasket';
+    $pagetitle ='The item have been add to the basket succesfully';
     require (File::build_path(array("view", "view.php")));
 }
 
 public static function deleteFromBasket() {
     $item = ModelBasket::deleteFromBasket(myGet('id'));
-    $view='DeletedFromBasket';
-    $pagetitle='Removed from basket';
+    $view = 'DeletedFromBasket';
+    $pagetitle = 'Removed from basket';
     require (File::build_path(array("view", "view.php")));
+}
+
+public static function transfertToWL() {
+    ModelBasket::deleteFromBasket(myGet('id'));
+//    ModelWishList::addItem($item);
 }
 
 public static function resetBasket() {
     ModelBasket::resetBasket();
-    $ButtonState = "disabled";
-    $view='basketReseted';
-    $pagetitle='Panier';
+    $view ='basketReseted';
+    $pagetitle ='Panier';
     require (File::build_path(array("view", "view.php")));
 }
 
@@ -71,14 +75,14 @@ public static function beforeBuyBasket() {
         $moneyAfter = $moneyBefore - $sumBasket;
         if ($moneyBefore >= $sumBasket) {
             $_SESSION['basket'] = $tab_basket;
-            $view='checkBasket';
-            $pagetitle='Basket';
+            $view ='checkBasket';
+            $pagetitle ='Basket';
             require (File::build_path(array("view", "view.php")));
         } else {
             static::$object = "user";
             Messenger::alert("ALERTE : You do not have any money");
-            $view='profil';
-            $pagetitle='profil';
+            $view ='profil';
+            $pagetitle ='profil';
             require (File::build_path(array("view", "view.php")));
         }
     } else {

@@ -2,6 +2,7 @@
 
 require_once (File::build_path(array('model', 'ModelWishlist.php')));
 require_once (File::build_path(array('model', 'ModelItem.php')));
+require_once (File::build_path(array('model', 'ModelBasket.php')));
 require_once (File::build_path(array('lib', 'Session.php')));
 require_once (File::build_path(array('lib', 'Messenger.php')));
 
@@ -29,8 +30,8 @@ class ControllerWishlist {
 
   public static function addItem() {
     $login_user = $_SESSION['login'];
-    $item_id = myGet('id');
-    $data = array(
+      $item_id = myGet('id');
+      $data = array(
       "login_user" => $login_user
     );
     $current_wishlist = ModelWishlist::selectWhereFromArray($data);

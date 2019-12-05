@@ -4,7 +4,6 @@ TO DO :
 
 2 /
 Faire un formulaire de contact dont le lien est donné dans le footer, formulaire et fonction mail, action dans le controller Home
-Une page de membres avec lient dans le footer
 
 3 /
 Commande :
