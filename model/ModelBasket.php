@@ -2,6 +2,7 @@
 
 require_once (File::build_path(array('model', 'Model.php')));
 require_once (File::build_path(array('model', 'ModelItem.php')));
+require_once (File::build_path(array('model', 'ModelCommand.php')));
 
 class ModelBasket extends Model {
 
@@ -11,7 +12,7 @@ class ModelBasket extends Model {
             $_SESSION['basket'] = $tab_basket;
             return $tab_basket;
         } else {
-            return $tab_basket;
+            return $tab_basket = [];
         }
     }
 
@@ -20,7 +21,7 @@ class ModelBasket extends Model {
             setcookie('basket', serialize($_SESSION['basket']), time() + (60 * 60 * 24));
             return $_SESSION['basket'];
         } else {
-            return $tab_basket;
+            return $tab_basket = [];
         }        
     }
 
@@ -53,7 +54,7 @@ class ModelBasket extends Model {
 
     public static function actualizeSumBasket() {
         $sum = 0;
-        $tab_basket = self::getBasketFromCookie();
+        $tab_basket = self::getBasketFromSession();
             foreach($tab_basket as $key => $value) {
                 $item = ModelItem::select($key);
                 $sum += $item->get('price') * $value;
@@ -102,7 +103,15 @@ class ModelBasket extends Model {
      }
 
     public static function buyBasket() {
-//        ModelCommand::buyBasket();
+        $tab_basket = getBasketFromSession();
+        foreach($tab_basket as $key => $value) {
+            $data = array (
+                'id_command' => NULL,
+                'login_user' => $user->get('login'),
+                'date_buy' => NULL,
+            );
+            ModelCommand::buyBasket($data);
+        }
     }
 
 }

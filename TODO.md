@@ -1,27 +1,21 @@
 TO DO :
 
-1 / Utiliser un serveur qui affiche les warnings et corriger tout ça
+Une vue Wallet dans profil afin d'augmenter le montant du porte feuille
 
-2 /
-Faire un formulaire de contact dont le lien est donné dans le footer, formulaire et fonction mail, action dans le controller Home
+sécurisation de vue sur ControllerItem
+
+problème d'update pour les item
+
+1 / Utiliser un serveur qui affiche les warnings et corriger tout ça
 
 3 /
 Commande :
 Finir l’enregistrement des commandes
 Faire un readAll dans le nav administration, sous la forme d'une table
 
-4 / 
+4 /
 Transfert to basket :
 terminer la méthode qui ajoute l'item au panier et le supprime de Wishlist
-
-5 / 
-Basket :
-Refactoriser la vue confirmBuyBasket pour créer un système de cas d’erreur
-Envoyer dans modelBasket les éléments qui modifie les données
-
-6 /
-Add ou remove item depuis le readbasket :
-Utiliser le panier de la session pour afficher le nombre de produit dans le panier courant et faire des ajout ou retrait
 
 7 /
 Vérification du mail :
@@ -79,7 +73,7 @@ Prévention de hijacking :
 
 
 
-------------------------------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------
 
 PREPARER LA PRESENTATION :
 

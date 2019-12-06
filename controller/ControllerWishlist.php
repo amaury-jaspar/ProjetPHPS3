@@ -62,6 +62,7 @@ class ControllerWishlist {
     $login_user = $_SESSION['login'];
     $item_id = myGet('id');
     ModelWishlist::deleteItem($login_user, $item_id);
+    $item = ModelItem::select(myGet('id'));
     $view = 'removedFromWishlist';
     $pagetitle = 'Item removed from wishlist';
     require (File::build_path(array("view","view.php")));

@@ -41,7 +41,7 @@ EOT;
 
 echo '</div>';
 
-echo "<div><h3>Total : $sumBasket</h1></div>";
+echo "<h3>Total : $sumBasket</h1>";
 
 echo <<< EOT
 <div class="row">

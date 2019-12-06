@@ -1,5 +1,5 @@
 <?php
 
-echo "You have been correctly validated you account";
+echo "<p>You have been correctly validated you account</p>";
 
 ?>

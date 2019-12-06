@@ -361,7 +361,9 @@ class ControllerUser {
             $pagetitle='accueil';
             require (File::build_path(array("view", "view.php")));
         } else {
-            self::error();
+            $password = "";
+            $login = myGet('login');
+            self::connect();
         }
     }
 

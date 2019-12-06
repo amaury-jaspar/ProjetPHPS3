@@ -1,5 +1,7 @@
 <?php
 
-    echo "the item " . htmlspecialchars(myGet('name')) . " has been updated !</p>";
+    echo "<p>the category " . htmlspecialchars(myGet('name')) . " has been updated !</p>";
+    
+    require (File::build_path(array("view", "category", "list.php")));
 
 ?>

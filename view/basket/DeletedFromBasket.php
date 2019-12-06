@@ -1,8 +1,6 @@
 <?php
 
-    $itemName = htmlspecialchars($item->get('name'));
+    echo '<div>The item ' . htmlspecialchars($item->get('name')) . ' has been removed to the basket</div>';
+    echo '<div><a href="index.php?action=readBasket&controller=basket">Basket</a></div>';
 
-    echo 'The item ' . $itemName . ' has been removed to the basket ';
-    echo "<br>";
-    echo '<a href="index.php?action=readBasket&controller=basket">Basket</a></li>';
 ?>
