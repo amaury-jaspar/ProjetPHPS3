@@ -58,7 +58,7 @@ class ModelWishlist extends Model {
 			$req_prep = Model::$pdo->prepare("DELETE FROM $table_name WHERE login_user= :primary AND item_id= :item_id");
 			$values = array(
 				"primary" => $login_user,
-        "item_id" => $item_id
+                "item_id" => $item_id
 			);
 			$req_prep->execute($values);
 		} catch (PDOException $e) {
