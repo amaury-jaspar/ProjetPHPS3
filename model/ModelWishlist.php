@@ -29,6 +29,29 @@ class ModelWishlist extends Model {
     return false;
   }
 
+  public static function add($login_user, $item) {
+      $user = array(
+          "login_user" => $login_user
+      );
+      $item_id = $item->get('id');
+      $current_wishlist = ModelWishlist::selectWhereFromArray($user);
+      foreach ($current_wishlist as $tuple) {
+          $current_item = ModelItem::select($tuple['item_id']);
+          $tab_item_id[] = $current_item->get('id');
+      }
+      if (! in_array($item_id, $tab_item_id)) {
+          $data = array (
+              'login_user' => $login_user,
+              'item_id' => $item_id
+          );
+          $wishlist = new ModelWishlist($data);
+          $wishlist->save($data);
+          return $data;
+      } else {
+          return null;
+      }
+  }
+
   public static function deleteItem($login_user, $item_id) {
 		$table_name = static::$object;
 		try {

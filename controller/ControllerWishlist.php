@@ -30,30 +30,16 @@ class ControllerWishlist {
   public static function addItem() {
     $login_user = $_SESSION['login'];
     $item_id = myGet('id');
-    $data = array(
-      "login_user" => $login_user
-    );
-    $current_wishlist = ModelWishlist::selectWhereFromArray($data);
-    foreach ($current_wishlist as $tuple) {
-      $current_item = ModelItem::select($tuple['item_id']);
-      $tab_item_id[] = $current_item->get('id');
-    }
-    if (! in_array($item_id, $tab_item_id)) {
-      $wishlist = new ModelWishlist($login_user, $item_id);
-      $data = array (
-        'login_user' => $login_user,
-        'item_id' => $item_id
-      );
-      $item = ModelItem::select(myGet('id'));
-      $wishlist->save($data);
-      $view = 'addedToWishlist';
-      $pagetitle = 'Item added to wishlis}t';
-      require (File::build_path(array("view","view.php")));
+    $item = ModelItem::select($item_id);
+    $data = ModelWishlist::add($login_user, $item);
+    if ($data != null) {
+        $view = 'addedToWishlist';
+        $pagetitle = 'Item added to wishlis}t';
+        require (File::build_path(array("view","view.php")));
     } else {
-      $item = ModelItem::select(myGet('id'));
-      $view = 'alreadyInWishlist';
-      $pagetitle = 'Item already in wishlist';
-      require (File::build_path(array("view","view.php")));
+        $view = 'alreadyInWishlist';
+        $pagetitle = 'Item already in wishlist';
+        require (File::build_path(array("view","view.php")));
     }
   }
 
