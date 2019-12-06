@@ -4,6 +4,9 @@
 echo "<h1>YOUR WISHLIST</h1>";
 
 $totalPrice = 0;
+
+echo '<div class="row">';
+
 if (!empty($wishlist)){
   foreach($tab_wishes as $item) {
     $itemName = htmlspecialchars($item->get('name'));
@@ -12,17 +15,22 @@ if (!empty($wishlist)){
 
     $totalPrice += $item->get('price');
 
+    
 echo <<< EOT
-<div style="border: 1px solid black;text-align:left;padding:1em;margin:1em;">
-
-<h6>$itemName</h6>
-<img src="../images/$itemName.jpg" alt="image">
-<br>
-<a href="index.php?controller=item&action=addToBasket&prix=$itemPriceURL&id=$itemIdURL">Add item to basket</a>
-<br>
-<a href="index.php?controller=wishlist&action=removeFromWishlist&id=$itemIdURL">Remove from wishlist</a>
-<br>
-<p><a href="index.php?controller=item&action=read&id=$itemIdURL">More about this item</a></p>
+<div class="col s3 m3">
+    <div class="card large">
+        <div class="card-image">
+          <img class="responsive-img" width="200" height="200" src="../images/$itemName.jpg">
+        </div>
+        <div class="card-content">
+            <div class="card-action">
+                <p>$itemName</p>
+                <a href="index.php?controller=item&action=addToBasket&prix=$itemPriceURL&id=$itemIdURL">Add item to basket</a>
+                <a href="index.php?controller=wishlist&action=removeFromWishlist&id=$itemIdURL">Remove from wishlist</a>
+                <p><a href="index.php?controller=item&action=read&id=$itemIdURL">More about this item</a></p>
+            </div>
+        </div>
+    </div>
 </div>
 EOT;
   }
@@ -30,6 +38,7 @@ EOT;
   echo "Your Wishlist is empty";
 }
 echo <<< EOT
+</div>
 <div>
   <p>TOTAL COST : $totalPrice</p>
 </div>

@@ -25,65 +25,67 @@ class ControllerBasket {
 
 public static function readBasket() {
     $sumBasket = ModelBasket::getSumBasket();
-    $tab_basket = ModelBasket::getBasketFromCookie();
-    $tab_basket = ModelBasket::buildBasket($tab_basket);
+    $tab_basket = ModelBasket::buildBasketFromCookie();
     if (!empty($tab_basket)) { $ButtonState = null; } else { $ButtonState = "disabled"; }
     $view='basket';
     $pagetitle='Basket';
     require (File::build_path(array("view", "view.php")));
 }
 
+// rajouter un second paramètre pour pouvoir rajouter x exemplaire d'un coup
 public static function addToBasket() {
     $item = ModelBasket::addToBasket(myGet('id'));
-    $view='addedToBasket';
-    $pagetitle='The item have been add to the basket succesfully';
+    $view  ='addedToBasket';
+    $pagetitle ='The item have been add to the basket succesfully';
     require (File::build_path(array("view", "view.php")));
 }
 
 public static function deleteFromBasket() {
     $item = ModelBasket::deleteFromBasket(myGet('id'));
-    $view='DeletedFromBasket';
-    $pagetitle='Removed from basket';
+    $view = 'DeletedFromBasket';
+    $pagetitle = 'Removed from basket';
     require (File::build_path(array("view", "view.php")));
+}
+
+public static function transfertToWL() {
+    ModelBasket::deleteFromBasket(myGet('id'));
+//    ModelWishList::addItem($item);
 }
 
 public static function resetBasket() {
     ModelBasket::resetBasket();
-    $ButtonState = "disabled";
-    $view='basketReseted';
-    $pagetitle='Panier';
+    $view ='basketReseted';
+    $pagetitle ='Panier';
     require (File::build_path(array("view", "view.php")));
 }
 
 public static function beforeBuyBasket() {
-    if (Session::is_connected()) {
-        ControllerBasket::actualizeSumBasket();
-        $sumBasket = $_SESSION['sumBasket'];
-        $tab_basket = unserialize($_COOKIE['basket']);
-        foreach($tab_basket as $key => $value) {
-            if ($value > 0) {
-                $currentBasket[$key] = ModelItem::select($key);
-            }
-        }
-        require_once (File::build_path(array('controller', 'ControllerUser.php')));
-        $user = ModelUser::select($_SESSION['login']);
-        $moneyBefore = $user->get('wallet');
-        $moneyAfter = $moneyBefore - $sumBasket;
-        if ($moneyBefore >= $sumBasket) {
-            $_SESSION['basket'] = $tab_basket;
-            $view='checkBasket';
-            $pagetitle='Basket';
-            require (File::build_path(array("view", "view.php")));
-        } else {
-            static::$object = "user";
-            Messenger::alert("ALERTE : You do not have any money");
-            $view='profil';
-            $pagetitle='profil';
-            require (File::build_path(array("view", "view.php")));
-        }
-    } else {
+    $user = ModelUser::select($_SESSION['login']);
+    $moneyBefore = $user->get('wallet');
+    $moneyAfter = $moneyBefore - $sumBasket;
+    if (!Session::is_connected()) {
+        $errorMessage = "You need to be connected to buy the content of your basket";
+        $codeError = 1;
+    } else if($moneyBefore < $sumBasket) {
+        $errorMessage = "You do not have enough money";
+        $codeError = 2;
+    }
+    if(!isset($errorMessage)) {
+        ModelBasket::actualizeSumBasket();
+        $tab_basket = ModelBasket::buildBasketFromSession();
+        $_SESSION['basket'] = $tab_basket;
+        $view ='checkBasket';
+        $pagetitle ='Basket';
+        require (File::build_path(array("view", "view.php")));
+    } else if ($codeError == 2) {
         static::$object = "user";
-        Messenger::alert("YOUR ATTENTION PLEASE : You need to be connected to buy the content of your basket");
+        Messenger::alert($errorMessage);
+        $view ='profil';
+        $pagetitle ='profil';
+        require (File::build_path(array("view", "view.php")));        
+    } else if ($codeError == 1) {
+        static::$object = "user";
+        Messenger::alert("");
         ControllerUser::connect();
     }
 }
@@ -104,65 +106,48 @@ public static function beforeBuyBasket() {
 
 public static function confirmBuyBasket() {
     $user = ModelUser::select($_SESSION['login']);
-    if (Session::is_connected()) {
-        if ($user->get('billingaddress') !== NULL && $user->get('shippingaddress')) {
-        // On commence par récupérer la somme du panier qui est dans la session
-        $sumBasket = $_SESSION['sumBasket']; // On récupère la somme du panier
-        // On instancie un utilisateur afin de pouvoir lui soustraite le montant du panier et d'augmenter son attribut spend
-        if ($user->get('wallet') >= $sumBasket) {
-            $user->set('wallet', $user->get('wallet') - $sumBasket);
-            $user->set('spend', $user->get('spend') + $sumBasket);
-            $newLevel = $user->get('spend') / 100;
-            if ($newLevel != $user->get('level')) {
-                echo 'Bravo, vous passez du  niveau '.$user->get('level'). ' au niveau ' .$newLevel;
-                $user->set('level', $newLevel);
-            }
-            $data = array ('login' => $user->get('login'), 'wallet' => $user->get('wallet'), 'spend' => $user->get('spend'));
-            ModelUser::updateByID($data);
-            // Ensuite on enregistre la commande dans la table commande
-            foreach($tab_basket as $key => $value) {
-                $data = array (
-                    'id_command' => NULL,
-                    'login_user' => $user->get('login'),
-                    'date_buy' => NULL,
-                );
-                ModelCommand::save($data);
-            }
-            // On finit en vidant le panier de la session, des cookies
-            // Il faut en faire plus ici, car il existe plusieurs moyens de conserver des cookie
-            unset($_COOKIE['basket']);
-            setcookie('basket', "", time() - 1);
-            unset($_SESSION['basket']); // on efface le panier dans la Session
-            $_SESSION['sumBasket'] = 0;
-            // Pour chaque item, il faut incrémenter l'attribut nbAchat
-            foreach($tab_basket as $key => $value) {
-                $item = ModelItem::select($key);
-                $item->set('nbbuy', $item->get('nbbuy') + $value);
-            }
-            $view='bought';
-            $pagetitle='Basket bought';
-            require (File::build_path(array("view", "view.php")));
-        } else {
-            Messenger::alert("You do not have enought money, you should add money to your account first");
-            static::$object = "user";
-            $view='profil';
-            $pagetitle='profile';
-            require (File::build_path(array("view", "view.php")));
+    $sumBasket = ModelBasket::getSumBasket();
+    if (isset($errorMessage)) { unset($errorMessage); }
+    if (!Session::is_connected()) {
+        $errorMessage = "You need to be connected to buy the content of your basket";
+    } else if ($user->get('billingaddress') !== NULL || $user->get('shippingaddress')) {
+        $errorMessage = "You didnt told us about your billing and shipping address. Please, fill the form in profil -> detail -> update data";
+    } else if ($user->get('wallet') < $sumBasket) {
+        $errorMessage = "You do not have enought money, you should add money to your account first";
+    }
+    if(!isset($errorMessage)) {
+        // on soustrait l'argent du portemonnaie de l'acheteur
+        $user->set('wallet', $user->get('wallet') - $sumBasket);
+        // on actualise le champ qui recensse combien l'utilisateur à dépenser jusqu'à maintenant
+        $user->set('spend', $user->get('spend') + $sumBasket);
+        // s'il y a raison de, on modifie le niveau du joueur
+        $newLevel = $user->get('spend') % 100;
+        if ($newLevel != $user->get('level')) {
+            $user->set('level', $newLevel);
+            $message = "Bravo, vous passez du  niveau '.$user->get('level'). ' au niveau ' .$newLevel";
+            Messenger::alert($message);
         }
-        } else {
-            static::$object = "user";
-            Messenger::alert("YOUR ATTENTION PLEASE : You didn\'t told us about your billing and shipping address. Please, fill the form in profil -> detail -> update data"); #function call
-            $view='profil';
-            $pagetitle='profile';
-            require (File::build_path(array("view", "view.php")));
+        // puis on sauvegarde dans la BDD toutes les modification faites sur l'acheteur
+        $data = array ('login' => $user->get('login'), 'wallet' => $user->get('wallet'), 'spend' => $user->get('spend'));
+        ModelUser::updateByID($data);
+        // Ensuite on enregistre la commande dans la table commande
+        ModelBasket::buyBasket();
+        ModeBasket::resetBasket();
+        foreach($tab_basket as $key => $value) {
+            $item = ModelItem::select($key);
+            $item->set('nbbuy', $item->get('nbbuy') + $value);
+            ModelItem::updateById($item);
         }
+        $view='bought';
+        $pagetitle='Basket bought';
+        require (File::build_path(array("view", "view.php")));
     } else {
+        Messenger::alert($errorMessage);
         static::$object = "user";
-        Messenger::alert("YOUR ATTENTION PLEASE : You need to be connected before be allowed to buy the content of your basket");
-        ControllerUser::connect();
+        $view='profil';
+        $pagetitle='profile';
+        require (File::build_path(array("view", "view.php")));
     }
 }
-
-
 
 }

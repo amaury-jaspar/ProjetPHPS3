@@ -7,8 +7,6 @@
 
 // bloc sécurité
 
-echo "<br>";
-
 echo "<h1>LE CONTENU COURANT DU DASHBOARD</h1>";
 
 /*

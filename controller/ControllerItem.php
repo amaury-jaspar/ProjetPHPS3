@@ -105,6 +105,7 @@ class ControllerItem {
 		$price = htmlspecialchars($item->get('price'));
 		$levelaccess = htmlspecialchars($item->get('levelaccess'));
 		$description = htmlspecialchars($item->get('description'));
+		$lastCat = htmlspecialchars($item->get('category'));
 		$tab_category = ModelCategory::selectAll();
 		$required = "readonly";
 		$action = "updated";
@@ -126,6 +127,7 @@ class ControllerItem {
 		);
 		if(!empty($_FILES['img'])) { ImageUploader::uploadImg();}
 		ModelItem::updateByID($data);
+		$tab_item = ModelItem::selectAll();		
 		$view='updated';
 		$pagetitle='Item updated';
 		require (File::build_path(array("view", "view.php")));
@@ -164,6 +166,9 @@ class ControllerItem {
 			}
 			$i++;
 		}
+
+		$tab_category = ModelCategory::selectAll();
+
 		$view='paging';
 		$pagetitle='paging';
 		require_once (File::build_path(array("view", "view.php")));

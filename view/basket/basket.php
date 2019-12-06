@@ -23,7 +23,12 @@ echo <<< EOT
             <div class="card-action">
                 <p>$itemName</p>
                 <p>quantity : $itemQuantity</p>
-                <a href="index.php?controller=item&action=transfertToWL&id=&itemIdURL">Transfert To wish list</a>
+EOT;
+if (Session::is_connected()) {
+    echo '<a href="index.php?controller=basket&action=transfertToWL&id='.$itemIdURL.'">Transfert To wish list</a>';
+}
+
+echo <<< EOT
                 <a href="index.php?controller=basket&action=deleteFromBasket&id=$itemIdURL">Remove one exemplary</a>
                 <a href="index.php?controller=item&action=read&id=$itemIdURL">Detail page</a>
             </div>
@@ -36,7 +41,7 @@ EOT;
 
 echo '</div>';
 
-echo "<div><h3>Total : $sumBasket</h1></div>";
+echo "<h3>Total : $sumBasket</h1>";
 
 echo <<< EOT
 <div class="row">

@@ -1,41 +1,40 @@
 <?php
 
 echo <<< EOT
-    <form class="container" method=$method action="index.php?">
-        <fieldset>
-            <legend>Mon formulaire :
-                <p>
+    <form class="container" method=$method action="index.php">
+            <legend>$view form :
+                <fieldset>
+                    <p>
                     <label for="immat_id">Login</label>
-                    <input type="text" placeholder="" name="login" id="immat_id" $required value="$login"/>
-                    <br>
+                    <input type="text" placeholder="" name="login" id="immat_id" value="$login" $required/>
+
                     <label for="couleur_id">Last Name</label>
                     <input type="text" placeholder="" name="lastName" id="couleur_id" value="$lastName" required/>
-                    <br>
+
                     <label for="marque_id">Surname</label>
                     <input type="text" placeholder="" name="surname" id="fonction_id" value="$surname" required/>
-                    <br>
-EOT;
-if ($action == "updated" && Session::is_admin() && $login !== $_SESSION['login']) { 
-    echo 'As an administrator updating the account of a member :<br>';
-    echo 'please, fill the form with your own password, <br>';
 
+EOT;
+if ($action == "updated" && Session::is_admin() && !Session::is_user($login)) { 
+    echo '<p>As an administrator updating the account of a member :</p>';
+    echo '<p>please, fill the form with your own password :</p>';
 }
 echo <<< EOT
                     <label for="password_id1">Password</label>
                     <input type="password" name="password1" id="password_id1" value="$password1" required/>
-                    <br>
+
                     <label for="password_id2">Repeat the password</label>
                     <input type="password" name="password2" id="password_id2" value="$password2" required/>
-                    <br>
+
                     <label for="mail_id">Mail</label>
-                    <input type="text" placeholder="bob@yopmail.com" name="mail" id="mail_id" value="$mail" required>
-                    <br>
+                    <input type="text" placeholder="bob@yopmail.com" name="mail" id="mail_id" value="$mail" required/>
+
                     <label for="shippingaddress_id">Shipping Address</label>
                     <input type="text" placeholder="" name="shippingaddress" id="shippingaddress_id" value="$shippingaddress">
-                    <br>
+
                     <label for="billingaddress_id">Billing Address</label>
                     <input type="text" placeholder="" name="billingaddress" id="billingaddress_id" value="$billingaddress">
-                    <br>
+
 EOT;
                     if (Session::is_admin() && $action == 'updated') {
 echo <<< EOT
@@ -50,12 +49,11 @@ EOT;
 echo <<< EOT
                     <input type='hidden' name='action' value=$action>
                     <input type='hidden' name='controller' value='user'>
+                    <input type="submit" value="Send">        
                 </p>
-                <input type="submit" value="Send">
-            </legend>
-        </fieldset>
-   </form>
+            <fieldset>
+        </legend>
+    </form>
 EOT;
 
 ?>
-

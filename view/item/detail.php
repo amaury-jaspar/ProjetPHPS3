@@ -8,22 +8,25 @@ $idURL = rawurlencode($item->get('id'));
 $priceURL = rawurlencode($item->get('price'));
 
 
-echo '<div>Name : '.$itemName.'</div> <div>Price : '.$itemPrice.'</div> Description '.$itemDescription.'</div>';
+echo <<< EOT
+<p>Name : $itemName</p>
+<p>Price : $itemPrice</p>
+<p>Description : $itemDescription</p>
+<div><img class="responsive-img" width="200" height="200" src="../images/$itemName.jpg" alt=""><div>
 
-echo '<img class="responsive-img" width="200" height="200" src="../images/'.$itemName.'.jpg" alt="">';
-
-echo '<br>';
-
+EOT;
 if (Session::is_admin()) {
-    echo '<a href="index.php?controller=item&action=delete&id=' .$idURL . ' ">Delete this item from DataBase</a>';
-    echo '<br>';
-    echo '<a href="index.php?controller=item&action=update&id=' . $idURL . ' ">Modify the data of this item</a>';
-    echo '<br>';
+echo <<< EOT
+
+<p><a href="index.php?controller=item&action=delete&id=$idURL">Delete this item from DataBase</a></p>
+<p><a href="index.php?controller=item&action=update&id=$idURL">Modify the data of this item</a></p>
+   
+EOT;
 }
+echo <<< EOT
 
-echo '<a href="index.php?controller=basket&action=addToBasket&id=' . $idURL . ' ">Add to basket</a>';
-echo "<br>";
-echo "<br>";
-echo '<a href="index.php?controller=wishlist&action=addItem&id=' . $idURL . ' ">Add to my Wishlist</a>';
+<p><a href="index.php?controller=basket&action=addToBasket&id=$idURL">Add to basket</a><p>
+<p><a href="index.php?controller=wishlist&action=addItem&id=$idURL">Add to my Wishlist</a></p>
 
+EOT;
 ?>

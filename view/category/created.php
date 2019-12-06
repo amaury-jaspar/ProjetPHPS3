@@ -1,10 +1,8 @@
 <?php
 
-	$htmlCategory = htmlspecialchars($category->get('name'));
-
-	echo '<p>The category '.$htmlCategory.' has been created !</p>';
-
-    $array = array("view", "item", "list.php");
-	require (File::build_path($array));
+	echo "<p>The category ". htmlspecialchars($category->get('name')) ." has been created !</p>";
 	
+    $array = array("view", "category", "list.php");
+    require (File::build_path($array));
+
 ?>

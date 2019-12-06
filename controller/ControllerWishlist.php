@@ -2,6 +2,7 @@
 
 require_once (File::build_path(array('model', 'ModelWishlist.php')));
 require_once (File::build_path(array('model', 'ModelItem.php')));
+require_once (File::build_path(array('model', 'ModelBasket.php')));
 require_once (File::build_path(array('lib', 'Session.php')));
 require_once (File::build_path(array('lib', 'Messenger.php')));
 
@@ -29,6 +30,7 @@ class ControllerWishlist {
 
   public static function addItem() {
     $login_user = $_SESSION['login'];
+<<<<<<< HEAD
     $item_id = myGet('id');
     $item = ModelItem::select($item_id);
     $data = ModelWishlist::add($login_user, $item);
@@ -36,6 +38,28 @@ class ControllerWishlist {
         $view = 'addedToWishlist';
         $pagetitle = 'Item added to wishlis}t';
         require (File::build_path(array("view","view.php")));
+=======
+      $item_id = myGet('id');
+      $data = array(
+      "login_user" => $login_user
+    );
+    $current_wishlist = ModelWishlist::selectWhereFromArray($data);
+    foreach ($current_wishlist as $tuple) {
+      $current_item = ModelItem::select($tuple['item_id']);
+      $tab_item_id[] = $current_item->get('id');
+    }
+    if (! in_array($item_id, $tab_item_id)) {
+      $wishlist = new ModelWishlist($login_user, $item_id);
+      $data = array (
+        'login_user' => $login_user,
+        'item_id' => $item_id
+      );
+      $item = ModelItem::select(myGet('id'));
+      $wishlist->save($data);
+      $view = 'addedToWishlist';
+      $pagetitle = 'Item added to wishlis}t';
+      require (File::build_path(array("view","view.php")));
+>>>>>>> 7fef5be7981f45439bf55026e422d570ae9fbaef
     } else {
         $view = 'alreadyInWishlist';
         $pagetitle = 'Item already in wishlist';
@@ -47,6 +71,7 @@ class ControllerWishlist {
     $login_user = $_SESSION['login'];
     $item_id = myGet('id');
     ModelWishlist::deleteItem($login_user, $item_id);
+    $item = ModelItem::select(myGet('id'));
     $view = 'removedFromWishlist';
     $pagetitle = 'Item removed from wishlist';
     require (File::build_path(array("view","view.php")));
