@@ -3,11 +3,11 @@
 echo <<< EOT
 
 <form class="container" method="$method" action="index.php">
-    <legend>
+    <legend> $view form
         <fieldset>
             <p>
                 <label for="lastName">Lastname</label>
-                <input type="text" id="name" placeholder="" name="lastName" value="$lastName" required/>
+                <input type="text" id="lastName" placeholder="" name="lastName" value="$lastName" required/>
 
                 <label for="surname">Surname</label>
                 <input type="text" id="surname" placeholder="" name="surname" value="$surname" required/>

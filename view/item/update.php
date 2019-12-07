@@ -1,7 +1,7 @@
 <?php
 
 echo <<< EOT
-    <form class="container" method=$method  action="index.php" enctype="multipart/form-data">
+    <form class="container" method="$method"  action="index.php" enctype="multipart/form-data">
         <legend> $view form
             <fieldset>
                 <p>

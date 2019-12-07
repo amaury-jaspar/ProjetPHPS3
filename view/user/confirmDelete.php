@@ -1,4 +1,4 @@
-<form method=<?php echo $method ?> action="index.php">
+<form method="<?php echo $method ?>" action="index.php">
 
     <h5>Confirm delete account by giving information</h1>
 

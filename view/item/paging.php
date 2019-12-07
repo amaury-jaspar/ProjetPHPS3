@@ -7,12 +7,12 @@
                     <input type='hidden' name='action' value='paging'>
                     <input type='hidden' name='controller' value='item'>
                     <select id="select" name="condition">
-                        <option id="select" value="" disabled selected>Tri : All shop</option>
+                        <option value="" disabled selected>Tri : All shop</option>
                         <?php
-                        foreach($tab_category as $category) {
-                            $tabName = htmlspecialchars($category->get('name'));
-                            echo " <option value=".$tabName.">Tri : ".ucfirst($tabName)."</option>  ";
-                        }
+                            foreach($tab_category as $category) {
+                                $tabName = htmlspecialchars($category->get('name'));
+                                echo " <option value=".$tabName.">Tri : ".ucfirst($tabName)."</option>  ";
+                            }
                         ?>
                     </select>
                     <input type="submit" value="Envoyer">
