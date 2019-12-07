@@ -8,7 +8,7 @@ TO DO :
 	- Faire une fonctionnalité qui nécessite une jointure
 	- Contrainte de clef étranger dans les requêtes SQL
 
-3 / Terminer la méthode qui ajoute l'item au panier et le supprime de Wishlist
+3 / Gérer erreur dans wishlist quand personne est connecté
 
 4 / Sécurisation de vue sur ControllerItem, surtout create et update
 
@@ -36,7 +36,7 @@ Prévention de hijacking :
 	$_SESSION['ip'] = $_SERVER['REMOTE_ADDR'];
 	A chaque fois que l'on charge une page et qu'une session est disponible :
 	on vérifie de cette manière :
-	if ($_SESSION['ip'] != $_SERVER['REMOTE_ADDR']) {   different_user();    } 
+	if ($_SESSION['ip'] != $_SERVER['REMOTE_ADDR']) {   different_user();    }
 	et le code dans different_user(); est encore à déterminer (rick rolled ?)
 		il est recommander de supprimer la session actuelle, et de demander à l'utilisateur de se connecter à nouveau à cause d'une erreur technique
 
