@@ -48,8 +48,10 @@ public static function deleteFromBasket() {
 }
 
 public static function transfertToWL() {
-    ModelBasket::deleteFromBasket(myGet('id'));
-//    ModelWishList::addItem($item);
+    $login = $_SESSION['login'];
+    $item = ModelItem::select(myGet('id'));
+    ModelWishList::add($login, $item);
+    ControllerBasket::deleteFromBasket();
 }
 
 public static function resetBasket() {
@@ -82,7 +84,7 @@ public static function beforeBuyBasket() {
         Messenger::alert($errorMessage);
         $view ='profil';
         $pagetitle ='profil';
-        require (File::build_path(array("view", "view.php")));        
+        require (File::build_path(array("view", "view.php")));
     } else if ($codeError == 1) {
         static::$object = "user";
         Messenger::alert("");
