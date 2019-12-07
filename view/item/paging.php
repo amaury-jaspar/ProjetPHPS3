@@ -40,7 +40,7 @@ echo <<< EOT
     <div class="col s2 m2">
     <div class="card medium">
         <div class="card-image">
-        <img class="responsive-img" width="100" height="100" src="../images/$itemNameHTML.jpg">
+        <img class="responsive-img" width="100" height="100" alt="Image of the product" src="../images/$itemNameHTML.jpg">
         </div>
             <div class="card-content">
             <p>$itemNameHTML</p>

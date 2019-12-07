@@ -42,8 +42,7 @@ echo <<< EOT
     <p><a href="index.php?action=preference&controller=user">Preference</a></p>
     <p><a href="index.php?action=readAll&controller=command">Your commands</a></p>
     <p><a href="index.php?action=securitySetting&controller=user&login=$userLogin">Security setting and connection</a></p>
-    <p><a href="index.php?action=&controller=user">Payment option</a></p>
-    <p><a href="index.php?action=&controller=user">Manage your Wallet</a></p>
+    <p><a href="index.php?action=manageWallet&controller=user&login=$userLogin">Manage your Wallet</a></p>
     <p><a href="index.php?action=&controller=user&action=update&login=$userLogin">Modificate the data of your account</a></p>
     <p><a href="index.php?action=&controller=user&action=delete&login=$userLogin">Delete your account</a></p>
 

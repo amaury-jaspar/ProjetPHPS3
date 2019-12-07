@@ -12,7 +12,7 @@ echo <<< EOT
   <div class="col s6 m6">
         <div class="card medium">
           <div class="card-image">
-            <img src="../images/$catName.jpeg">
+            <img alt="Image of the shop" src="../images/$catName.jpeg">
             <span class="card-title">$catName</span>
           </div>
           <div class="card-content">

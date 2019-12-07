@@ -305,7 +305,7 @@ class ControllerUser {
             $errorMessage = 'The new password cant be the same as the old one';
         }
         if(!isset($errorMessage)) {
-            $user = ModelUser::select(myGet('login'));
+            $user = ModelUser::select($_SESSION['login']);
             $user->updatePassword(Security::chiffrer(myGet('password1')), $user->get('login'), Security::chiffrer(myGet('password3')));
             Messenger::alert('Your password have been updated');
             $view='profil';
@@ -355,14 +355,14 @@ class ControllerUser {
     }
 
     public static function profil() {
-        $user = ModelUser::select(myGet('login'));
+        $user = ModelUser::select($_SESSION['login']);
         if (Session::is_user($user->get('login')) && Session::is_connected()) {
             $view='profil';
             $pagetitle='accueil';
             require (File::build_path(array("view", "view.php")));
         } else {
             $password = "";
-            $login = myGet('login');
+            $login = $_SESSION['login'];
             self::connect();
         }
     }
@@ -379,6 +379,30 @@ class ControllerUser {
         // setcookie("preference", myGet('preference'), time()+3600);
         $_SESSION['preference'] = myGet('preference');
         $view='profil';
+        $pagetitle='profil';
+        require (File::build_path(array("view", "view.php")));
+    }
+
+    public static function manageWallet() {
+        if (Conf::getDebug() == True) { $method = "get"; } else { $method = "post";}
+        $user = ModelUser::select($_SESSION['login']);
+        $wallet = $user->get('wallet');
+        $view='manageWallet';
+        $pagetitle='profil';
+        require (File::build_path(array("view", "view.php")));
+    }
+
+    public static function walletManaged() {
+        if (Conf::getDebug() == True) { $method = "get"; } else { $method = "post";}
+        $user = ModelUser::select($_SESSION['login']);
+        $user->set('wallet', $user->get('wallet') + 50000);
+        $data = array (
+            'login' => $user->get('login'),
+            'wallet' => $user->get('wallet'),
+        );
+        ModelUser::updateByID($data);
+        $wallet = $user->get('wallet');
+        $view='manageWallet';
         $pagetitle='profil';
         require (File::build_path(array("view", "view.php")));
     }

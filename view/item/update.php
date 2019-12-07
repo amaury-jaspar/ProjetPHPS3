@@ -22,8 +22,9 @@ echo <<< EOT
                         <option value="lastCat" disabled selected>Choose a category</option>
 EOT;
                     foreach($tab_category as $category) {
+                        $selected = NULL;
                         $tabName = htmlspecialchars($category->get('name'));
-                        if ($view == "update" && $item->get('category') == $tabName) {$selected = "selected";} else { $selected = NULL;}
+                        if ($action == "updated" && $item->get('category') == $tabName) {$selected = "selected";} else { $selected = NULL;}
                         echo " <option value=".$tabName." $selected>".ucfirst($tabName)."</option>  ";
                     }
 echo <<< EOT

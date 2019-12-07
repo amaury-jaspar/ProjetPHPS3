@@ -89,6 +89,18 @@ class ControllerItem {
 
 	public static function delete() {
 		$id = myGet('id');
+		if (Session::is_connected() && Session::is_admin()) {
+			$view='delete';
+			$pagetitle='Delete validation';
+			require (File::build_path(array("view", "view.php")));
+		} else {
+			Messenger::alert('You are not allowed to do such action');
+			self::connect();
+		}
+	}
+
+	public static function confirmDelete() {
+		$id = myGet('id');
 		ModelItem::deleteById($id);
 		$tab_item = ModelItem::selectAll();
 		$view='deleted';

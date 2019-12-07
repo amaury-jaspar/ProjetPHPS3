@@ -1,58 +1,31 @@
 TO DO :
 
-Une vue Wallet dans profil afin d'augmenter le montant du porte feuille
-
-sécurisation de vue sur ControllerItem
-
-problème d'update pour les item
-
 1 / Utiliser un serveur qui affiche les warnings et corriger tout ça
+2 / Commande :
+	- Finir l’enregistrement des commandes
+	- Faire un readAll dans le nav administration, sous la forme d'une table
+	- Faire une fonctionnalité qui nécessite une jointure
+	- Contrainte de clef étranger dans les requêtes SQL
 
-3 /
-Commande :
-Finir l’enregistrement des commandes
-Faire un readAll dans le nav administration, sous la forme d'une table
+3 / terminer la méthode qui ajoute l'item au panier et le supprime de Wishlist
 
-4 /
-Transfert to basket :
-terminer la méthode qui ajoute l'item au panier et le supprime de Wishlist
+4 / Sécurisation de vue sur ControllerItem, surtout create et update
 
-7 /
-Vérification du mail :
+
+
+
+
+
+5 / Vérification du mail :
 Dans le cas ou l'utilisateur fait une faute de frappe dans le mail, et qu'il est envoyé à quelqu'un d'autre.
 le nonce est envoyé à la mauvaise addresse, et donc un autre utilisateur peut valider le mail avec le nonce.
 Il faut donc demander à l'utilisateur d'être connecté pour pouvoir valider une addresse email grâce au nonce.
 DONC il faut un champ email_validated dans la dession qui fait que quand on est connecté sans avoir validé, alors on ne peut que valider son email.
 
-8 /
-MVC :
-Virer tout le code php des vues
-
-9 /
-Delete item :
-Voir s'il y a une sécurité au bouton delete qui demande vérification
-
-10 /
-Mise en page :
-remplacer les <br> par des <div>
-CSS responsive
-
-11 /
-BACK-OFFICE :
-Message de bienvenue
-Securisation de quelques pages (manuellement), surtout les update et créate, exactement comment est protégé la vue create de user à l'heure actuelle
-Sécurisation de toutes les pages (automatisé via le controleur) : peut-être qu'en fonction de l'action demandé, on peut vérifier si la personne est admin ou user etc...
 
 12 /
 CRUD :
-Faire une fonctionnalité qui nécessite une jointure
-Contrainte de clef étranger dans les requêtes SQL
 
-13 /
-MVC :
-Aucun code HTML hors des vues
-Aucun SQL hors du modèle
-Aucun calcul dans les vue (les if sont des calculs, et on en a plein)
 
 14 /
 Pour checkPassword dans user, il faudrait utiliser ModelUser::selectWhere($data) qui fait un select sur les champs de $data (login et mpd), et non pas utilisé ModelUser::select($data)
@@ -71,9 +44,7 @@ Prévention de hijacking :
 	et le code dans different_user(); est encore à déterminer (rick rolled ?)
 		il est recommander de supprimer la session actuelle, et de demander à l'utilisateur de se connecter à nouveau à cause d'une erreur technique
 
-
-
------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------
 
 PREPARER LA PRESENTATION :
 

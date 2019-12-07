@@ -17,7 +17,7 @@ echo <<< EOT
 <div class="col s3 m3">
     <div class="card large">
         <div class="card-image">
-            <img class="responsive-img" width="200" height="200" src="../images/$itemName.jpg">
+            <img class="responsive-img" width="200" height="200" alt="Image of the product" src="../images/$itemName.jpg">
         </div>
         <div class="card-content">
             <div class="card-action">

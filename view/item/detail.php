@@ -12,7 +12,7 @@ echo <<< EOT
 <p>Name : $itemName</p>
 <p>Price : $itemPrice</p>
 <p>Description : $itemDescription</p>
-<div><img class="responsive-img" width="200" height="200" src="../images/$itemName.jpg" alt=""><div>
+<div><img class="responsive-img" width="200" height="200" alt="Image of the product" src="../images/$itemName.jpg" alt=""><div>
 
 EOT;
 if (Session::is_admin()) {
