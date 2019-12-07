@@ -2,7 +2,6 @@
 
 	require_once (File::build_path(array('model', 'ModelItem.php')));
 	require_once (File::build_path(array('model', 'ModelUser.php')));
-	require_once (File::build_path(array('model', 'ModelInventory.php')));
 	require_once (File::build_path(array('model', 'ModelCommand.php')));
 	require_once (File::build_path(array('lib', 'Security.php')));
 	require_once (File::build_path(array('lib', 'Session.php')));
