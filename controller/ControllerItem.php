@@ -127,7 +127,7 @@ class ControllerItem {
 	}
 
 	public static function updated() {
-		if (myGet('catalog') !== NULL && myGet('catalog') === on) { $catalog = 1; } else { $catalog = 0; }
+		if (myGet('catalog') !== NULL && myGet('catalog') == 'on') { $catalog = 1; } else { $catalog = 0; }
 		$data = array (
 			'id' => myGet('id'),
 			'name' => myGet('name'),
@@ -139,7 +139,7 @@ class ControllerItem {
 		);
 		if(!empty($_FILES['img'])) { ImageUploader::uploadImg();}
 		ModelItem::updateByID($data);
-		$tab_item = ModelItem::selectAll();		
+		$tab_item = ModelItem::selectAll();
 		$view='updated';
 		$pagetitle='Item updated';
 		require (File::build_path(array("view", "view.php")));
