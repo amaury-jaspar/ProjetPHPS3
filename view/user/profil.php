@@ -35,7 +35,7 @@ echo "<p>Hi " . $userSurname . ", welcome</p>";
     // Réaliser un versement au compte d'un autre utilisateur
     // Ajouter des sous, faire l'aumone à l'administrateur
     // consulter le solde du porte-monnaie
-    
+
 echo <<< EOT
 
     <p><a href="index.php?action=read&controller=user&login=$userLogin">Detail</a></p>
@@ -43,7 +43,7 @@ echo <<< EOT
     <p><a href="index.php?action=readAll&controller=command">Your commands</a></p>
     <p><a href="index.php?action=securitySetting&controller=user&login=$userLogin">Security setting and connection</a></p>
     <p><a href="index.php?action=manageWallet&controller=user&login=$userLogin">Manage your Wallet</a></p>
-    <p><a href="index.php?action=&controller=user&action=update&login=$userLogin">Modificate the data of your account</a></p>
+    <p><a href="index.php?action=&controller=user&action=update&login=$userLogin">Modify the data of your account</a></p>
     <p><a href="index.php?action=&controller=user&action=delete&login=$userLogin">Delete your account</a></p>
 
 EOT;
