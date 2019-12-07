@@ -21,13 +21,13 @@ class ModelItem extends Model {
         if (!is_null($data)) {
             $this->id = $data['id'];
             $this->name = $data['name'];
-            $this->price = $$data['price'];
+            $this->price = $data['price'];
             $this->description = $data['description'];
 			$this->category = $data['category'];
 			$this->catalog = $data['catalog'];
-			$this->$nbbuy = $data['nbbuy'];
-			$this->$dateadd = $data['dateadd'];
-			$this->$levelaccess = $data['levelaccess'];
+			$this->nbbuy = $data['nbbuy'];
+			$this->dateadd = $data['dateadd'];
+			$this->levelaccess = $data['levelaccess'];
         }
     }
 
