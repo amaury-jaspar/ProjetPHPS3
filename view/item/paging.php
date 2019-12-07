@@ -23,6 +23,9 @@
                           <i class="material-icons">close</i>
                         </div>
                     </form>
+                    <?php
+                        echo"<div><p>" . $searchResult . "</p></div>";
+                    ?>
             </div>
         </div>
     </form>
