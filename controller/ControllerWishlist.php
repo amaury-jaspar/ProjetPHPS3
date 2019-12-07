@@ -29,19 +29,29 @@ class ControllerWishlist {
   }
 
   public static function addItem() {
-    $login_user = $_SESSION['login'];
-    $item_id = myGet('id');
-    $item = ModelItem::select($item_id);
-    $data = ModelWishlist::add($login_user, $item);
-    if ($data != null) {
-        $view = 'addedToWishlist';
-        $pagetitle = 'Item added to wishlis}t';
-        require (File::build_path(array("view","view.php")));
+    if (Session::is_connected()) {
+        $login_user = $_SESSION['login'];
+        $item_id = myGet('id');
+        $item = ModelItem::select($item_id);
+        $data = ModelWishlist::add($login_user, $item);
+        if ($data != null) {
+            $view = 'addedToWishlist';
+            $pagetitle = 'Item added to wishlis}t';
+            require (File::build_path(array("view","view.php")));
+        } else {
+            $view = 'alreadyInWishlist';
+            $pagetitle = 'Item already in wishlist';
+            require (File::build_path(array("view","view.php")));
+        }
     } else {
-        $view = 'alreadyInWishlist';
-        $pagetitle = 'Item already in wishlist';
+        static::$object = "user";
+        $method = 'get';
+        $view = 'connect';
+        $controller = 'user';
+        $pagetitle = 'You are not connected';
         require (File::build_path(array("view","view.php")));
     }
+
   }
 
   public static function removeFromWishlist() {
