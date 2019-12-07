@@ -102,6 +102,7 @@ class ModelBasket extends Model {
         unset($_SESSION['sumBasket']);
      }
 
+     /*
     public static function buyBasket() {
         $tab_basket = getBasketFromSession();
         foreach($tab_basket as $key => $value) {
@@ -112,7 +113,7 @@ class ModelBasket extends Model {
             );
             ModelCommand::buyBasket($data);
         }
-    }
+    } */
 
 }
 

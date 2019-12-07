@@ -30,7 +30,7 @@ class ModelCommand extends Model {
             $this->$nom_attribut = $valeur;
         return false;
     }
-/*
+
     public static function findItems($id_command) {
         try {
             $pdo = Model::$pdo;
@@ -59,12 +59,20 @@ class ModelCommand extends Model {
         }
     }
 
-
-    public function save($login__user, $currentBasket) {
+    public function buyBasket() {
+	    $basket = ModelBasket::getBasketFromSession();
+		$user = ModelUser::select($_SESSION['login']);
         try {
-            $INSERT_Command = "INSERT INTO `command` (`id_command`, `login_user`, `date`) VALUES (NULL,"."$login__user".", NULL);";
+            $this->save();
+			foreach($tab_basket as $key => $value) {
+				$data = array(
+					'id_command' => NULL,
+					'login_user' => $user->get('login'),
+					'date_buy' => NULL,
+				);
+			}
             foreach($currentBasket as $item) {
-                $itemQuantity = $tab_basket[$item->get('id')]);
+                $itemQuantity = $tab_basket[$item->get('id')];
                 $itemIdURL = rawurlencode($item->get('id'));
                 $INSERT_item = "INSERT INTO `itemcommand` (`id_command`, `id_item`, `quantity`) VALUES (" . ", '9d5216e07ba24a9999ef1d669ed7ba0f', '7'";
             }
@@ -89,7 +97,6 @@ class ModelCommand extends Model {
             die();
         }
     }
-*/
 
     public function selectLastUserCommand($login_user) {
         try {

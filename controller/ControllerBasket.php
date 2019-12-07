@@ -120,7 +120,7 @@ public static function confirmBuyBasket() {
     if(!isset($errorMessage)) {
         // on soustrait l'argent du portemonnaie de l'acheteur
         $user->set('wallet', $user->get('wallet') - $sumBasket);
-        // on actualise le champ qui recensse combien l'utilisateur à dépenser jusqu'à maintenant
+        // on actualise le champ qui recense combien l'utilisateur a dépensé jusqu'à maintenant
         $user->set('spend', $user->get('spend') + $sumBasket);
         // s'il y a raison de, on modifie le niveau du joueur
         $newLevel = $user->get('spend') % 100;
