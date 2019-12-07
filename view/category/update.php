@@ -1,9 +1,9 @@
 <?php
 echo <<< EOT
 <div>
-    <form class="container" method=$method action="index.php" enctype="multipart/form-data">
-    <legend> $view Category
-        <fieldset>
+    <form class="container" method="$method" action="index.php" enctype="multipart/form-data">
+        <legend> $view Category
+            <fieldset>
                 <p>
                     <label for="name_id">Name</label>
                     <input type="text" placeholder="" name="name" id="name_id" value="$name" $required/>

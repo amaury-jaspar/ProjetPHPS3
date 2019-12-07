@@ -1,24 +1,24 @@
 <?php
 echo <<< EOT
-<form method=$method action="index.php">
+<form method="$method" action="index.php">
         <legend> Home page preference :
         <fieldset>
                 <p>
                 <div>
                     <label>
-                        <input type="radio" placeholder="" name="preference" value="item">
+                        <input type="radio" name="preference" value="item">
                         <span>Catalog</span>
                     </label>
                 </div>
                 <div>
                     <label>
-                        <input type="radio" placeholder="" name="preference" value="home">                
+                        <input type="radio" name="preference" value="home">                
                         <span>Marketplace</span>
                     </label>
                 </div>
                 <div>
                     <label>
-                        <input type="radio" placeholder="" name="preference" value="profil">                
+                        <input type="radio" name="preference" value="profil">                
                         <span>Profil</span>
                     </label>
                 </div>

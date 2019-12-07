@@ -100,6 +100,8 @@ class ControllerItem {
 
 	public static function confirmDelete() {
 		$id = myGet('id');
+		$item = ModelItem::select($id);
+		$name = $item->get('name');
 		ModelItem::deleteById($id);
 		$tab_item = ModelItem::selectAll();
 		$view='deleted';
