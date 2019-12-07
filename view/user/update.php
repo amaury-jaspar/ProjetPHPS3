@@ -5,14 +5,14 @@ echo <<< EOT
             <legend>$view form :
                 <fieldset>
                     <p>
-                    <label for="immat_id">Login</label>
-                    <input type="text" placeholder="" name="login" id="immat_id" value="$login" $required/>
+                    <label for="login_id">Login</label>
+                    <input type="text" placeholder="" name="login" id="login_id" value="$login" $required/>
 
-                    <label for="couleur_id">Last Name</label>
-                    <input type="text" placeholder="" name="lastName" id="couleur_id" value="$lastName" required/>
+                    <label for="lastName_id">Last Name</label>
+                    <input type="text" placeholder="" name="lastName" id="lastName_id" value="$lastName" required/>
 
-                    <label for="marque_id">Surname</label>
-                    <input type="text" placeholder="" name="surname" id="fonction_id" value="$surname" required/>
+                    <label for="surname_id">Surname</label>
+                    <input type="text" placeholder="" name="surname" id="surname_id" value="$surname" required/>
 
 EOT;
 if ($action == "updated" && Session::is_admin() && !Session::is_user($login)) { 
