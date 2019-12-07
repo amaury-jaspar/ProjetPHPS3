@@ -1,16 +1,9 @@
 <?php
 
-$itemName = htmlspecialchars($item->get('name'));
-$itemPrice = htmlspecialchars($item->get('price'));
-$itemDescription = htmlspecialchars($item->get('description'));
+$html_commandId = htmlspecialchars($command->get('id_command'));
+$html_user = htmlspecialchars($command->get('login_user'));
+$html_date = htmlspecialchars($command->get('date_buy'));
 
-$idURL = rawurlencode($item->get('id'));
-$priceURL = rawurlencode($item->get('price'));
+echo '<div>Command n°'.$html_commandId.'</div> <div>User : '.$html_user.'</div> Date : '.$html_date.'</div>';
 
-
-echo '<div>Name : '.$itemName.'</div> <div>Price : '.$itemPrice.'</div> Description '.$itemDescription.'</div>';
-
-echo '<img class="responsive-img" width="200" height="200" src="../images/'.$itemName.'.jpg" alt="">';
-
-echo '<br>';
 ?>

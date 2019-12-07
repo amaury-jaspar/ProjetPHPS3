@@ -8,7 +8,7 @@ class ControllerCommand {
 	protected static $object = "command";
 
 	public static function read() {
-		$id = htmlspecialchars(myGet('id_command'));
+		$id = htmlspecialchars(myGet('id'));
 		$command = ModelCommand::select($id);
 		if ($command == false) {
 			self::error();
@@ -20,22 +20,19 @@ class ControllerCommand {
 	}
 
 	public static function readAll() {
-			$login_user = $_SESSION['login'];
-		  $data = array(
-		    "login_user" => $login_user
-		  );
-		  $tab_commands = ModelCommand::selectWhereFromArray($data);
-		  if (!empty($tab_commands)) {
-		    $tab_items = array();
-		    foreach ($items as $tuple) {
-		      $current_item = ModelItem::select($tuple['item_id']);
-		      $tab_items[] = $current_item;
-	    }
-	  }
-	  $view='list';
-	  $pagetitle='Command list';
-	  require (File::build_path(array("view", "view.php")));
+		$tab_commands = ModelCommand::selectAll();
+	  	$view='list';
+	  	$pagetitle='Command list';
+	  	require (File::build_path(array("view", "view.php")));
 	}
+
+	/* 		if (!empty($tab_commands)) {
+			$tab_items = array();
+			foreach ($items as $tuple) {
+				$current_item = ModelItem::select($tuple['item_id']);
+				$tab_items[] = $current_item;
+			}
+		}*/
 
 	public static function create($data) {
 		$command = new ModelItem($data);

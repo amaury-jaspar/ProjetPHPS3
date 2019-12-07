@@ -14,6 +14,7 @@ $userAdmin = htmlspecialchars($user->get('admin'));
 $userIdURL = rawurlencode($user->get('login'));
 
 echo <<< EOT
+<div>
 <p>login : $userLogin</p>
 <p>last name : $userLastname</p>
 <p>surname : $userName</p>
@@ -24,11 +25,11 @@ echo <<< EOT
 <p>Your adventurer's level is : $level</p>
 <p>Your buy will be send to : $shippingaddress</p>
 <p>Your bill will be send to : $billingaddress</p>
-
-EOT;    
-    if (Session::is_user($userLogin)  || Session::is_admin()) {
-        echo '<p><a href="index.php?controller=user&action=update&login=' . $userIdURL . ' ">Modificate the data of this user</a></p>';
-        echo '<p><a href="index.php?controller=user&action=delete&login=' . $userIdURL . ' ">Delete this user from DataBase</a></p>';
-    }
+</div>
+EOT;
+if (Session::is_user($userLogin)  || Session::is_admin()) {
+    echo '<p><a href="index.php?controller=user&action=update&login=' . $userIdURL . ' ">Modificate the data of this user</a></p>';
+    echo '<p><a href="index.php?controller=user&action=delete&login=' . $userIdURL . ' ">Delete this user from DataBase</a></p>';
+}
 
 ?>
