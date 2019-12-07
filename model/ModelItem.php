@@ -128,6 +128,33 @@ class ModelItem extends Model {
 		return $tab_obj;
     }
 
+	public static function selectFromSearch($currentPage, $parPage, $search) {
+		$primary_key = static::$primary;
+        $table_name = static::$object;
+		$alias = $table_name[0];
+		$class_name = 'Model' . ucfirst($table_name);
+		$search = '%' . $search . '%';
+		try {
+			$req_prep = Model::$pdo->prepare("SELECT $alias.* FROM $table_name $alias WHERE name LIKE :search AND catalog = 1 ORDER BY $primary_key ASC LIMIT " .(($currentPage-1)*$parPage) .",$parPage");
+			$values = array (
+				"search" => $search
+			);
+			$req_prep->execute($values);
+			$req_prep->setFetchMode(PDO::FETCH_CLASS, $class_name);
+			$tab_obj = $req_prep->fetchAll();
+		} catch (PDOException $e) {
+			if(Conf::getDebug()) {
+				echo $e->getMessage();
+			} else {
+				echo 'Une erreur est survenue <a href="index.php?action=buildFrontPage&controller=home"> retour à la page d\'acceuil </a>';
+			}
+			die();
+		}
+		if (empty($tab_obj))
+			return false;
+		return $tab_obj;
+	}
+
 }
 
 ?>

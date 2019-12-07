@@ -162,7 +162,9 @@ class ControllerItem {
 			$currentPage = 1;
 		}
 
-		if (myGet('condition') !== NULL) {
+		if (myGet('search') != NULL) {
+			$tab_result = ModelItem::selectFromSearch($currentPage, $parPage, myGet('search'));
+		} else if (myGet('condition') !== NULL) {
 			$tab_result = Modelitem::selectPageCategory($currentPage, $parPage, myGet('condition'));
 		} else {
 			$tab_result = ModelItem::selectPage($currentPage, $parPage);
