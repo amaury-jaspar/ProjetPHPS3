@@ -2,7 +2,6 @@
 
 	require_once (File::build_path(array('model', 'ModelItem.php')));
 	require_once (File::build_path(array('model', 'ModelUser.php')));
-	require_once (File::build_path(array('model', 'ModelInventory.php')));
 	require_once (File::build_path(array('model', 'ModelCommand.php')));
 	require_once (File::build_path(array('lib', 'Security.php')));
 	require_once (File::build_path(array('lib', 'Session.php')));
@@ -129,7 +128,7 @@ class ControllerItem {
 	}
 
 	public static function updated() {
-		if (myGet('catalog') !== NULL && myGet('catalog') === on) { $catalog = 1; } else { $catalog = 0; }
+		if (myGet('catalog') !== NULL && myGet('catalog') == 'on') { $catalog = 1; } else { $catalog = 0; }
 		$data = array (
 			'id' => myGet('id'),
 			'name' => myGet('name'),
@@ -141,7 +140,7 @@ class ControllerItem {
 		);
 		if(!empty($_FILES['img'])) { ImageUploader::uploadImg();}
 		ModelItem::updateByID($data);
-		$tab_item = ModelItem::selectAll();		
+		$tab_item = ModelItem::selectAll();
 		$view='updated';
 		$pagetitle='Item updated';
 		require (File::build_path(array("view", "view.php")));

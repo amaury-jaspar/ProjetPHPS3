@@ -72,7 +72,7 @@ class ModelUser extends Model {
 	}
 
 	// Quand on se connecte, on vérifie que le champ nonce de la relation user est vide.
-	// S'il n'est pas vide, c'est que l'utilisateur n'a pas valider son compte et il doit donc d'abord en passer par le mail qui lui a été envoyé.
+	// S'il n'est pas vide, c'est que l'utilisateur n'a pas validé son compte et il doit donc d'abord passer par le mail qui lui a été envoyé.
 	public static function checkNonce($login) {
 		try {
 			$req_prep = Model::$pdo->prepare("SELECT nonce FROM user WHERE login = :login");
@@ -136,13 +136,6 @@ class ModelUser extends Model {
 			die();
 		}
 	}
-
-//	113fb26b8401d29a75f2fc6b1d806db30c8c8d585848c23dfc8a2f98fd51a506
-
-// UPDATE user SET password = 6b877d9d9b62b3831a745b3b4c28d3d83455db93352242f22369266227f2aceb WHERE login = visiteur AND password = 113fb26b8401d29a75f2fc6b1d806db30c8c8d585848c23dfc8a2f98fd51a506
-
-// UPDATE user SET `password` = :newmdp WHERE `login` = ':login' AND `password` = ':oldmdp'
-
 
 	public static function updatePassword($old, $login, $new) {
 		try {

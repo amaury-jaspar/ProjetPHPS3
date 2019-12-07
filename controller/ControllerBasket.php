@@ -3,7 +3,6 @@
     require_once (File::build_path(array('model', 'ModelBasket.php')));
 	require_once (File::build_path(array('model', 'ModelItem.php')));
 	require_once (File::build_path(array('model', 'ModelUser.php')));
-	require_once (File::build_path(array('model', 'ModelInventory.php')));
 	require_once (File::build_path(array('model', 'ModelCommand.php')));
     require_once (File::build_path(array('lib', 'Messenger.php')));
 
@@ -48,8 +47,10 @@ public static function deleteFromBasket() {
 }
 
 public static function transfertToWL() {
-    ModelBasket::deleteFromBasket(myGet('id'));
-//    ModelWishList::addItem($item);
+    $login = $_SESSION['login'];
+    $item = ModelItem::select(myGet('id'));
+    ModelWishList::add($login, $item);
+    ControllerBasket::deleteFromBasket();
 }
 
 public static function resetBasket() {
@@ -82,7 +83,7 @@ public static function beforeBuyBasket() {
         Messenger::alert($errorMessage);
         $view ='profil';
         $pagetitle ='profil';
-        require (File::build_path(array("view", "view.php")));        
+        require (File::build_path(array("view", "view.php")));
     } else if ($codeError == 1) {
         static::$object = "user";
         Messenger::alert("");
@@ -118,7 +119,7 @@ public static function confirmBuyBasket() {
     if(!isset($errorMessage)) {
         // on soustrait l'argent du portemonnaie de l'acheteur
         $user->set('wallet', $user->get('wallet') - $sumBasket);
-        // on actualise le champ qui recensse combien l'utilisateur à dépenser jusqu'à maintenant
+        // on actualise le champ qui recense combien l'utilisateur a dépensé jusqu'à maintenant
         $user->set('spend', $user->get('spend') + $sumBasket);
         // s'il y a raison de, on modifie le niveau du joueur
         $newLevel = $user->get('spend') % 100;
