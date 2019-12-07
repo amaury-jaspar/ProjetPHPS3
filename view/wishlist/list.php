@@ -15,7 +15,7 @@ if (!empty($wishlist)){
 
     $totalPrice += $item->get('price');
 
-    
+
 echo <<< EOT
 <div class="col s3 m3">
     <div class="card large">
@@ -25,7 +25,7 @@ echo <<< EOT
         <div class="card-content">
             <div class="card-action">
                 <p>$itemName</p>
-                <a href="index.php?controller=item&action=addToBasket&prix=$itemPriceURL&id=$itemIdURL">Add item to basket</a>
+                <a href="index.php?controller=basket&action=addToBasket&prix=$itemPriceURL&id=$itemIdURL">Add item to basket</a>
                 <a href="index.php?controller=wishlist&action=removeFromWishlist&id=$itemIdURL">Remove from wishlist</a>
                 <p><a href="index.php?controller=item&action=read&id=$itemIdURL">More about this item</a></p>
             </div>
