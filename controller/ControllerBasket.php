@@ -134,9 +134,9 @@ public static function confirmBuyBasket() {
         $data = array ('login' => $user->get('login'), 'wallet' => $user->get('wallet'), 'spend' => $user->get('spend'), 'level' => $user->get('level'));
         ModelUser::updateByID($data);
         // Ensuite on enregistre la commande dans la table commande
-// a débloquer        ModelBasket::buyBasket();
-//        ModelBasket::resetBasket();
-        // pour chaque item, on va augmenter l'attribut nbachat de la quantitée achetée
+		$command = new ModelCommand(array('login_user' => $user->get('login')));
+        $command->buyBasket();
+        ModelBasket::resetBasket();
         $tab_basket = ModelBasket::getBasketFromSession();
         foreach($tab_basket as $key => $value) {
             $item = ModelItem::select($key);

@@ -55,49 +55,44 @@ class ModelCommand extends Model {
         }
     }
 
-    public function buyBasket() {
-	    $basket = ModelBasket::getBasketFromSession();
-		$user = ModelUser::select($_SESSION['login']);
-        try {
-            $this->save();
-			foreach($tab_basket as $key => $value) {
-				$data = array(
-					'id_command' => NULL,
-					'login_user' => $user->get('login'),
-					'date_buy' => NULL,
+	public function saveItems($basket) {
+		try {
+			$pdo = Model::$pdo;
+			$sql = "INSERT INTO `itemcommand` (`id_command`, `id_item`, `quantity`) VALUES (:tag_id_command, :tag_id_item, :tag_quantity);";
+			$req_prep = Model::$pdo->prepare($sql);
+			foreach($basket as $item) {
+				$values = array(
+					"tag_id_command" => $this->get('id_command'),
+					"tag_id_item" => $item->get('id'),
+					"tag_quantity" => $_SESSION['basket'][$item->get('id')],
 				);
+				$req_prep->execute($values);
 			}
-            foreach($currentBasket as $item) {
-                $itemQuantity = $tab_basket[$item->get('id')];
-                $itemIdURL = rawurlencode($item->get('id'));
-                $INSERT_item = "INSERT INTO `itemcommand` (`id_command`, `id_item`, `quantity`) VALUES (" . ", '9d5216e07ba24a9999ef1d669ed7ba0f', '7'";
-            }
-            $INSERINTO = rtrim($INSERINTO, ", ");
-            $INSERINTO = $INSERINTO . ")";
-            $VALUES = rtrim($VALUES, ", ");
-            $VALUES = $VALUES . ")";
-            $sql = $INSERINTO . " " . $VALUES;
-            $req_prep = Model::$pdo->prepare($sql);
-            $values = array();
-            foreach ($data as $cle => $valeur) {
-                $maclef = ":" . $cle;
-                $values[$maclef] = $valeur;
-            }
-            $req_prep->execute($values);
-        } catch (PDOException $e) {
-            if(Conf::getDebug()) {
-                echo $e->getMessage();
-            } else {
-                echo 'Une erreur est survenue <a href="index.php?action=buildFrontPage&controller=home"> retour à la page d\'acceuil </a>';
-            }
-            die();
-        }
+		} catch (PDOException $e) {
+			if (Conf::getDebug()) {
+				echo $e->getMessage(); // affiche un message d'erreur
+			} else {
+				echo 'Une erreur est survenue <a href=""> retour a la page d\'accueil </a>';
+			}
+			die();
+		}
+	}
+
+    public function buyBasket() {
+	    $basket = ModelBasket::buildBasketFromCookie();
+	    $data = array('id_command' => $this->id_command, 'login_user' => $this->login_user, 'date_buy' => $this->date_buy);
+	    $this->save($data);
+        $this->selectLastUserCommand();
+        $this->saveItems($basket);
     }
 
-    public function selectLastUserCommand($login_user) {
+	/* Une fois la commande créé dans la BD à partir de l'objet on récupère l'id_command
+	 * et on met à jour l'objet*/
+
+    public function selectLastUserCommand() {
         try {
-            $req_prep = Model::$pdo->prepare("SELECT id_command FROM command WHERE login_user = :primary AND date = (SELECT MAX(date) FROM command WHERE login_user = :primary)");
-            $values = array("primary" => $login_user);
+            $req_prep = Model::$pdo->prepare("SELECT id_command FROM command WHERE login_user = :primary AND date_buy = (SELECT MAX(date_buy) FROM command WHERE login_user = :primary)");
+            $values = array("primary" => $this->login_user);
             $req_prep->execute($values);
             $req_prep->setFetchMode(PDO::FETCH_ASSOC);
             $tab = $req_prep->fetchAll();
@@ -111,7 +106,10 @@ class ModelCommand extends Model {
         }
         if (empty($tab))
             return false;
-        return $tab[0];
+        else {
+        	$this->set('id_command',$tab[0]['id_command']);
+        	return $tab[0]['id_command'];
+		}
     }
 }
 
