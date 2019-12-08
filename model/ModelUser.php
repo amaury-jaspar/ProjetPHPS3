@@ -1,6 +1,7 @@
 <?php
 
 require_once (File::build_path(array('model', 'Model.php')));
+require_once (File::build_path(array('lib', 'Messenger.php')));
 
 class ModelUser extends Model {
 
@@ -155,6 +156,22 @@ class ModelUser extends Model {
 			die();
 		}
 	}
+
+    public function actualizeLevel() {
+        $sum = 1;
+        $count = 0;
+        while ($sum < $this->spend) {
+			$sum * 100;
+            $count += 1;
+        }
+        if ($count !== $this->level) {
+            $message = "Bravo, vous passez du niveau '. $this->level .' au niveau '.$count '.";
+            $this->set('level', $count);
+			Messenger::alert($message);
+        }
+        
+    }
+
 }
 
 ?>
