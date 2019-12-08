@@ -1,6 +1,6 @@
 <?php
 
-foreach ($tab_commands as $command) {
+foreach ($tab_command as $command) {
 
   $url_commandId = rawurldecode($command->get('id_command'));
   $html_commandId = htmlspecialchars($command->get('id_command'));

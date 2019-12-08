@@ -162,22 +162,37 @@ class ControllerItem {
 			$currentPage = 1;
 		}
 
-		if (myGet('condition') !== NULL) {
-			$tab_result = Modelitem::selectPageCategory($currentPage, $parPage, myGet('condition'));
+		if (myGet('search') != NULL) {
+			$tab_from_search = ModelItem::selectFromSearch($currentPage, $parPage, myGet('search'));
+			if (! empty($tab_from_search)) {
+				$tab_result = $tab_from_search;
+				$searchResult = "We found some items !";
+			} else {
+				$tab_result = array();
+				$searchResult = "There are no items that correspond to your search query";
+			}
 		} else {
-			$tab_result = ModelItem::selectPage($currentPage, $parPage);
+			if (myGet('condition') !== NULL) {
+				$tab_result = Modelitem::selectPageCategory($currentPage, $parPage, myGet('condition'));
+			} else {
+				$tab_result = ModelItem::selectPage($currentPage, $parPage);
+			}
 		}
+
+
 
 		if (Session::is_connected()) {
 			require_once (File::build_path(array('controller', 'ControllerUser.php')));
 			$user = ModelUser::select($_SESSION['login']);
 		}
 		$i = 0;
+		if (empty($tab_result)) {
 			foreach($tab_result as $item) {
-			if ((Session::is_connected() && $user->get('level') < $item->get('levelaccess')) || (!Session::is_connected() && $item->get('levelaccess') > 1)) {
-				unset($tab_result[$i]);
+				if ((Session::is_connected() && $user->get('level') < $item->get('levelaccess')) || (!Session::is_connected() && $item->get('levelaccess') > 1)) {
+					unset($tab_result[$i]);
+				}
+				$i++;
 			}
-			$i++;
 		}
 
 		$tab_category = ModelCategory::selectAll();

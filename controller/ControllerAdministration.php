@@ -11,7 +11,7 @@
         public static function dashboard() {
 
             if (Session::is_admin()) {
-               $controller= static::$object;
+                $controller= static::$object;
                 $view='dashboard';
                 $pagetitle='Dashboard';
                 require (File::build_path(array("view", "view.php")));

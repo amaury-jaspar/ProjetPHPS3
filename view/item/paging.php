@@ -16,6 +16,16 @@
                         ?>
                     </select>
                     <input type="submit" value="Envoyer">
+                    <form method="get" action="index.php">
+                        <div class="input-field">
+                          <input id="search" type="search" name="search">
+                          <label class="label-icon" for="search"><i class="material-icons">search</i></label>
+                          <i class="material-icons">close</i>
+                        </div>
+                    </form>
+                    <?php
+                        echo"<div><p>" . $searchResult . "</p></div>";
+                    ?>
             </div>
         </div>
     </form>
