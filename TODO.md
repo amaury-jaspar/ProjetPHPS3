@@ -14,6 +14,12 @@ TO DO :
 
 
 
+nouvelle observation :
+	warnings quand on crée un utilisateur
+	problème de mot de passe quand on supprime un utilisateur autre que soi et que l'on est admin
+	on voit les commandes des autres dans profil
+	lien "create a new command" qui ne fonctionne pas
+	warning quand on supprime un utilisateur, et la suppression n'est pas effective
 
 
 

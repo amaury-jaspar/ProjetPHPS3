@@ -1,13 +1,11 @@
 <?php
 
-$sumBasket = htmlspecialchars($_SESSION['sumBasket']);
-
 echo '<div class="row">';
 
-foreach($currentBasket as $item) {
+foreach($tab_basket as $item) {
 
 $itemName = htmlspecialchars($item->get('name'));
-$itemQuantity = htmlspecialchars($tab_basket[$item->get('id')]);
+$itemQuantity = $_SESSION['basket'][$item->get('id')];
 
 echo <<< EOT
 <div class="col s3 m3">
@@ -28,14 +26,14 @@ EOT;
 
 echo "</div>";
 
-echo "<div>Your money now : " . $moneyBefore."</div>";
-echo "<div>Your money after : " . $moneyAfter."</div>";
-echo "<div>TOTAL COST : " . $sumBasket."</div>";
+echo "<p>Your money now : " . $moneyBefore."</p>";
+echo "<p>Your money after : " . $moneyAfter."</p>";
+echo "<p>TOTAL COST : " . $sumBasket."</p>";
 
 echo <<< EOT
-<div>Do you really want to buy that basket ?</div>
-<div><a href="index.php?controller=basket&action=readBasket">Modify my basket</a></div>
-<div><a href="index.php?controller=basket&action=confirmBuyBasket">Purchase</a></div>
+<p>Do you really want to buy that basket ?</p>
+<p><a href="index.php?controller=basket&action=readBasket">Modify my basket</a></p>
+<p><a href="index.php?controller=basket&action=confirmBuyBasket">Purchase</a></p>
 EOT;
 
 ?>

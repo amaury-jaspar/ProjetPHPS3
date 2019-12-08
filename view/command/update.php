@@ -1,7 +1,7 @@
 <?php
 
 echo <<< EOT
-    <form class="container" method=$method action="index.php">
+    <form class="container" method="$method" action="index.php">
 		<fieldset>
 			<p>
 				<label for="command_id">Command n°</label>

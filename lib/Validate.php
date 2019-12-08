@@ -1,12 +1,15 @@
 <?php
 
+require_once (File::build_path(array('lib', 'Messenger.php')));
+
 class Validate {
 
     public static function validation() {
         if (!is_null(ModelUser::select(myGet('login'))) && ModelUser::nonceAndId(myGet('login'), myGet('nonce'))) {
             ModelUser::eraseNonce(myGet('login'), myGet('nonce'));
+            Messenger::alert("Your account has been validated");
         } else {
-            echo "Mauvaise clef de validation";
+            Messenger::alert("Wrong validation key");
         }
     }
 

@@ -41,7 +41,7 @@ class ModelBasket extends Model {
         $currentBasket = array();
         foreach($tab_basket as $key => $value) {
             if ($value > 0) {
-                    $currentBasket[$i] = ModelItem::select($key);
+                    $currentBasket[] = ModelItem::select($key);
             }
         }
         return $currentBasket;
@@ -102,7 +102,7 @@ class ModelBasket extends Model {
         unset($_SESSION['sumBasket']);
      }
 
-     /*
+/*
     public static function buyBasket() {
         $tab_basket = getBasketFromSession();
         foreach($tab_basket as $key => $value) {
@@ -111,9 +111,11 @@ class ModelBasket extends Model {
                 'login_user' => $user->get('login'),
                 'date_buy' => NULL,
             );
+            echo "étape de lachat du panier";
             ModelCommand::buyBasket($data);
         }
-    } */
+    }
+*/
 
 }
 

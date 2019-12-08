@@ -170,6 +170,8 @@ class ControllerUser {
             $errorMessage = 'Cant access this page';
         } else if (!ModelUser::checkPassword(myGet('login'), Security::chiffrer(myGet('password'))) && !ModelUser::checkPassword($_SESSION['login'], Security::chiffrer(myGet('password')))  ) {
             $errorMessage = 'Wrong password';
+        } else if (ModelUser::select(myGet('login')) == false) {
+            $errorMessage = 'No user with that login';
         }
         if (!isset($errorMessage) && Session::is_user(myGet('login'))) {
             $user = ModelUser::select(myGet('login'));
@@ -181,6 +183,7 @@ class ControllerUser {
             $pagetitle='Deleted';
             require (File::build_path(array("view", "view.php")));
         } else if (!isset($errorMessage) && Session::is_admin()) {
+            $user = ModelUser::select(myGet('login'));
             ModelUser::deleteById(myGet('login'));
             $view='deleted';
             $pagetitle='Deleted';
@@ -413,11 +416,14 @@ class ControllerUser {
         require File::build_path(array('view','view.php'));
     }
 
+
+
 //----------------------------------- VALIDATION COMPTE --------------------------------------------------------------------------------------
 
     public static function validation() {
         Validate::validation();
-        $view='profil';
+        if (Conf::getDebug() == True) { $method = "get"; } else { $method = "post";}
+        $view='connect';
         $pagetitle='profile';
         require (File::build_path(array("view", "view.php")));
     }

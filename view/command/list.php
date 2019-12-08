@@ -9,7 +9,7 @@ foreach ($tab_command as $command) {
 
 }
 
-echo '<p><a href="index.php?controller=command&action=create">Create a new command</a></p>';
+  echo '<p><a href="index.php?controller=command&action=create">Create a new command</a></p>';
 
 ?>
 

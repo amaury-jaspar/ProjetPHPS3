@@ -61,33 +61,37 @@ public static function resetBasket() {
 }
 
 public static function beforeBuyBasket() {
-    $user = ModelUser::select($_SESSION['login']);
-    $moneyBefore = $user->get('wallet');
-    $moneyAfter = $moneyBefore - $sumBasket;
+    if (isset($errorMessage)) { unset($errorMessage); }
     if (!Session::is_connected()) {
         $errorMessage = "You need to be connected to buy the content of your basket";
         $codeError = 1;
-    } else if($moneyBefore < $sumBasket) {
-        $errorMessage = "You do not have enough money";
-        $codeError = 2;
+    } else {
+        $user = ModelUser::select($_SESSION['login']);
+        $sumBasket = ModelBasket::getSumBasket();
+        $moneyBefore = $user->get('wallet');
+        $moneyAfter = $moneyBefore - $sumBasket;
+    }
+    if (Session::is_connected() && $user->get('wallet') < $sumBasket) {
+        $errorMessage = "You need to be connected to buy the content of your basket";
+        $codeError = 1;
     }
     if(!isset($errorMessage)) {
         ModelBasket::actualizeSumBasket();
+        ModelBasket::setBasket(ModelBasket::getBasketFromCookie());
         $tab_basket = ModelBasket::buildBasketFromSession();
-        $_SESSION['basket'] = $tab_basket;
         $view ='checkBasket';
         $pagetitle ='Basket';
         require (File::build_path(array("view", "view.php")));
+    } else if ($codeError == 1) {
+        static::$object = "user";
+        Messenger::alert($errorMessage);
+        ControllerUser::connect();
     } else if ($codeError == 2) {
         static::$object = "user";
         Messenger::alert($errorMessage);
         $view ='profil';
         $pagetitle ='profil';
         require (File::build_path(array("view", "view.php")));
-    } else if ($codeError == 1) {
-        static::$object = "user";
-        Messenger::alert("");
-        ControllerUser::connect();
     }
 }
 
@@ -106,12 +110,15 @@ public static function beforeBuyBasket() {
 */
 
 public static function confirmBuyBasket() {
-    $user = ModelUser::select($_SESSION['login']);
-    $sumBasket = ModelBasket::getSumBasket();
     if (isset($errorMessage)) { unset($errorMessage); }
     if (!Session::is_connected()) {
         $errorMessage = "You need to be connected to buy the content of your basket";
-    } else if ($user->get('billingaddress') !== NULL || $user->get('shippingaddress')) {
+    } else {
+        $user = ModelUser::select($_SESSION['login']);
+    }
+    $sumBasket = ModelBasket::getSumBasket();
+
+    if ($user->get('billingaddress') == NULL || $user->get('shippingaddress') == NULL) {
         $errorMessage = "You didnt told us about your billing and shipping address. Please, fill the form in profil -> detail -> update data";
     } else if ($user->get('wallet') < $sumBasket) {
         $errorMessage = "You do not have enought money, you should add money to your account first";
@@ -122,18 +129,15 @@ public static function confirmBuyBasket() {
         // on actualise le champ qui recense combien l'utilisateur a dépensé jusqu'à maintenant
         $user->set('spend', $user->get('spend') + $sumBasket);
         // s'il y a raison de, on modifie le niveau du joueur
-        $newLevel = $user->get('spend') % 100;
-        if ($newLevel != $user->get('level')) {
-            $user->set('level', $newLevel);
-            $message = "Bravo, vous passez du  niveau '.$user->get('level'). ' au niveau ' .$newLevel";
-            Messenger::alert($message);
-        }
+//        $user->actualizeLevel();
         // puis on sauvegarde dans la BDD toutes les modification faites sur l'acheteur
-        $data = array ('login' => $user->get('login'), 'wallet' => $user->get('wallet'), 'spend' => $user->get('spend'));
+        $data = array ('login' => $user->get('login'), 'wallet' => $user->get('wallet'), 'spend' => $user->get('spend'), 'level' => $user->get('level'));
         ModelUser::updateByID($data);
         // Ensuite on enregistre la commande dans la table commande
-        ModelBasket::buyBasket();
-        ModeBasket::resetBasket();
+		$command = new ModelCommand(array('login_user' => $user->get('login')));
+        $command->buyBasket();
+        ModelBasket::resetBasket();
+        $tab_basket = ModelBasket::getBasketFromSession();
         foreach($tab_basket as $key => $value) {
             $item = ModelItem::select($key);
             $item->set('nbbuy', $item->get('nbbuy') + $value);
