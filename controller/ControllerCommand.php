@@ -10,12 +10,21 @@ class ControllerCommand {
 	public static function read() {
 		$id = htmlspecialchars(myGet('id'));
 		$command = ModelCommand::select($id);
+		$tab_items = $command->getItems();
 		if ($command == false) {
 			self::error();
 		} else {
-            $view='detail';
-			$pagetitle='Detail command';
-            require_once (File::build_path(array("view", "view.php")));
+			if (Session::is_connected()) {
+				if ($_SESSION['login']==$command->get('login_user') || Session::is_admin()) {
+					$view='detail';
+					$pagetitle='Detail command';
+					require_once (File::build_path(array("view", "view.php")));
+				} else {
+					Messenger::alert('You are not allowed to do such action');
+				}
+			} else {
+				ControllerUser::connect();
+			}
 		}
 	}
 
@@ -97,7 +106,7 @@ class ControllerCommand {
 			require (File::build_path(array("view", "view.php")));
 		} else {
 			Messenger::alert('You are not allowed to do such action');
-			self::connect();
+			ControllerUser::connect();
 		}
 	}
 

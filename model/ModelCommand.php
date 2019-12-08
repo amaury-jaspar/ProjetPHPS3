@@ -31,24 +31,20 @@ class ModelCommand extends Model {
         return false;
     }
 
-    public static function findItems($id_command) {
+    public function getItems() {
         try {
             $pdo = Model::$pdo;
-            $sql = "SELECT I.*, IC.quantity FROM items I JOIN itemcommand IC ON IC.id_item=I.id WHERE IC.id_command=:tag_id_command";
-
+            $sql = "SELECT I.id, I.name, IC.quantity FROM item I JOIN itemcommand IC ON IC.id_item=I.id WHERE IC.id_command=:tag_id_command";
             $req_prep = Model::$pdo->prepare($sql);
-
             $values = array(
-                "tag_id_command" => $id_command,
+                "tag_id_command" => $this->id_command,
             );
-
             $req_prep->execute($values);
 
-            $req_prep->setFetchMode(PDO::FETCH_ARRAY);
-            $tab_items = $req_prep->fetchAll();
-            // Attention, si il n'y a pas de résultats, on renvoie false
-            return $tab_items;
-
+            $req_prep->setFetchMode(PDO::FETCH_ASSOC);
+            $tab_item = $req_prep->fetchAll();
+            // Attention, s'il n'y a pas de résultats, on renvoie false
+			return $tab_item;
         } catch (PDOException $e) {
             if (Conf::getDebug()) {
                 echo $e->getMessage(); // affiche un message d'erreur
