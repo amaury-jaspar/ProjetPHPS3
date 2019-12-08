@@ -41,7 +41,7 @@ class ModelBasket extends Model {
         $currentBasket = array();
         foreach($tab_basket as $key => $value) {
             if ($value > 0) {
-                    $currentBasket[$i] = ModelItem::select($key);
+                    $currentBasket[] = ModelItem::select($key);
             }
         }
         return $currentBasket;

@@ -61,34 +61,41 @@ public static function resetBasket() {
 }
 
 public static function beforeBuyBasket() {
-    $user = ModelUser::select($_SESSION['login']);
-    $moneyBefore = $user->get('wallet');
-    $moneyAfter = $moneyBefore - $sumBasket;
-    if (!Session::is_connected()) {
-        $errorMessage = "You need to be connected to buy the content of your basket";
-        $codeError = 1;
-    } else if($moneyBefore < $sumBasket) {
-        $errorMessage = "You do not have enough money";
-        $codeError = 2;
-    }
-    if(!isset($errorMessage)) {
-        ModelBasket::actualizeSumBasket();
-        $tab_basket = ModelBasket::buildBasketFromSession();
-        $_SESSION['basket'] = $tab_basket;
-        $view ='checkBasket';
-        $pagetitle ='Basket';
-        require (File::build_path(array("view", "view.php")));
-    } else if ($codeError == 2) {
-        static::$object = "user";
-        Messenger::alert($errorMessage);
-        $view ='profil';
-        $pagetitle ='profil';
-        require (File::build_path(array("view", "view.php")));
-    } else if ($codeError == 1) {
-        static::$object = "user";
-        Messenger::alert("");
-        ControllerUser::connect();
-    }
+	if (Session::is_connected()) {
+		$user = ModelUser::select($_SESSION['login']);
+		$moneyBefore = $user->get('wallet');
+		$sumBasket = ModelBasket::getSumBasket();
+		$moneyAfter = $moneyBefore - $sumBasket;
+		if (!Session::is_connected()) {
+			$errorMessage = "You need to be connected to buy the content of your basket";
+			$codeError = 1;
+		} else if ($moneyBefore < $sumBasket) {
+			$errorMessage = "You do not have enough money";
+			$codeError = 2;
+		}
+		if (!isset($errorMessage)) {
+			ModelBasket::actualizeSumBasket();
+			$currentBasket = ModelBasket::buildBasketFromSession();
+			$tab_basket  = ModelBasket::getBasketFromCookie();
+			$_SESSION['basket'] = $currentBasket;
+			$view = 'checkBasket';
+			$pagetitle = 'Basket';
+			require(File::build_path(array("view", "view.php")));
+		} else if ($codeError == 2) {
+			static::$object = "user";
+			Messenger::alert($errorMessage);
+			$view = 'profil';
+			$pagetitle = 'profil';
+			require(File::build_path(array("view", "view.php")));
+		} else if ($codeError == 1) {
+			static::$object = "user";
+			Messenger::alert("");
+			ControllerUser::connect();
+		}
+	} else {
+		Messenger::alert('You need to be connected to do such action');
+		ControllerUser::connect();
+	}
 }
 
 /* 1 - En premier lieu, l'utilisateur ne doit pas pouvoir acheter hors connexion
@@ -111,7 +118,7 @@ public static function confirmBuyBasket() {
     if (isset($errorMessage)) { unset($errorMessage); }
     if (!Session::is_connected()) {
         $errorMessage = "You need to be connected to buy the content of your basket";
-    } else if ($user->get('billingaddress') !== NULL || $user->get('shippingaddress')) {
+    } else if ($user->get('billingaddress') == NULL || $user->get('shippingaddress') == NULL) {
         $errorMessage = "You didnt told us about your billing and shipping address. Please, fill the form in profil -> detail -> update data";
     } else if ($user->get('wallet') < $sumBasket) {
         $errorMessage = "You do not have enought money, you should add money to your account first";
@@ -132,8 +139,10 @@ public static function confirmBuyBasket() {
         $data = array ('login' => $user->get('login'), 'wallet' => $user->get('wallet'), 'spend' => $user->get('spend'));
         ModelUser::updateByID($data);
         // Ensuite on enregistre la commande dans la table commande
-        ModelBasket::buyBasket();
-        ModeBasket::resetBasket();
+		$command = new ModelCommand(array('login_user' => $user->get('login')));
+        $command->buyBasket();
+        ModelBasket::resetBasket();
+        $tab_basket = ModelBasket::getBasketFromSession();
         foreach($tab_basket as $key => $value) {
             $item = ModelItem::select($key);
             $item->set('nbbuy', $item->get('nbbuy') + $value);
