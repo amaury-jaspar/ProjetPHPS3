@@ -1,18 +1,4 @@
-TO DO :
-
-1 / Utiliser un serveur qui affiche les warnings et corriger tout ça
-
-2 / Commande :
-	- Finir l’enregistrement des commandes
-	- Faire un readAll dans le nav administration, peut-être sous la forme d'une table avec des <ul> et <li>
-	- Faire une fonctionnalité qui nécessite une jointure
-	- Contrainte de clef étranger dans les requêtes SQL
-
-3 / Gérer erreur dans wishlist quand personne est connecté
-
 4 / Sécurisation de vue sur ControllerItem, surtout create et update
-
-
 
 nouvelle observation :
 	warnings quand on crée un utilisateur
@@ -20,6 +6,11 @@ nouvelle observation :
 	on voit les commandes des autres dans profil
 	lien "create a new command" qui ne fonctionne pas
 	warning quand on supprime un utilisateur, et la suppression n'est pas effective
+
+
+
+
+
 
 
 
