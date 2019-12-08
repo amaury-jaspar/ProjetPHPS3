@@ -172,6 +172,7 @@ class ControllerItem {
 				$searchResult = "There are no items that correspond to your search query";
 			}
 		} else {
+			$searchResult = NULL;
 			if (myGet('condition') !== NULL) {
 				$tab_result = Modelitem::selectPageCategory($currentPage, $parPage, myGet('condition'));
 			} else {
