@@ -5,7 +5,7 @@ echo <<< EOT
     <p>Compte admin: login = admin, password = p</p>
     <p>Compte visiteur: login = visiteur, password = p</p>
     
-    <form method=$method action="index.php?">
+    <form method="$method" action="index.php?">
         <legend>
             <fieldset>
             <label for="login_id">Login</label>

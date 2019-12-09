@@ -109,16 +109,18 @@ class ControllerUser {
             $pagetitle='user created';
             require (File::build_path(array("view", "view.php")));
         } else {
+            if (Conf::getDebug() == True) { $method = "get"; } else { $method = "post";}
             Messenger::alert($errorMessage);
             $login = htmlspecialchars(myGet('login'));
             $lastName = htmlspecialchars(myGet('lastName'));
             $surname = htmlspecialchars(myGet('surname'));
+            $mail = htmlspecialchars(myGet('mail'));
             $password1 = "";
             $password2 = "";
             $shippingaddress = htmlspecialchars(myGet('shippingaddress'));
             $billingaddress = htmlspecialchars(myGet('billingaddress'));
             $required = "required";
-            $action = "create";
+            $action = "created";
             $view='update';
             $pagetitle='user creation';
             require (File::build_path(array("view", "view.php")));
@@ -240,12 +242,12 @@ class ControllerUser {
         } else if (!ModelUser::checkPassword(myGet('login'), Security::chiffrer(myGet('password1'))) && !ModelUser::checkPassword($_SESSION['login'], Security::chiffrer(myGet('password1')))) {
             $codeError = 1;
             $errorMessage = 'Wrong password';
-        } else if (!Session::is_admin() && myGet('admin') !== NULL && myGet('admin') == on) {
+        } else if (!Session::is_admin() && myGet('admin') !== NULL && myGet('admin') == 'on') {
             $codeError = 2;
             $errorMessage = 'CHEATER !!!';
         }
         if (!isset($errorMessage)) {
-            if (Session::is_admin() && myGet('admin') !== NULL && myGet('admin') == on) { $admin = 1; } else { $admin = 0; }
+            if (Session::is_admin() && myGet('admin') !== NULL && myGet('admin') == 'on') { $admin = 1; } else { $admin = 0; }
             $data = array (
 				'login' => htmlspecialchars(myGet('login')),
 				'lastName' => htmlspecialchars(myGet('lastName')),
@@ -264,11 +266,14 @@ class ControllerUser {
 			require (File::build_path(array("view", "view.php")));
         } else if ($codeError == 1) {
             if (Conf::getDebug() == True) { $method = "get"; } else { $method = "post";}
+            if ($user->get('admin') == 0) { $checked = NULL; } else { $checked = 'checked="checked"';}
             Messenger::alert($errorMessage);
 			$login = myGet('login');
 			$lastName = myGet('lastName');
 			$surname = myGet('surname');
-			$mail = myGet('mail');
+            $mail = myGet('mail');
+            $password1 = "";
+            $password2 = "";
             $shippingaddress = myGet('shippingaddress');
             $billingaddress = myGet('billingaddress');
             $required = "required";
@@ -371,6 +376,7 @@ class ControllerUser {
     }
 
     public static function preference() {
+        if (Conf::getDebug() == True) { $method = "get"; } else { $method = "post";}
         $action = "personnalisation";
         $view='preference';
         $pagetitle='settings';

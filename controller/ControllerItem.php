@@ -152,16 +152,13 @@ class ControllerItem {
 		} else {
 			$nb_Id = ModelItem::countCatalog(); // le nombre d'item qui ont 1 pour l'attribut catalog
 		}
-
 		$parPage = 5; // le nombre d'item que l'on veut afficher par page
 		$nbPage = ceil($nb_Id / $parPage); // On calcule le nombre de page par division nbProduit / Produit par page
-
 		if(myGet('currentpage') !== NULL && myGet('currentpage') > 0 && myGet('currentpage') <= $nbPage) {
 			$currentPage = myGet('currentpage');
 		} else {
 			$currentPage = 1;
 		}
-
 		if (myGet('search') != NULL) {
 			$tab_from_search = ModelItem::selectFromSearch($currentPage, $parPage, myGet('search'));
 			if (! empty($tab_from_search)) {
@@ -179,9 +176,6 @@ class ControllerItem {
 				$tab_result = ModelItem::selectPage($currentPage, $parPage);
 			}
 		}
-
-
-
 		if (Session::is_connected()) {
 			require_once (File::build_path(array('controller', 'ControllerUser.php')));
 			$user = ModelUser::select($_SESSION['login']);
@@ -195,9 +189,7 @@ class ControllerItem {
 				$i++;
 			}
 		}
-
 		$tab_category = ModelCategory::selectAll();
-
 		$view='paging';
 		$pagetitle='paging';
 		require_once (File::build_path(array("view", "view.php")));

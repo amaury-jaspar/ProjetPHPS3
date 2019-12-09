@@ -13,7 +13,7 @@ class Conf {
         // a remplir
     );
 
-    static private $debug = True;
+    static private $debug = False;
 
     static public function getDebug() {
         return self::$debug;

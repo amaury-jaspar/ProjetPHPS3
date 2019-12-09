@@ -62,8 +62,12 @@ class ControllerHome {
             require (File::build_path(array("view", "view.php")));
         } else {
             Messenger::alert('Your mail has been sent');
-            $mailTo = 'jean.simondon@etu.umontpellier.fr, amaury.jaspar@etu.umontpellier.fr, mathieu.lagny@etu.umontpellier.fr';
-            $headers = "FROM: ". myGet('nom') . ", " . myGet('prenom') . ", " .  myGet('mail');
+            $mailTo = 'bob@yopmail.com, jean.simondon@etu.umontpellier.fr, amaury.jaspar@etu.umontpellier.fr, mathieu.lagny@etu.umontpellier.fr';
+            $headers = array (
+                'From' => "FROM: " . myGet('nom') . ", " . myGet('prenom'),
+                'Repy-To' => myGet('mail')
+            );
+
             mail($mailTo, myGet('objet'), myGet('message'), $headers);
 			$tab_category = ModelCategory::selectAll();
             $action = "buildFrontPage";

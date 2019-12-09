@@ -22,7 +22,7 @@ class ModelBasket extends Model {
             return $_SESSION['basket'];
         } else {
             return $tab_basket = [];
-        }        
+        }
     }
 
     public static function buildBasketFromCookie() {
@@ -101,21 +101,6 @@ class ModelBasket extends Model {
         unset($_SESSION['basket']);
         unset($_SESSION['sumBasket']);
      }
-
-/*
-    public static function buyBasket() {
-        $tab_basket = getBasketFromSession();
-        foreach($tab_basket as $key => $value) {
-            $data = array (
-                'id_command' => NULL,
-                'login_user' => $user->get('login'),
-                'date_buy' => NULL,
-            );
-            echo "étape de lachat du panier";
-            ModelCommand::buyBasket($data);
-        }
-    }
-*/
 
 }
 

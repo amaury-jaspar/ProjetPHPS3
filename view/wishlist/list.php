@@ -25,8 +25,8 @@ echo <<< EOT
         <div class="card-content">
             <div class="card-action">
                 <p>$itemName</p>
-                <a href="index.php?controller=basket&action=addToBasket&prix=$itemPriceURL&id=$itemIdURL">Add item to basket</a>
-                <a href="index.php?controller=wishlist&action=removeFromWishlist&id=$itemIdURL">Remove from wishlist</a>
+                <p><a href="index.php?controller=basket&action=addToBasket&prix=$itemPriceURL&id=$itemIdURL">Add item to basket</a></p>
+                <p><a href="index.php?controller=wishlist&action=removeFromWishlist&id=$itemIdURL">Remove from wishlist</a></p>
                 <p><a href="index.php?controller=item&action=read&id=$itemIdURL">More about this item</a></p>
             </div>
         </div>

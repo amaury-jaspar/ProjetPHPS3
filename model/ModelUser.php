@@ -169,8 +169,7 @@ class ModelUser extends Model {
             $this->set('level', $count);
 			Messenger::alert($message);
         }
-        
-    }
+	}
 
 }
 

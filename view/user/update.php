@@ -2,7 +2,7 @@
 
 echo <<< EOT
     <form class="container" method="$method" action="index.php">
-            <legend>$view form :
+            <legend>
                 <fieldset>
                     <p>
                     <label for="login_id">Login</label>

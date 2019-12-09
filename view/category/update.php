@@ -2,7 +2,7 @@
 echo <<< EOT
 <div>
     <form class="container" method="$method" action="index.php" enctype="multipart/form-data">
-        <legend> $view Category
+        <legend>
             <fieldset>
                 <p>
                     <label for="name_id">Name</label>
@@ -12,7 +12,6 @@ echo <<< EOT
                     <label for="fileToUpload">Select image to upload :</label>
                     <input type="file" value="Upload Image" name="img" accept="image/png, image/jpeg" id="fileToUpload"/>
                     <p>Veuillez nommer l'image du même nom que la category et avec une extention .jpeg</p>
-                    <input type='hidden' name='id' value=$id>
                     <input type='hidden' name='controller' value='category'>
                     <input type='hidden' name='action' value=$action>
                 </p>

@@ -23,6 +23,7 @@ class ControllerCommand {
 					Messenger::alert('You are not allowed to do such action');
 				}
 			} else {
+				static::$object="user";
 				ControllerUser::connect();
 			}
 		}
@@ -53,6 +54,7 @@ class ControllerCommand {
 			require(File::build_path(array("view", "view.php")));
 		} else {
 			Messenger::alert('You are not allowed to do such action');
+			static::$object="home";
 			ControllerHome::buildFrontPage();
 		}
 	}
