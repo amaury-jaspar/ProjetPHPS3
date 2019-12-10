@@ -16,10 +16,6 @@ if (isset($_COOKIE['basket'])) {
     $_SESSION['basket'] = $tab_basket;
 }
 
-echo $_COOKIE['sessionMMElog'];
-echo '<br>';
-echo $_SERVER['REMOTE_ADDR'];
-
 function myGet($nomvar) {
     if (isset($_GET[$nomvar])) {
     return $_GET[$nomvar];
