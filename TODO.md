@@ -1,7 +1,5 @@
 1 / une variable dans la SESSION qui regarde si le nonce est bien supprimé
 
-2 / Sécurisation de vue sur ControllerItem, surtout create et update, avec is_admin, is_user, is_connected
-
 3 / Vérification du mail :
 Dans le cas ou l'utilisateur fait une faute de frappe dans le mail, et qu'il est envoyé à quelqu'un d'autre.
 le nonce est envoyé à la mauvaise addresse, et donc un autre utilisateur peut valider le mail avec le nonce.

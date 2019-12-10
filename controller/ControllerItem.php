@@ -25,10 +25,17 @@ class ControllerItem {
 	}
 
 	public static function readAll() {
+		if (Session::is_admin()) {
         $tab_item = ModelItem::selectAll();
         $view='list';
         $pagetitle='Item list';
-        require (File::build_path(array("view", "view.php")));
+		require (File::build_path(array("view", "view.php")));
+		} else {
+			static::$object = "user";
+			$view='connect';
+			$pagetitle='connection';
+			require (File::build_path(array("view", "view.php")));
+		}
 	}
 
 	public static function create() {
@@ -64,26 +71,40 @@ class ControllerItem {
 	}
 
 	public static function created() {
-		if (myGet('catalog') !== NULL) {$catalog = 1;} else { $catalog = 0;}
-		$data = array (
-			'id' => Security::generateRandomHex(),
-			'name' => myGet('name'),
-			'price' => myGet('price'),
-			'description' => myGet('description'),
-			'catalog' => $catalog,
-			'nbbuy' => 0,
-			'dateadd' => date("Y-m-d"),
-			'category' => myGet('category'),
-			'nbbuy' =>  0,
-			'levelaccess' => myGet('levelaccess'),
-		);
-		$item = new ModelItem($data);
-		if(!empty($_FILES['img'])) { ImageUploader::uploadImg();}
-		$item->save($data);
-		$tab_item = ModelItem::selectAll();
-		$view='created';
-		$pagetitle='Item Created';
-		require (File::build_path(array("view", "view.php")));
+        if (isset($errorMessage)) { unset($errorMessage); }
+        if (is_null(myGet('name')) || is_null(myGet('price')) || is_null(myGet('description')) || is_null(myGet('category')) || is_null(myGet('levelaccess'))) {
+			$errorMessage = 'Some of the attribut are NULL';
+		} else if (!Session::is_admin()) {
+			$errorMessage = 'Cant access this page';
+		}
+		if(!isset($errorMessage)) {
+			if (myGet('catalog') !== NULL) {$catalog = 1;} else { $catalog = 0;}
+			$data = array (
+				'id' => Security::generateRandomHex(),
+				'name' => myGet('name'),
+				'price' => myGet('price'),
+				'description' => myGet('description'),
+				'catalog' => $catalog,
+				'nbbuy' => 0,
+				'dateadd' => date("Y-m-d"),
+				'category' => myGet('category'),
+				'nbbuy' =>  0,
+				'levelaccess' => myGet('levelaccess'),
+			);
+			$item = new ModelItem($data);
+			if(!empty($_FILES['img']['name'])) { ImageUploader::uploadImg();}
+			$item->save($data);
+			$tab_item = ModelItem::selectAll();
+			$view='created';
+			$pagetitle='Item Created';
+			require (File::build_path(array("view", "view.php")));
+		} else {
+			Messenger::alert($errorMessage);
+			static::$object = "user";
+			$view='connect';
+			$pagetitle='connection';
+			require (File::build_path(array("view", "view.php")));
+		}
 	}
 
 	public static function delete() {
@@ -99,14 +120,26 @@ class ControllerItem {
 	}
 
 	public static function confirmDelete() {
-		$id = myGet('id');
-		$item = ModelItem::select($id);
-		$name = $item->get('name');
-		ModelItem::deleteById($id);
-		$tab_item = ModelItem::selectAll();
-		$view='deleted';
-		$pagetitle='Delete Item';
-		require_once (File::build_path(array("view", "view.php")));
+		if (!Session::is_admin()) {
+			$errorMessage = 'Cant access this page';
+		}
+		if (!isset($errorMessage)) {
+			$id = myGet('id');
+			$item = ModelItem::select($id);
+			$name = $item->get('name');
+			ModelItem::deleteById($id);
+			$tab_item = ModelItem::selectAll();
+			$view='deleted';
+			$pagetitle='Delete Item';
+			require_once (File::build_path(array("view", "view.php")));
+		} else {
+			Messenger::alert($errorMessage);
+			static::$object = "user";
+			$view='connect';
+			$pagetitle='connection';
+			require (File::build_path(array("view", "view.php")));
+		}
+
 	}
 
 	public static function update() {
@@ -128,22 +161,37 @@ class ControllerItem {
 	}
 
 	public static function updated() {
-		if (myGet('catalog') !== NULL && myGet('catalog') == 'on') { $catalog = 1; } else { $catalog = 0; }
-		$data = array (
-			'id' => myGet('id'),
-			'name' => myGet('name'),
-			'description' => myGet('description'),
-			'price' => myGet('price'),
-			'category' => myGet('category'),
-			'catalog' => $catalog,
-			'levelaccess' => myGet('levelaccess'),
-		);
-		if(!empty($_FILES['img'])) { ImageUploader::uploadImg();}
-		ModelItem::updateByID($data);
-		$tab_item = ModelItem::selectAll();
-		$view='updated';
-		$pagetitle='Item updated';
-		require (File::build_path(array("view", "view.php")));
+        if (isset($errorMessage)) { unset($errorMessage); }
+        if (is_null(myGet('name')) || is_null(myGet('price')) || is_null(myGet('description')) || is_null(myGet('category')) || is_null(myGet('levelaccess'))) {
+			$errorMessage = 'Some of the attribut are NULL';
+		} else if (!Session::is_admin()) {
+			$errorMessage = 'Cant access this page';
+		}
+		if(!isset($errorMessage)) {
+			if (myGet('catalog') !== NULL && myGet('catalog') == 'on') { $catalog = 1; } else { $catalog = 0; }
+			$data = array (
+				'id' => myGet('id'),
+				'name' => myGet('name'),
+				'description' => myGet('description'),
+				'price' => myGet('price'),
+				'category' => myGet('category'),
+				'catalog' => $catalog,
+				'levelaccess' => myGet('levelaccess'),
+			);
+			if(!empty($_FILES['img']['name'])) { ImageUploader::uploadImg();}
+			ModelItem::updateByID($data);
+			$tab_item = ModelItem::selectAll();
+			$view='updated';
+			$pagetitle='Item updated';
+			require (File::build_path(array("view", "view.php")));
+		} else {
+			Messenger::alert($errorMessage);
+			static::$object = "user";
+			$view='connect';
+			$pagetitle='connection';
+			require (File::build_path(array("view", "view.php")));
+		}
+
 	}
 
 	public static function paging() {

@@ -10,7 +10,7 @@ echo <<< EOT
 </p>
 <p>Can only be used on <strong>MYSTIC MARKET EVERYWHERE</strong></p>
 
-<form method="get" action="index.php">
+<form method="$method" action="index.php">
     <legend>
     <fieldset>
             <label for="id_wallet">Your Wallet</label>

@@ -330,6 +330,7 @@ class ControllerUser {
             $pagetitle='accueil';
             require (File::build_path(array("view", "view.php")));
         } else {
+            $user = ModelUser::select('login');
             Messenger::alert($errorMessage);
             $view='profil';
             $pagetitle='accueil';
@@ -387,30 +388,23 @@ class ControllerUser {
         }
     }
 
-    public static function preference() {
-        if (Conf::getDebug() == True) { $method = "get"; } else { $method = "post";}
-        $action = "personnalisation";
-        $view='preference';
-        $pagetitle='settings';
-        require (File::build_path(array("view", "view.php")));
-    }
-
-    public static function personnalisation() {
-        $user = ModelUser::select($_SESSION['login']);
-        // setcookie("preference", myGet('preference'), time()+3600);
-        $_SESSION['preference'] = myGet('preference');
-        $view='profil';
-        $pagetitle='profil';
-        require (File::build_path(array("view", "view.php")));
-    }
-
     public static function manageWallet() {
-        if (Conf::getDebug() == True) { $method = "get"; } else { $method = "post";}
-        $user = ModelUser::select($_SESSION['login']);
-        $wallet = $user->get('wallet');
-        $view='manageWallet';
-        $pagetitle='profil';
-        require (File::build_path(array("view", "view.php")));
+        if (!Session::is_connected()) {
+            $errorMessage = 'You need to be connected';
+        } else if (!Session::is_user(myGet('login'))) {
+            $errorMessage = 'Cant access this page';
+        }
+        if (!isset($errorMessage)) {
+            if (Conf::getDebug() == True) { $method = "get"; } else { $method = "post";}
+            $user = ModelUser::select($_SESSION['login']);
+            $wallet = $user->get('wallet');
+            $view='manageWallet';
+            $pagetitle='profil';
+            require (File::build_path(array("view", "view.php")));
+        } else {
+            Messenger::alert($errorMessage);
+            self::connect();
+        }
     }
 
     public static function walletManaged() {
@@ -433,8 +427,6 @@ class ControllerUser {
         $pagetitle='Page d\'erreur';
         require File::build_path(array('view','view.php'));
     }
-
-
 
 //----------------------------------- VALIDATION COMPTE --------------------------------------------------------------------------------------
 

@@ -45,7 +45,7 @@ class ControllerWishlist {
         }
     } else {
         static::$object = "user";
-        $method = 'get';
+        if (Conf::getDebug() == True) { $method = "get"; } else { $method = "post";}
         $view = 'connect';
         $controller = 'user';
         $pagetitle = 'You are not connected';
