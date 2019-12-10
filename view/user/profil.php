@@ -41,7 +41,7 @@ echo <<< EOT
 
     <p><a href="index.php?action=read&controller=user&login=$userLogin">Detail</a></p>
     <p><a href="index.php?action=preference&controller=user">Preference</a></p>
-    <p><a href="index.php?action=readAll&controller=command">Your commands</a></p>
+    <p><a href="index.php?action=readUserCommand&controller=command">Your commands</a></p>
     <p><a href="index.php?action=securitySetting&controller=user&login=$userLogin">Security setting and connection</a></p>
     <p><a href="index.php?action=manageWallet&controller=user&login=$userLogin">Manage your Wallet</a></p>
     <p><a href="index.php?action=&controller=user&action=update&login=$userLogin">Modify the data of your account</a></p>
