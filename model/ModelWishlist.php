@@ -35,9 +35,13 @@ class ModelWishlist extends Model {
       );
       $item_id = $item->get('id');
       $current_wishlist = ModelWishlist::selectWhereFromArray($user);
-      foreach ($current_wishlist as $tuple) {
-          $current_item = ModelItem::select($tuple['item_id']);
-          $tab_item_id[] = $current_item->get('id');
+      if (! empty($current_wishlist)) {
+          foreach ($current_wishlist as $tuple) {
+              $current_item = ModelItem::select($tuple['item_id']);
+              $tab_item_id[] = $current_item->get('id');
+          }
+      } else {
+          $tab_item_id = array();
       }
       if (! in_array($item_id, $tab_item_id)) {
           $data = array (
