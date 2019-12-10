@@ -14,7 +14,10 @@ class Session {
     }
 
     public static function different_user() {
-        return (isset($_SESSION['ip']) && $_SESSION['ip'] != $_SERVER['REMOTE_ADDR']);
+        Messenger::alert("due to technical error, we need to ask you to log again");
+        unset($_SESSION['login']);
+        session_destroy();
+        setcookie(session_name(),'',time()-1/*, "/~simondonj/ecommerce/", "webinfo.iutmontp.univ-montp2.fr"*/);
     }
     
 }

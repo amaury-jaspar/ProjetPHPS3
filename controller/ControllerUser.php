@@ -170,7 +170,7 @@ class ControllerUser {
             $errorMessage = 'Cant access this page';
         } else if (!(Session::is_connected()) || (!(Session::is_user(myGet('login'))) && !(Session::is_admin()))) {
             $errorMessage = 'Cant access this page';
-        } else if (!ModelUser::checkPassword(myGet('login'), Security::chiffrer(myGet('password'))) && !ModelUser::checkPassword($_SESSION['login'], Security::chiffrer(myGet('password')))  ) {
+        } else if (!ModelUser::checkPassword(myGet('login'), Security::chiffrer(myGet('password'))) && !ModelUser::checkPassword($_SESSION['login'], Security::chiffrer(myGet('password')))) {
             $errorMessage = 'Wrong password';
         } else if (ModelUser::select(myGet('login')) == false) {
             $errorMessage = 'No user with that login';
@@ -219,6 +219,7 @@ class ControllerUser {
 			$pagetitle='User modification';
 			require (File::build_path(array("view", "view.php")));
     	} else {
+            Messenger::alert("Cant access this page");
             self::connect();
         }
     }
@@ -288,15 +289,24 @@ class ControllerUser {
     }
 
     public static function securitySetting() {
-        $user = ModelUser::select(myGet('login'));
-        $login = $user->get('login');
-        $password1 = "";
-        $password2 = "";
-        $password3 = "";
-        $action = "securitySettingModified";
-        $view='securitySettings';
-        $pagetitle='connection';
-        require (File::build_path(array("view", "view.php")));
+        if (isset($errorMessage)) { unset($errorMessage);}
+        if (!Session::is_connected() || !Session::is_user(myGet('login'))) {
+            $errorMessage = "Cant access this page";
+        }
+        if (!isset($errorMessage)) {
+            $user = ModelUser::select(myGet('login'));
+            $login = $user->get('login');
+            $password1 = "";
+            $password2 = "";
+            $password3 = "";
+            $action = "securitySettingModified";
+            $view='securitySettings';
+            $pagetitle='connection';
+            require (File::build_path(array("view", "view.php")));
+        } else {
+            Messenger::alert($errorMessage);
+            self::error();
+        }
     }
 
     public static function securitySettingModified() {
@@ -358,7 +368,7 @@ class ControllerUser {
     public static function disconnect() {
         unset($_SESSION['login']);
         session_destroy();
-    setcookie(session_name(),'',time()-1/*, "/~simondonj/ecommerce/", "webinfo.iutmontp.univ-montp2.fr"*/);
+        setcookie(session_name(),'',time()-1/*, "/~simondonj/ecommerce/", "webinfo.iutmontp.univ-montp2.fr"*/);
         $view='disconnected';
         $pagetitle='accueil';
         require (File::build_path(array("view", "view.php")));
