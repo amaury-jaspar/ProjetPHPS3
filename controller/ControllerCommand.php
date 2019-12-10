@@ -36,13 +36,23 @@ class ControllerCommand {
 	  	require (File::build_path(array("view", "view.php")));
 	}
 
-	/* 		if (!empty($tab_commands)) {
-			$tab_items = array();
-			foreach ($items as $tuple) {
+	public static function readUserCommand() {
+		$login_user = $_SESSION['login'];
+		$data = array(
+			"login_user" => $login_user
+		);
+		$tab_command = ModelCommand::selectWhereFromArray($data);
+		if (!empty($wishlist)) {
+			$tab_wishes = array();
+			foreach ($wishlist as $tuple) {
 				$current_item = ModelItem::select($tuple['item_id']);
-				$tab_items[] = $current_item;
+				$tab_wishes[] = $current_item;
 			}
-		}*/
+		}
+		$view='command';
+		$pagetitle='Command list';
+		require (File::build_path(array("view", "view.php")));
+	}
 
 	public static function create() {
 		if (Session::is_connected() && Session::is_admin()) {
