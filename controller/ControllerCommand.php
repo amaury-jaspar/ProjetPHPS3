@@ -30,28 +30,36 @@ class ControllerCommand {
 	}
 
 	public static function readAll() {
-		$tab_command = ModelCommand::selectAll();
-	  	$view='list';
-	  	$pagetitle='Command list';
-	  	require (File::build_path(array("view", "view.php")));
+		if (Session::is_connected() && Session::is_admin()) {
+			$tab_command = ModelCommand::selectAll();
+			$view = 'list';
+			$pagetitle = 'Command list';
+			require(File::build_path(array("view", "view.php")));
+		} else {
+			ControllerHome::buildFrontPage();
+		}
 	}
 
 	public static function readUserCommand() {
-		$login_user = $_SESSION['login'];
-		$data = array(
-			"login_user" => $login_user
-		);
-		$tab_command = ModelCommand::selectWhereFromArray($data);
-		if (!empty($wishlist)) {
-			$tab_wishes = array();
-			foreach ($wishlist as $tuple) {
-				$current_item = ModelItem::select($tuple['item_id']);
-				$tab_wishes[] = $current_item;
+		if (Session::is_connected()) {
+			$login_user = $_SESSION['login'];
+			$data = array(
+				"login_user" => $login_user
+			);
+			$tab_command = ModelCommand::selectWhereFromArray($data);
+			if (!empty($wishlist)) {
+				$tab_wishes = array();
+				foreach ($wishlist as $tuple) {
+					$current_item = ModelItem::select($tuple['item_id']);
+					$tab_wishes[] = $current_item;
+				}
 			}
+			$view='command';
+			$pagetitle='Command list';
+			require (File::build_path(array("view", "view.php")));
+		} else {
+			ControllerHome::buildFrontPage();
 		}
-		$view='command';
-		$pagetitle='Command list';
-		require (File::build_path(array("view", "view.php")));
 	}
 
 	public static function create() {
