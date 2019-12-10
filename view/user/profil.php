@@ -35,8 +35,9 @@ echo "<p>Hi " . $userSurname . ", welcome</p>";
     // Réaliser un versement au compte d'un autre utilisateur
     // Ajouter des sous, faire l'aumone à l'administrateur
     // consulter le solde du porte-monnaie
-
+    echo $_SESSION['ip'];
 echo <<< EOT
+
 
     <p><a href="index.php?action=read&controller=user&login=$userLogin">Detail</a></p>
     <p><a href="index.php?action=preference&controller=user">Preference</a></p>

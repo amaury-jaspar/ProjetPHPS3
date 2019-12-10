@@ -1,5 +1,5 @@
 <?php
 
-echo "Your basket have been succesfully bought and added to your inventory"
+echo "Your basket have been succesfully bought. You can find everything about you order in \"profile\" -> \"Your command\"";
 
 ?>

@@ -180,7 +180,7 @@ class ControllerUser {
             ModelUser::deleteById(myGet('login'));
             unset($_SESSION['login']);
             session_destroy();
-            setcookie(session_name(),'',time()-1);
+        setcookie(session_name(),'',time()-1/*, "/~simondonj/ecommerce/", "webinfo.iutmontp.univ-montp2.fr"*/);
             $view='deleted';
             $pagetitle='Deleted';
             require (File::build_path(array("view", "view.php")));
@@ -335,6 +335,7 @@ class ControllerUser {
     }
 
     public static function connected() {
+        Messenger::alert("Bienvenue");
         if (ModelUser::checkPassword(myGet('login'), Security::chiffrer(myGet('password'))) && ModelUser::checkNonce(myGet('login'))) {
             $_SESSION['login'] = myGet('login');
             $user = ModelUser::select(myGet('login'));
@@ -342,6 +343,7 @@ class ControllerUser {
                 $_SESSION['admin'] = true;
             }
             $_SESSION['connected'] = true;
+            $_SESSION['ip'] = $_SERVER['REMOTE_ADDR'];
             $view='profil';
             $pagetitle='User\'s detail';
             require (File::build_path(array("view", "view.php")));
@@ -356,7 +358,7 @@ class ControllerUser {
     public static function disconnect() {
         unset($_SESSION['login']);
         session_destroy();
-        setcookie(session_name(),'',time()-1);
+    setcookie(session_name(),'',time()-1/*, "/~simondonj/ecommerce/", "webinfo.iutmontp.univ-montp2.fr"*/);
         $view='disconnected';
         $pagetitle='accueil';
         require (File::build_path(array("view", "view.php")));

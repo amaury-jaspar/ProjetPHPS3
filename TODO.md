@@ -1,22 +1,26 @@
+3 / dans routeur, Il faut 2 manière supplémentaire de protéger le site web
+	1: une variable dans la SESSION qui regarde si le nonce est bien supprimé
+	2: un moyen de vérifier que l'adresse IP correspond bien avec celle de celui qui s'est connecté
+
+Continuer à faire de la validaton de HTML sur w3school
+
 4 / Sécurisation de vue sur ControllerItem, surtout create et update, avec is_admin, is_user, is_connected
+	Sécurisation diverses
+	Tester l'usage de l'adresse IP différente
 
-nouvelle observation :
-	on voit les commandes des autres dans profil
-	lien "create a new command" qui ne fonctionne pas
-	warning quand on supprime un utilisateur, et la suppression n'est pas effective
-
+/*
+	if (Session::different_user()) {
+		static::$object = "user"
+		Messenger::alert("disconnected due to a technical error);
+		disconnet();
+	}
+*/
 
 5 / Vérification du mail :
 Dans le cas ou l'utilisateur fait une faute de frappe dans le mail, et qu'il est envoyé à quelqu'un d'autre.
 le nonce est envoyé à la mauvaise addresse, et donc un autre utilisateur peut valider le mail avec le nonce.
 Il faut donc demander à l'utilisateur d'être connecté pour pouvoir valider une addresse email grâce au nonce.
 DONC il faut un champ email_validated dans la dession qui fait que quand on est connecté sans avoir validé, alors on ne peut que valider son email.
-
-14 /
-Pour checkPassword dans user, il faudrait utiliser ModelUser::selectWhere($data) qui fait un select sur les champs de $data (login et mpd), et non pas utilisé ModelUser::select($data)
-
-15 /
-Faire l’autorisation d’upload dans le tuto d’uploading d’images
 
 16 /
 SECURISATION :
@@ -51,9 +55,3 @@ Si possible, terminer le QueryBuilder et l'utiliser dans Model
 Rajouter des méthodes où l’on passe l’objet $pdo en paramètre pour faire un execute
 
 -----------------------------------------------------------------------------------------------------------------------
-
-QUESTION :
-
-— Comment renouveler l’identifiant de la session régulièrement, dans l’action connected ?
-
-— Regarder pourquoi les comptes partage les cookies, donc partage les mêmes panier, quand on passe d’un compte à l’autre, on partage le même panier, c’est problématique

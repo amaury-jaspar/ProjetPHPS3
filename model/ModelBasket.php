@@ -18,7 +18,7 @@ class ModelBasket extends Model {
 
     public static function getBasketFromSession() {
         if (isset($_SESSION['basket'])) {
-            setcookie('basket', serialize($_SESSION['basket']), time() + (60 * 60 * 24));
+        setcookie('basket', serialize($_SESSION['basket']), time() + (60 * 60 * 24)/*, "/~simondonj/ecommerce/", "webinfo.iutmontp.univ-montp2.fr"*/);
             return $_SESSION['basket'];
         } else {
             return $tab_basket = [];
@@ -91,17 +91,26 @@ class ModelBasket extends Model {
 
     public static function setBasket($tab_basket) {
         $_SESSION['basket'] = $tab_basket;
-        setcookie('basket', serialize($tab_basket), time() + (60 * 60 * 24));
+    setcookie('basket', serialize($tab_basket), time() + (60 * 60 * 24)/*, "/~simondonj/ecommerce/", "webinfo.iutmontp.univ-montp2.fr"*/);
         self::actualizeSumBasket();
     }
 
     public static function resetBasket() {
         $tab_basket = NULL;
-        setcookie('basket', "", time() - 1);
+    setcookie('basket', "", time() - 1/*, "/~simondonj/ecommerce/", "webinfo.iutmontp.univ-montp2.fr"*/);
         unset($_SESSION['basket']);
         unset($_SESSION['sumBasket']);
      }
 
 }
+
+/*
+* localhost:8888
+* PHP/ProjetPHPS3/public/index.php
+* "/~simondonj/ecommerce/", "webinfo.iutmontp.univ-montp2.fr"
+
+*/
+
+
 
 ?>

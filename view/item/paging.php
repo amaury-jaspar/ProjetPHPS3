@@ -1,9 +1,9 @@
 <h1>OUR CATALOG</h1>
 
-<div class="row container">
-    <form method="get" action="index.php?" class="col s12">
-        <div class="row" id="test">
-            <div class="input-field col s12">
+<div class="container">
+    <form method="get" action="index.php" class="col">
+
+            <div class="input-field">
                     <input type='hidden' name='action' value='paging'>
                     <input type='hidden' name='controller' value='item'>
                     <select id="select" name="condition">
@@ -27,7 +27,7 @@
                         echo"<div><p>" . $searchResult . "</p></div>";
                     ?>
             </div>
-        </div>
+
     </form>
 </div>
 
@@ -47,7 +47,7 @@ $itemIdHTML = htmlspecialchars($item->get('id'));
 $itemNameHTML = htmlspecialchars($item->get('name'));
 
 echo <<< EOT
-    <div class="col s2 m2">
+    <div class="col s12 m6 l4">
     <div class="card medium">
         <div class="card-image">
         <img class="responsive-img" width="100" height="100" alt="Image of the product" src="../images/$itemNameHTML.jpg">

@@ -13,5 +13,9 @@ class Session {
         return (isset($_SESSION['connected']) && $_SESSION['connected'] == true);
     }
 
+    public static function different_user() {
+        return (isset($_SESSION['ip']) && $_SESSION['ip'] != $_SERVER['REMOTE_ADDR']);
+    }
+    
 }
 ?>

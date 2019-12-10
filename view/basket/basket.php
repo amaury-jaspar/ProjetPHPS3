@@ -14,7 +14,7 @@ foreach($tab_basket as $item) {
     $itemPriceURL = rawurlencode($item->get('price'));
 
 echo <<< EOT
-<div class="col s3 m3">
+<div class="col s12 m6 l4">
     <div class="card large">
         <div class="card-image">
             <img class="responsive-img" width="200" height="200" alt="Image of the product" src="../images/$itemName.jpg">

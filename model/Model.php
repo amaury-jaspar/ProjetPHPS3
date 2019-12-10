@@ -1,6 +1,7 @@
 <?php
 
 require_once (File::build_path(array('conf', 'Conf.php')));
+require_once (File::build_path(array('lib', 'QueryBuilder.php')));
 
 class Model {
 
@@ -30,7 +31,10 @@ class Model {
 		$table_name = static::$object;
 		$class_name = 'Model' . ucfirst($table_name);
 		try {
-			$req_prep = Model::$pdo->prepare("SELECT * from $table_name WHERE $primary_key = :primary");
+			$myRequest = new QueryBuilder;
+			$myRequest->select('*')->from($table_name)->where($primary_key, "=", ":primary");
+//			$sql = "SELECT * from $table_name WHERE $primary_key = :primary";
+			$req_prep = Model::$pdo->prepare($myRequest->getSQL());
 			$values = array("primary" => $primary_value);
 			$req_prep->execute($values);
 			$req_prep->setFetchMode(PDO::FETCH_CLASS, $class_name);
@@ -87,7 +91,10 @@ class Model {
 		$table_name = static::$object;
 		$class_name = 'Model' . ucfirst($table_name);
 		try {
-			$req_prep = Model::$pdo->query("SELECT * FROM $table_name");
+			$myRequest = new QueryBuilder;
+			$myRequest->select('*')->from($table_name);
+//		 	$sql = "SELECT * FROM $table_name";
+			$req_prep = Model::$pdo->query($myRequest->getSQL());
 			$req_prep->setFetchMode(PDO::FETCH_CLASS, $class_name);
 			$tab_obj = $req_prep->fetchAll();
 		} catch (PDOException $e) {
@@ -103,13 +110,14 @@ class Model {
 		return $tab_obj;
 	}
 
-		// Inutile à l'heure actuelle
-		// A tester, pas sûr que la préparation des valeurs à insérer soi correct
 	public static function selectWhere($attribut, $value) {
 		$table_name = static::$object;
 		$class_name = 'Model' . ucfirst($table_name);
 		try {
-			$req_prep = Model::$pdo->prepare("SELECT * FROM $table_name WHERE :attribut = :value");
+			$myRequest = new QueryBuilder;
+			$myRequest->select('*')->from($table_name)->where(":attribut", "=", ":value");
+//			 $sql = "SELECT * FROM $table_name WHERE :attribut = :value"
+			$req_prep = Model::$pdo->prepare($myRequest->getSQL());
 			$values = array (
 				"attribut" => $attribut,
 				"value" => $value

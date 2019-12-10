@@ -94,7 +94,7 @@
 
             // ici il faut utiliser pdo pour preparer la requête et l'inserer
         public function where (string $condition, string $symbole, $value): self {
-            $this->sql .= " WHERE $condition $symbole '$value'";
+            $this->sql .= " WHERE $condition $symbole $value";
             return $this;
         }
 
@@ -168,27 +168,19 @@
 
 
 
-    public function fetch (PDO $pdo, string $field): ?string {
-
-            $query = $pdo->prepare($this->getSQL());
-
+    public function fetch (PDO $pdo) {
+            $query = $pdo->prepare($this->sql);
             $query->execute($this->params);
-
             $result = $query->fetch();
-
             if ($result === false) {
                 return null;
             }
-
-            return $result[$field] ?? null;
-
+            return $result;
         }
 
         public function getSQL () {
             return (string)$this->sql;
         }
-
-
 
     public function test () {
 

@@ -9,7 +9,7 @@ $catName = ucfirst($category->get('name'));
 $catDesc = ucfirst($category->get('description'));
 
 echo <<< EOT
-  <div class="col s6 m6">
+  <div class="col s12 m6">
         <div class="card medium">
           <div class="card-image">
             <img alt="Image of the shop" src="../images/$catName.jpeg">
