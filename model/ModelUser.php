@@ -157,20 +157,6 @@ class ModelUser extends Model {
 		}
 	}
 
-    public function actualizeLevel() {
-        $sum = 1;
-        $count = 0;
-        while ($sum < $this->spend) {
-			$sum * 100;
-            $count += 1;
-        }
-        if ($count !== $this->level) {
-            $message = "Bravo, vous passez du niveau '. $this->level .' au niveau '.$count '.";
-            $this->set('level', $count);
-			Messenger::alert($message);
-        }
-	}
-
 }
 
 ?>

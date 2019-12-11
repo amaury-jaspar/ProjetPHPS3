@@ -25,12 +25,12 @@ echo <<< EOT
                 <p>quantity : $itemQuantity</p>
 EOT;
 if (Session::is_connected()) {
-    echo '<a href="index.php?controller=basket&action=transfertToWL&id='.$itemIdURL.'">Transfert To wish list</a>';
+    echo '<p><a href="index.php?controller=basket&action=transfertToWL&id='.$itemIdURL.'">Transfert To wish list</a></p>';
 }
 
 echo <<< EOT
-                <a href="index.php?controller=basket&action=deleteFromBasket&id=$itemIdURL">Remove one exemplary</a>
-                <a href="index.php?controller=item&action=read&id=$itemIdURL">Detail page</a>
+                <p><a href="index.php?controller=basket&action=deleteFromBasket&id=$itemIdURL">Remove one exemplary</a></p>
+                <p><a href="index.php?controller=item&action=read&id=$itemIdURL">Detail page</a></p>
             </div>
         </div>
     </div>

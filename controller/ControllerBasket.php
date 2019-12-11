@@ -129,7 +129,17 @@ public static function confirmBuyBasket() {
         // on actualise le champ qui recense combien l'utilisateur a dépensé jusqu'à maintenant
         $user->set('spend', $user->get('spend') + $sumBasket);
         // s'il y a raison de, on modifie le niveau du joueur
-//        $user->actualizeLevel();
+        $sum = 1;
+        $count = 0;
+            while ($sum < $user->get('spend')) {
+                $sum *= 100;
+                $count += 1;
+            }
+            if ($count != $user->get('level')) {
+                $message = "Bravo, vous passez au niveau $count";
+                $user->set('level', $count);
+                Messenger::alert($message);
+            }
         // puis on sauvegarde dans la BDD toutes les modification faites sur l'acheteur
         $data = array ('login' => $user->get('login'), 'wallet' => $user->get('wallet'), 'spend' => $user->get('spend'), 'level' => $user->get('level'));
         ModelUser::updateByID($data);
