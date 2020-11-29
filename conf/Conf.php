@@ -3,13 +3,13 @@
 class Conf {
 
     static private $databases = array (
-        'hostname' => 'webinfo.iutmontp.univ-montp2.fr',
+        'hostname' => '',
         // le nom de la base de donnée
-        'database' => 'simondonj',
+        'database' => '',
         // root
-        'login' => 'simondonj',
+        'login' => '',
         // mdp créer à l'installation, certainement un root
-        'password' => '07C4XS02ID7'
+        'password' => ''
         // a remplir
     );
 
